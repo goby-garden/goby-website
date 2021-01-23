@@ -65,8 +65,9 @@ body.authorized #login-screen{
 }
 
 
-@media(hover:hover){
-  .view-option::hover{
+@media (hover:hover){
   
-}
+  .view-option:hover{
+    box-shadow:inset 5px -5px 32px -17px rgba(0, 0, 0, 0.5);
+  }
 }
