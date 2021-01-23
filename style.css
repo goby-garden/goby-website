@@ -1,19 +1,50 @@
-
+div{
+  position:relative;
+}
 
 
 
 #login-screen{
-  position:absolute;
+  position:fixed;
   top:0;
   left:0;
   width:100%;
   height:100vh;
   background-color: white;
+}
+
+#login-screen .view-option{
+  background-color: white;
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
   display:flex;
+}
+
+
+#login-page1{
+  flex-flow: row nowrap;
+}
+#login-page1 div{
+  flex:1;
+}
+
+#login-page1 div:first-child{
+  border-right:1px;
+}
+
+
+#login-page2{
   flex-flow: column nowrap;
   justify-content: center;
   align-content: center;
 }
+
+
+
+
 
 body.authorized #login-screen{
   display:none;
