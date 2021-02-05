@@ -3,7 +3,7 @@ let editMode=true;
 
 
 function startUp(){
-  let slug='good-personal-blogs'
+  let slug='innovative-software-formats'
   // interesting-shapes
   postRequest(slug,'contents');
   postRequest(slug,'meta')
