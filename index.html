@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="css/clearstyle.css">
     <link rel="stylesheet" href="css/style.css">
     <!-- external fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet"> -->
   </head>
   <body class="edit-mode">
       <!-- <a href="http://dev.are.na/oauth/authorize?client_id=b7e90305232837caf2fd24598c3de3970819b57e2639574a652dffd4329afd19&redirect_uri=https://goby.glitch.me/?slug=test&response_type=code">Give Goby permission to read and write to Are.na</a> -->
@@ -30,29 +30,42 @@
         </div>
       </div>
       <div id="item-meta">
+        <div id="close-item">
+          <svg>
+            <line class="line" x1="0%" x2="100%" y1="0%" y2="100%"></line><line class="line" x1="100%" x2="0%" y1="0%" y2="100%"></line>
+          </svg>
+        </div>
+        <div id="submit-cancel">
+          <button type="button" id="cancel-form" name="cancel"><p>Cancel</p></button>
+          <button type="button" id="submit-form" name="submit"><p>Submit</p></button>
+        </div>
         <form action="" method="post">
           <div id="item-title">
             <label for="item-title">Title</label>
             <p class='user-input'></p>
-            <textarea name="item-title"></textarea>
+            <input class="form-edit" type="text" name="item-title" value="">
+            <!-- <textarea name="item-title"></textarea> -->
           </div>
           <div id="item-author" class='single-line'>
             <label for="item-author">Author:</label>
             <p class='user-input'></p>
-            <input type="text" name="item-author" value="">
+            <input class="no-own-req form-edit" type="text" name="item-author" value="">
           </div>
           <div id="item-origin" class='single-line'>
             <label for="item-origin">Origin</label>
             <p class='user-input'></p>
-            <input type="text" name="item-origin" value="">
+            <input class="no-own-req form-edit" type="text" name="item-origin" value="">
           </div>
           <div id="item-description">
             <label for="item-description">Description:</label>
             <p class='user-input'></p>
-            <textarea name="item-description"></textarea>
+            <textarea class="form-edit" name="item-description"></textarea>
           </div>
           <div id="item-tags">
             <label for="item-tags">Tags:</label>
+            <input id='add-new-tag' placeholder="comma separate or add from below" class="no-own-req form-edit" type="text" name="item-tags" value="">
+            <div id="tag-folder">
+            </div>
           </div>
           <div id="item-fields">
             <label for="item-tags">Fields:</label>
@@ -113,7 +126,9 @@
         </g>
       </g>
     </svg>
-      <script src="js/d3.min.js"></script>
-      <script src="js/function.js" charset="utf-8"></script>
+    <script src="https://unpkg.com/intersection-observer"></script>
+    <script src="https://unpkg.com/scrollama"></script>
+    <script src="js/d3.min.js"></script>
+    <script src="js/function.js" charset="utf-8"></script>
   </body>
 </html>

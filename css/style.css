@@ -22,9 +22,34 @@ h2{
   margin-bottom: 5px;
 }
 
+em{
+  font-style: italic;
+}
+
 .emphasis{
   color:black;
 }
+.no-emph{
+  color:var(--midtone);
+}
+
+.blockmode .text-block>*{
+  margin-bottom:15px;
+}
+.blockmode .text-block h1{
+  font-size:30px;
+  line-height: 34px;
+}
+.blockmode .text-block h2{
+  font-size:24px;
+  line-height: 30px;
+}
+.blockmode .text-block h3{
+  font-size:20px;
+  line-height: 28px;
+}
+
+
 
 /* overall grid layout---------- */
 
@@ -166,6 +191,8 @@ svg.inline{
   cursor:pointer;
 }
 
+
+
 #view-style svg{
   fill:var(--midtone);
 }
@@ -181,11 +208,62 @@ input:checked ~ svg #index-view {
 
 /*form----------- */
 
-#item-meta form{
-  padding-top:20px;
-  box-sizing: border-box;
-  width:calc(100% - 20px);
+
+#close-item{
+  position:absolute;
+  top:15px;
+  right:15px;
+  width:20px;
+  height:20px;
+  cursor:pointer;
+}
+
+#submit-cancel{
+  position:absolute;
+  top:0px;
+  left:0px;
+  width:calc(100% - 40px);
+  display: none;
+  flex-flow: row nowrap;
+  padding-top: 15px;
+  padding-bottom:4px;
+  background-color: white;
+}
+
+#submit-cancel.edit{
+  display:flex;
+}
+
+#submit-cancel button{
+  border-radius: 8px;
+  /* border:1px solid black; */
+  padding: 3px 7px;
+  color: black;
+  margin-right: 10px;
+}
+#submit-cancel button p{
+  border-bottom: 1px solid var(--midtone);
+}
+#submit-form{
+  background-color: var(--lightest);
+}
+
+#close-item svg{
+  width:100%;
   height:100%;
+  stroke:black;
+}
+
+#item-meta form{
+  padding-top:50px;
+  box-sizing: border-box;
+  width:calc(100% - 40px);
+  height:100%;
+  overflow:scroll;
+}
+
+#item-meta form.edit{
+  padding-top:70px;
 }
 
 .single-line{
@@ -213,17 +291,24 @@ input:checked ~ svg #index-view {
   cursor:auto;
 }
 
-form.edit input, form.edit textarea{
+form.edit.user-own .form-edit{
   display:block;
 }
 
-form.edit .user-input{
+form.edit .no-own-req{
+  display:block;
+}
+
+form.edit.user-own .user-input{
   display:none
 }
 
-#item-title,#item-origin,#item-description{
+#item-title,#item-origin,#item-description,#item-tags{
   margin-bottom:20px;
 }
+
+
+
 .user-input{
   overflow-x: scroll;
 }
@@ -257,6 +342,7 @@ form input[type='text'],form textarea{
   font-family: "Public Sans";
   font-size:17px;
   line-height: 22px;
+  box-sizing: border-box;
 }
 
 form textarea{
@@ -282,6 +368,58 @@ textarea {
   box-shadow: none;
   resize: none;
 }
+
+
+.tag{
+  display:inline-block;
+  position:relative;
+}
+
+.tag p{
+  border: 1px solid var(--lightest);
+  transition:border-color 0.3s, color 0.3s;
+  border-radius:8px;
+  padding:7px;
+  display:inline-block;
+  margin-right:10px;
+  margin-bottom:8px;
+}
+
+.tag input{
+  display:block;
+  position:absolute;
+  width:100%;
+  height:100%;
+  top:0;
+  left:0;
+  margin:0;
+  opacity:0;
+  cursor:pointer;
+  pointer-events: none;
+}
+form.edit .tag input{
+  pointer-events: all;
+}
+
+.tag input:checked~p{
+  border: 1px solid black;
+  color:black;
+}
+
+.tag :not(input:checked) ~ p{
+  display:none;
+}
+
+form.edit :not(input:checked) ~ p{
+  display:inline-block;
+}
+
+#item-tags input[type='text']{
+  margin-bottom:15px;
+}
+
+
+
 
 
 
@@ -319,7 +457,48 @@ textarea {
   position:absolute;
   bottom:-10px;
   transform:translateY(100%);
+  white-space: nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  width:100%;
+  text-align: center;
 }
+
+.blockmode .text-block{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  padding:20px;
+  padding-bottom:0px;
+  overflow:hidden;
+  color:black;
+  box-sizing:border-box;
+}
+
+.blockmode .channel-block .block-title{
+  bottom:auto;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  border:var(--midtone) 1px solid;
+  background-color: white;
+  padding:20px 10px;
+  width:calc(100% - 60px);
+  box-sizing: border-box;
+}
+
+
+.blockmode .channel-block svg{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  stroke:var(--midtone);
+}
+
 
 .img-wrap{
   width:100%;
@@ -405,4 +584,16 @@ textarea{
   #control-strip{
     justify-content: flex-end;
   }
+}
+
+@font-face {
+  font-family: 'Public Sans';
+  src: url('../fonts/PublicSans-VariableFont_wght.ttf') format('truetype');
+  font-weight: 1 999;
+}
+@font-face {
+  font-family: 'Public Sans';
+  src: url('../fonts/PublicSans-Italic-VariableFont_wght.ttf') format('truetype');
+  font-weight: 1 999;
+  font-style: italic;
 }
