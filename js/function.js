@@ -14,10 +14,11 @@ let goby={
 
 let channelContents;
 
+// approaching-goby-u9rrzm6iqee
 // screens-are-scary
 // interesting-shapes
 // good-personal-blogs
-let slug='good-personal-blogs';
+let slug='approaching-goby-u9rrzm6iqee';
 let currentPage=1;
 let per=10;
 let chanLength;
