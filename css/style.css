@@ -588,12 +588,12 @@ textarea{
 
 @font-face {
   font-family: 'Public Sans';
-  src: url('../fonts/PublicSans-VariableFont_wght.ttf') format('truetype');
+  src: url('https://cdn.glitch.com/a41e174e-1b9d-422e-9b2f-8772ed8c3a17%2FPublicSans-VariableFont_wght.ttf?v=1612696025839') format('truetype');
   font-weight: 1 999;
 }
 @font-face {
   font-family: 'Public Sans';
-  src: url('../fonts/PublicSans-Italic-VariableFont_wght.ttf') format('truetype');
+  src: url('https://cdn.glitch.com/a41e174e-1b9d-422e-9b2f-8772ed8c3a17%2FPublicSans-Italic-VariableFont_wght.ttf?v=1612696025733') format('truetype');
   font-weight: 1 999;
   font-style: italic;
 }
