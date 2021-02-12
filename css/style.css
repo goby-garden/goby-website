@@ -53,7 +53,10 @@ em{
   font-size:20px;
   line-height: 28px;
 }
-
+.blockmode .text-block-wrap li{
+  list-style:circle;
+  margin-left: 15px;
+}
 
 
 /* overall grid layout---------- */
