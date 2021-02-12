@@ -350,22 +350,22 @@ function fillChannel(){
         }
 
         // don't delete this-- you'll use it when writing to goby.json
-        if(gobyS.blocks.find(bl => bl.id==d.id)==undefined){
-          let newJson={
-            id:d.id,
-            tags:[],
-            fields:[],
-            author:"",
-            origin:(d.b.class=="Link")?d.b.source.url:""
-          }
-          gobyS.fields.forEach((item, i) => {
-            newJson.fields.push({
-              key:item.key,
-              val:item.default
-            })
-          });
-          gobyS.blocks.push(newJson);
-        }
+        // if(gobyS.blocks.find(bl => bl.id==d.id)==undefined){
+        //   let newJson={
+        //     id:d.id,
+        //     tags:[],
+        //     fields:[],
+        //     author:"",
+        //     origin:(d.b.class=="Link")?d.b.source.url:""
+        //   }
+        //   gobyS.fields.forEach((item, i) => {
+        //     newJson.fields.push({
+        //       key:item.key,
+        //       val:item.default
+        //     })
+        //   });
+        //   gobyS.blocks.push(newJson);
+        // }
 
       }
 
