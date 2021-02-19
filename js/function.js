@@ -2,14 +2,14 @@
 //placeholder values
 let userId=182020;
 let editMode=true;
-
+let username="nico-chilla";
 
 let goby;
 
 let gobyS={
   tags:['lettuce','tomato','cheddar','patty','pickles','onions'],
   fields:[
-    {key:'type',default:'entree'}
+    {key:'type',default:''}
   ],
   blocks:[]
 }
@@ -28,22 +28,27 @@ let bTitle=d3.select('#item-title');
 let bDesc=d3.select('#item-description');
 let bAuth=d3.select('#item-author');
 let bOrig=d3.select('#item-origin');
+let bFields=d3.select('#item-fields');
 
 let itemTitle=bTitle.select('.user-input');
 let itemDesc=bDesc.select('.user-input');
 let itemAuth=bAuth.select('.user-input');
-let itemOrig=bOrig.select('.user-input');
+let itemOrigLink=bOrig.select('.origin-link');
+let itemOrigNonlink=bOrig.select('.non-link');
 
 let formTitle=bTitle.select('input');
 let formDesc=bDesc.select('textarea');
 let formAuth=bAuth.select('input');
 let formOrig=bOrig.select('input');
 
+let tabindex=6;
 
 // screens-are-scary
 // interesting-shapes
 // good-personal-blogs
-let slug='approaching-goby-u9rrzm6iqee';
+// printed-matter-o0fah7ijg3u
+// approaching-goby-u9rrzm6iqee
+let slug='printed-matter-o0fah7ijg3u';
 let currentPage=1;
 let per=10;
 let chanLength;
@@ -62,6 +67,7 @@ function startUp(){
         d3.select('#submit-cancel').classed('edit',true);
         textAreaHeights(true);
         formOpen=true;
+        d3.select('#item-title').select('.form-edit').node().focus();
       }
     })
   }
@@ -72,7 +78,17 @@ function startUp(){
   })
   d3.select('#cancel-form').on('click',exitForm);
   d3.select('#submit-form').on('click',submitBlockData);
-  d3.select('#add-new-tag').on('input',newTagAdd)
+  d3.select('#add-new-tag').on('input',newTagAdd);
+  d3.select('#add-new-field').on('click',newFieldAdd);
+  d3.select('#form-sidecar').on('click',function(){
+    let theClass=d3.select('#form-sidecar').attr('class');
+    d3.select('#item-'+theClass).select('.form-edit').node().focus();
+  })
+  setUpFocus();
+  d3.select('#you-question').on('click',function(){
+    event.preventDefault();
+    d3.select('#item-author').select('.form-edit').property('value',"@"+username)
+  })
 }
 
 function exitForm(){
@@ -109,7 +125,7 @@ function submitBlockData(){
   if(formOrig.property('value')!==oldData.g.origin){
     oldData.g.origin=formOrig.property('value');
     gobyHasChanged=true;
-    console.log('origin changed');
+    console.log('origin changed',oldData.g.origin);
   }
   let newArr=[];
   document.querySelectorAll('.tag>input').forEach((item, i) => {
@@ -138,6 +154,37 @@ function submitBlockData(){
     oldData.g.tags=newArr;
   }
 
+  document.querySelectorAll('#item-fields>.single-line').forEach((item, i) => {
+    console.log(item.classList);
+    if(item.classList.contains("new-field")){
+      console.log('new field!')
+      let newField={
+        key:d3.select(item).select('.new-field-key').property('value'),
+        val:d3.select(item).select('.new-field-value').property('value')
+      }
+      goby.fields.push({key:newField.key})
+      oldData.g.fields.push(newField);
+    }else{
+      let fieldKey=item.dataset.key;
+      let newVal=d3.select(item).select('input').property('value');
+      let inBlock=oldData.g.fields.find(a=>a.key==fieldKey);
+      if(inBlock==undefined){
+        if(newVal.length>0){
+          oldData.g.fields.push({key:fieldKey,val:newVal});
+          gobyHasChanged=true;
+        }
+      }else if(newVal!==inBlock.val){
+        inBlock.val=newVal;
+        gobyHasChanged=true;
+      }
+    }
+
+
+  });
+
+
+
+
   exitForm();
   updateForm(oldData);
 
@@ -157,6 +204,74 @@ function submitBlockData(){
 
 
 }
+
+let greenTimer;
+let greenCounter;
+
+function setUpFocus(){
+  document.querySelectorAll('.form-section').forEach((item, i) => {
+    let instructions={
+      title:"What is this called?",
+      author:"Who made this?",
+      origin:"Where did you find this?",
+      description:"What is this about?"
+    }
+    let moreInfo={
+      title:"",
+      author:"text or @username",
+      origin:"text or URL (auto-fills link blocks)",
+      description:""
+    }
+    let selected=d3.select(item);
+    let sId=selected.attr('id');
+    let sType=sId.replace('item-','');
+
+
+    if(sId=='item-tags'||sId=='item-fields'){
+    }else{
+      selected.select('.form-edit').on('focus',function(){
+        d3.select('#instructions').select('.maintext').text(instructions[sType]);
+        d3.selectAll('.entry-sync').text(event.currentTarget.value);
+        d3.select('#form-sidecar').attr('class',sType).style('opacity',1);
+        d3.select('#media-type').text(moreInfo[sType]);
+        document.querySelector('#form-sidecar').dataset.viewing="true";
+        d3.select('#form-sidecar').style('pointer-events',"all");
+      })
+
+      selected.select('.form-edit').on('input',function(){
+        d3.selectAll('.entry-sync').text(event.currentTarget.value);
+
+        if((sType=="author"||sType=="origin")&&event.currentTarget.value.length>0&&event.inputType=="insertText"){
+          d3.select('#form-sidecar').style('background-color','#B2FFB8');
+          greenCounter=300;
+          clearInterval(greenTimer);
+          greenTimer=setInterval(function () {
+            greenCounter=greenCounter-10;
+            if(greenCounter==0){
+              clearInterval(greenTimer);
+              d3.select('#form-sidecar').style('background-color','white');
+            }
+          }, 10);
+        }
+      })
+      selected.select('.form-edit').on('focusout',function(){
+        d3.select('#form-sidecar').style('opacity',0);
+        document.querySelector('#form-sidecar').dataset.viewing="false";
+        setTimeout(function () {
+          if(document.querySelector('#form-sidecar').dataset.viewing=="false"){
+            d3.select('#form-sidecar').style('pointer-events',"none");
+          }
+        }, 300);
+
+        // #FFC1C1
+      })
+
+    }
+
+  });
+
+}
+
 
 
 
@@ -215,14 +330,14 @@ function doesGobyKnow(newBl){
       tags:[],
       fields:[],
       author:"",
-      origin:newBl.b!==undefined?((newBl.b.class=="Link")?newBl.b.source.url:""):""
+      origin:""
     }
-    goby.fields.forEach((field, f) => {
-      newJson.fields.push({
-        key:field.key,
-        val:field.default
-      })
-    });
+    // goby.fields.forEach((field, f) => {
+    //   newJson.fields.push({
+    //     key:field.key,
+    //     val:field.default
+    //   })
+    // });
     goby.blocks.push(newJson);
     newBl.g=goby.blocks.find(bl => bl.id==newBl.id);
   }
@@ -236,6 +351,7 @@ function fillMetaArray(fetchedItems){
       found.b=item;
     }else{
       if(item.title!=='goby.json'){
+        console.log(metaArray);
         let newDef=metaArray.find(bl=>bl.id==undefined)
         newDef.b=item;
         newDef.id=item.id;
@@ -264,6 +380,7 @@ function postRequest(slug,mode){
       break;
       case 'meta':
       totalLength=jsonResponse.length;
+      console.log(jsonResponse);
       fillMeta(jsonResponse);
       break;
       case 'update':
@@ -350,22 +467,23 @@ function fillChannel(){
         }
 
         // don't delete this-- you'll use it when writing to goby.json
-        // if(gobyS.blocks.find(bl => bl.id==d.id)==undefined){
-        //   let newJson={
-        //     id:d.id,
-        //     tags:[],
-        //     fields:[],
-        //     author:"",
-        //     origin:(d.b.class=="Link")?d.b.source.url:""
-        //   }
-        //   gobyS.fields.forEach((item, i) => {
-        //     newJson.fields.push({
-        //       key:item.key,
-        //       val:item.default
-        //     })
-        //   });
-        //   gobyS.blocks.push(newJson);
-        // }
+        if(gobyS.blocks.find(bl => bl.id==d.id)==undefined){
+          let newJson={
+            id:d.id,
+            tags:[],
+            fields:[],
+            author:"",
+            origin:""
+          }
+          // (d.b.class=="Link")?d.b.source.url:""
+          // gobyS.fields.forEach((item, i) => {
+          //   newJson.fields.push({
+          //     key:item.key,
+          //     val:item.default
+          //   })
+          // });
+          gobyS.blocks.push(newJson);
+        }
 
       }
 
@@ -429,11 +547,23 @@ function updateForm(blockData){
   let gob=blockData.g;
 
   itemAuth.html(gob.author);
-  console.log(gob.author,gob.origin);
   formAuth.property('value',gob.author);
 
-  itemOrig.attr('href',gob.origin)
+  useOrig=(gob.origin==""&&blockData.b.class=="Link")?blockData.b.source.url:gob.origin;
+  if(useOrig.search(/https:\/\/|http:\/\//g)==0){
+    itemOrigLink.classed('dont-show',false);
+    itemOrigNonlink.classed('dont-show',true);
+    itemOrigLink.attr('href',useOrig)
+    bOrig.select('.item-label').classed('hidden-until-edit',true);
+  }else{
+    itemOrigNonlink.classed('dont-show',false);
+    itemOrigLink.classed('dont-show',true);
+    itemOrigNonlink.html(useOrig);
+    bOrig.select('.item-label').classed('hidden-until-edit',false);
+  }
   formOrig.property('value',gob.origin);
+
+  d3.select('#item-id').html(blockData.id);
 
   theForm.node().dataset.id=blockData.id;
   tagFolder();
@@ -442,12 +572,59 @@ function updateForm(blockData){
     d3.select('#tag-'+item).property('checked',true);
   });
 
+  tabindex=6;
+  bFields.selectAll('.single-line').remove();
+
+  goby.fields.forEach((field, f) => {
+    let inBlock=gob.fields.find(a=>a.key==field.key)
+    bFields.insert('div','h5').attr('id','field-'+field.key).attr('class','single-line');
+    let newBar=d3.select('#field-'+field.key);
+    newBar.append('label').html(field.key+':');
+    newBar.append('p').attr('class','user-input').html(inBlock==undefined?"":inBlock.val);
+    newBar.append('input').attr('class','no-own-req form-edit')
+    .attr('type','text')
+    .property('value',inBlock==undefined?"":inBlock.val)
+    .attr('tabindex',tabindex)
+    .property('placeholder',field.default);
+    newBar.node().dataset.key=field.key;
+    tabindex++;
+  });
+  d3.select('#submit-form').attr('tabindex',tabindex);
+
+  // <div class="single-line">
+  //   <label for="item-field">Type:</label>
+  //   <p class='user-input'>Entree</p>
+  //   <input tabindex="6" class="no-own-req form-edit" type="text" name="item-field" placeholder="Entree" value="Entree">
+  // </div>
+
   // <div class="tag">
   //   <input type="checkbox" name="" value="">
   //   <p>cheese</p>
   // </div>
 
 }
+
+
+function newFieldAdd(){
+  bFields.insert('div','h5').attr('class','single-line new-field')
+  let newField=bFields.select('div:last-of-type');
+  newField.append('input').attr('class','no-own-req form-edit new-field-key')
+  .attr('type','text')
+  .property('value','')
+  .attr('tabindex',tabindex)
+  .property('placeholder','key');
+  tabindex++;
+  newField.append('span').html(':');
+  newField.append('input').attr('class','no-own-req form-edit new-field-value')
+  .attr('type','text')
+  .property('value','')
+  .attr('tabindex',tabindex)
+  .property('placeholder','value');
+  tabindex++;
+  d3.select('#submit-form').attr('tabindex',tabindex);
+  tabindex++;
+}
+
 
 function newTagAdd(){
   console.log(event);

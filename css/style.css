@@ -22,6 +22,16 @@ h2{
   margin-bottom: 5px;
 }
 
+h4{
+  font-size: 20px;
+  line-height: 26px;
+}
+
+h6{
+  font-size: 30px;
+  line-height: 28px;
+}
+
 strong{
   font-weight: 600;
 }
@@ -57,6 +67,7 @@ em{
   list-style:circle;
   margin-left: 15px;
 }
+
 
 #channel-description>*{
   margin-bottom:15px;
@@ -217,6 +228,83 @@ input:checked ~ svg #index-view {
 }
 
 
+
+#center-panel{
+  pointer-events: none;
+  z-index: 25;
+  position: fixed;
+  top: 50vh;
+  transform: translateY(-50%);
+  left: 0;
+  width: 100%;
+  grid-template-rows:minmax(0, 1fr);
+}
+#form-sidecar{
+  opacity:0;
+  transition:opacity 0.3s,background-color 0.3s;
+  background-color: white;
+  min-height: 150px;
+  grid-column: 7 / 13;
+  grid-row: 1;
+  border: 1px var(--midtone) solid;
+  border-radius: 35px;
+  border-top-left-radius: 0;
+  padding:20px;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+
+h4.entry-sync{
+  display:none;
+}
+h6.entry-sync{
+  display:block;
+  overflow:scroll;
+  white-space: nowrap;
+}
+
+#you-question{
+  display:none;
+  margin-left:10px;
+  border-bottom:1px solid black;
+  transition:color 0.3s;
+  cursor:pointer;
+}
+
+
+#form-sidecar.author #you-question{
+  display:inline;
+}
+
+
+
+#form-sidecar.description h4.entry-sync{
+  display:block;
+  text-align: left;
+}
+
+#form-sidecar.description h6.entry-sync{
+  display:none;
+}
+
+#instructions{
+  font-weight: 500;
+  margin-bottom:15px;
+}
+
+.entry-sync{
+  border-bottom: 1px solid black;
+  padding-bottom: 10px;
+  margin-bottom:10px;
+  text-align: center;
+  min-height: 28px;
+}
+
+
+
+
+
 /*form----------- */
 
 
@@ -309,6 +397,10 @@ input:checked ~ svg #index-view {
   box-sizing: border-box;
 }
 
+#scroll-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
 
 form.edit #item-author{
   margin-bottom:10px;
@@ -326,17 +418,49 @@ form.edit #item-author{
 .hidden-until-edit{
   display:none;
 }
+
+
 form.edit .hidden-until-edit{
   display:block;
 }
 
-#item-meta form.edit{
+form.edit{
   cursor:auto;
   width:calc(100% - 20px);
 }
-.edit-mode form.edit label{
-  cursor:auto;
+
+.dont-show{
+  display:none !important;
 }
+form.edit .dont-show{
+  display:none !important;
+}
+
+#item-id{
+  margin-top:100px;
+  padding: 10px 0px;
+  border-top: 1px solid var(--midtone);
+  display:block !important;
+}
+#item-id::before{
+  content:"block #";
+}
+
+#item-fields .single-line{
+  margin-bottom:10px;
+}
+.new-field-value{
+  margin-left:10px;
+}
+
+#add-new-field{
+  cursor:pointer;
+  border-bottom:1px solid black;
+}
+form.edit #add-new-field.hidden-until-edit{
+  display:inline;
+}
+
 
 form.edit.user-own .form-edit{
   display:block;
@@ -444,6 +568,7 @@ textarea {
   cursor:pointer;
   pointer-events: none;
 }
+
 form.edit .tag input{
   pointer-events: all;
 }
@@ -457,6 +582,10 @@ form.edit .tag input{
   display:none;
 }
 
+/* form:not(.edit) #tag-folder{
+  line-height: 0px;
+} */
+
 form.edit :not(input:checked) ~ p{
   display:inline-block;
 }
@@ -464,6 +593,7 @@ form.edit :not(input:checked) ~ p{
 #item-tags input[type='text']{
   margin-bottom:15px;
 }
+
 
 
 
@@ -597,7 +727,9 @@ textarea{
 
 
 @media(hover:hover){
-
+  #you-question:hover{
+    color:black;
+  }
 }
 
 
