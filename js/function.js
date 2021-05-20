@@ -97,8 +97,8 @@ function handleNewData(contents){
     }
   })
   console.log(blocks,goby);
-  fillWithBlocks('join');
-  fillWithBlocks('update');
+  fillWithBlocks();
+  fillWithBlocks();
 }
 
 function newGobyBlock(id){
@@ -113,17 +113,12 @@ function newGobyBlock(id){
   return newBlock;
 }
 
-function fillWithBlocks(mode){
-  if(mode="join"){
-    let domBlocks=feed.selectAll('div').data(blocks.filter(a=>a.title!=="goby.json"),d => d).join('div')
-  }else{
-    
-  }
-  
-  domBlocks
+function fillWithBlocks(){
+  let domBlocks=feed.selectAll('div')
+    .data(blocks.filter(a=>a.title!=="goby.json"),d => d)
+    .join('div')
     .attr('id',d => 'bl-'+d.id)
     .attr('class','block')
-  
   domBlocks.append('svg')
   .node().insertAdjacentHTML('afterbegin',chanLines);
   domBlocks.filter((d, i) =>d.image)
