@@ -22,11 +22,11 @@ function postRequest(slug,mode){
     console.log(jsonResponse)
     switch(mode){
       case 'contents':
-      channelContents=jsonResponse.contents;
+      console.log(jsonResponse.contents);
       break;
       case 'meta':
       totalLength=jsonResponse.length;
-      fillMeta(jsonResponse)
+      fillMeta(jsonResponse);
       break;
       case 'update':
       channelContents=channelContents.concat(jsonResponse.contents);
@@ -64,6 +64,7 @@ function fillMeta(data){
   //record channel length in global var
   chanLength=data.length;
 
+  //note to self:put a check here for errors in the future
   goby=JSON.parse(data.contents[0].content);
   postRequest(slug,'contents');
 }
