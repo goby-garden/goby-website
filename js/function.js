@@ -1,7 +1,7 @@
 
 // dom variables--------------------
 let feed=d3.select('#channel-feed');
-
+let chanLines='<line class="line" x1="0%" x2="100%" y1="0%" y2="100%"></line><line class="line" x1="100%" x2="0%" y1="0%" y2="100%"></line>';
 
 
 
@@ -112,11 +112,14 @@ function newGobyBlock(id){
 }
 
 function fillWithBlocks(){
-  feed.selectAll('div')
+  let domBlocks=feed.selectAll('div')
     .data(blocks,d => d)
     .join('div')
     .attr('id',d => 'bl-'+d.id)
     .attr('class','block')
+  domBlocks.append('svg')
+  .node().insertAdjacentHTML('afterbegin',chanLines);
+  domBlocks.filter()
 }
 
 
