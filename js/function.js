@@ -63,6 +63,7 @@ function fillMeta(data){
   document.querySelector('#username').innerText=data.user["full_name"]
   
   if(data.metadata!==null){
+    d3.select('#channel-description').text()
     document.querySelector('#channel-description').innerText=marked(data.metadata.description);
   }
   //record channel length in global var
