@@ -98,6 +98,7 @@ function handleNewData(contents){
   })
   console.log(blocks,goby);
   fillWithBlocks();
+  fillWithBlocks();
 }
 
 function newGobyBlock(id){
@@ -115,7 +116,8 @@ function newGobyBlock(id){
 function fillWithBlocks(){
   let domBlocks=feed.selectAll('div')
     .data(blocks.filter(a=>a.title!=="goby.json"),d => d)
-    .join('div')
+    .enter()
+    .append('div')
     .attr('id',d => 'bl-'+d.id)
     .attr('class','block')
   domBlocks.append('svg')
