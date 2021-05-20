@@ -29,7 +29,9 @@
           <p id="channel-description" class="emphasis"></p>
         </div>
       </div>
+      
       <div id="item-meta">
+        
         <form action="" method="post">
           <div id="submit-cancel">
             <button type="button" id="edit-form" name="edit"><p>Edit ✎</p></button>
@@ -37,40 +39,7 @@
             <button tabindex="6" type="button" id="submit-form" name="submit" type="submit"><p>Submit</p></button>
           </div>
           <div id="scroll-wrapper">
-            <div id="item-title" class="form-section">
-              <label for="item-title">Title</label>
-              <p class='user-input'></p>
-              <input tabindex="1" class="form-edit" type="text" name="item-title" value="">
-              <!-- <textarea name="item-title"></textarea> -->
-            </div>
-            <div id="item-author" class='single-line form-section'>
-              <label for="item-author">Author:</label>
-              <p class='user-input'></p>
-              <input tabindex="2" class="no-own-req form-edit" type="text" name="item-author" value="">
-            </div>
-            <div id="item-origin" class='single-line form-section'>
-              <label for="item-origin">
-                <span class="hidden-until-edit item-label">Origin:</span>
-                <a class='user-input origin-link dont-show'>Origin</a>
-              </label>
-              <p class="user-input non-link dont-show"></p>
-              <input tabindex="3" class="no-own-req form-edit" type="text" name="item-origin" value="">
-            </div>
-            <div id="item-description" class="form-section">
-              <label for="item-description">Description:</label>
-              <p class='user-input'></p>
-              <textarea tabindex="4" class="form-edit" name="item-description"></textarea>
-            </div>
-            <div id="item-tags" class="form-section">
-              <label for="item-tags">Tags:</label>
-              <input tabindex="5" id='add-new-tag' placeholder="comma separate or add from below" class="no-own-req form-edit" type="text" name="item-tags" value="">
-              <div id="tag-folder">
-              </div>
-            </div>
-            <div id="item-fields" class="form-section">
-              <h5 id="add-new-field" class="hidden-until-edit"><span class="emphasis">+ </span>Add new field</h5>
-            </div>
-            <p id="item-id"></p>
+            
           </div>
 
         </form>
@@ -114,14 +83,6 @@
         </div>
       </div>
     </div>
-    <div id="center-panel" class="grid">
-      <div id="form-sidecar">
-        <h4 id="instructions"><span class="maintext"></span><span id="you-question">You?</span></h4>
-        <h4 class="entry-sync emphasis"></h4>
-        <h6 class="entry-sync emphasis"></h6>
-        <p id="media-type"></p>
-      </div>
-    </div>
 
     <svg class="hide" xmlns="http://www.w3.org/2000/svg" width="13.846" height="10.581" viewBox="0 0 13.846 10.581">
       <path id="fields-icon" data-name="Path 8" d="M741.161,144.035l2.244,9.971h8.469l2.157-9.971" transform="translate(-740.673 -143.925)" fill="none" stroke="#000" stroke-width="1"/>
@@ -144,9 +105,6 @@
     </svg>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <!-- <script src="js/lodash.js"></script> -->
-    <script src="https://unpkg.com/intersection-observer"></script>
-    <script src="https://unpkg.com/scrollama"></script>
-    <script src="js/d3.min.js"></script>
     <script src="js/function.js" charset="utf-8"></script>
   </body>
 </html>
