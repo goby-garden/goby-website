@@ -1,5 +1,5 @@
 let totalLength=0;
-let blocks;
+let blocks=[];
 let goby;
 
 
@@ -13,6 +13,10 @@ let currentPage=1;
 let per=10;
 let chanLength;
 
+
+function startUp(){
+  postRequest(slug,'meta');
+}
 
 
 function postRequest(slug,mode){
@@ -56,10 +60,10 @@ function fillMeta(data){
   //add channel name to header
   document.querySelector('#channel-name').insertAdjacentHTML('beforeend',data.title);
   //add username to header
-  document.querySelector('#username').innerText(data.user["full_name"]);
+  document.querySelector('#username').innerText=data.user["full_name"]
   
   if(data.metadata!==null){
-    document.querySelector('#channel-description').innerText(marked(data.metadata.description));
+    document.querySelector('#channel-description').innerText=marked(data.metadata.description);
   }
   //record channel length in global var
   chanLength=data.length;
@@ -74,14 +78,15 @@ function handleNewData(contents){
   
   
   contents.forEach((block,b)=>{
-    if(goby.find(a=>a.id==block.id)==undefined){
-      goby.push(newGobyBlock(block.id));
+    if(goby.blocks.find(a=>a.id==block.id)==undefined&&block.title!=="goby.json"){
+      goby.blocks.push(newGobyBlock(block.id));
       gobyChanged=true;
     }
     if(blocks.find(a=>a.id==block.id)==undefined){
-      
+      blocks.push(block);
     }
   })
+  console.log(blocks,goby);
 }
 
 function newGobyBlock(id){
@@ -95,3 +100,6 @@ function newGobyBlock(id){
   })
   return newBlock;
 }
+
+
+window.addEventListener('load',startUp);
