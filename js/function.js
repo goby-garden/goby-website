@@ -130,8 +130,9 @@ function fillWithBlocks(){
   .classed('text-block',true)
   .append('div').classed('text-block-wrap',true)
   .html(d=>d["content_html"]);
-  domBlocks.filter((d, i) =>d.class="Channel")
+  domBlocks.filter((d, i) =>d.class=="Channel")
   .classed('channel-block',true);
+  domBlocks.append('p').attr('class','block-title emphasis').html(d=>d.title);
 }
 
 
