@@ -1,23 +1,32 @@
-let totalLength=0;
+
+// dom variables--------------------
+let feed=d3.select('#channel-feed');
+
+
+
+
+//data variables----------------
+let currentPage=1;
+let per=10;
+let chanLength;
 let blocks=[];
 let goby;
-
-
+let slug='goby-test-channel';
 // screens-are-scary
 // interesting-shapes
 // good-personal-blogs
 // printed-matter-o0fah7ijg3u
 // approaching-goby-u9rrzm6iqee
-let slug='goby-test-channel';
-let currentPage=1;
-let per=10;
-let chanLength;
+
+
+
 
 
 function startUp(){
   postRequest(slug,'meta');
 }
 
+// api requests--------------
 
 function postRequest(slug,mode){
   function reqListener () {
@@ -29,7 +38,6 @@ function postRequest(slug,mode){
       handleNewData(jsonResponse.contents);
       break;
       case 'meta':
-      totalLength=jsonResponse.length;
       fillMeta(jsonResponse);
       break;
       case 'update':
@@ -55,16 +63,17 @@ function postRequest(slug,mode){
 }
 
 
+// data reception and management--------------------------
+
 
 function fillMeta(data){
   //add channel name to header
   document.querySelector('#channel-name').insertAdjacentHTML('beforeend',data.title);
   //add username to header
-  document.querySelector('#username').innerText=data.user["full_name"]
+  d3.select('#username').text(data.user["full_name"]);
   
   if(data.metadata!==null){
-    d3.select('#channel-description').text()
-    document.querySelector('#channel-description').innerText=marked(data.metadata.description);
+    d3.select('#channel-description').text(marked(data.metadata.description));
   }
   //record channel length in global var
   chanLength=data.length;
@@ -101,6 +110,21 @@ function newGobyBlock(id){
   })
   return newBlock;
 }
+
+function fillWithBlocks(){
+  feed.selectAll('div')
+    .data(blocks,d => d)
+    .join('div')
+    .attr('id',d => 'bl-'+d.id)
+    .attr('class','block')
+}
+
+
+
+
+
+
+
 
 
 window.addEventListener('load',startUp);
