@@ -1,6 +1,5 @@
-let channelContents;
 let totalLength=0;
-let metaArray=[];
+let blocks;
 let goby;
 
 
@@ -23,7 +22,7 @@ function postRequest(slug,mode){
     switch(mode){
       case 'contents':
       console.log(jsonResponse.contents);
-      handleContents(jsonResponse.contents);
+      handleNewData(jsonResponse.contents);
       break;
       case 'meta':
       totalLength=jsonResponse.length;
@@ -70,20 +69,29 @@ function fillMeta(data){
   postRequest(slug,'contents');
 }
 
-function handleContents(contents){
+function handleNewData(contents){
   let gobyChanged=false;
   
   
   contents.forEach((block,b)=>{
-    if(goby.find(a=>a.id==block.ID)==undefined){
-      goby.push({
-        id:block.ID
-      })
+    if(goby.find(a=>a.id==block.id)==undefined){
+      goby.push(newGobyBlock(block.id));
       gobyChanged=true;
+    }
+    if(blocks.find(a=>a.id==block.id)==undefined){
+      
     }
   })
 }
 
 function newGobyBlock(id){
-  let newBlock={id:block.id}
+  let newBlock={id:id};
+  goby.manifest.forEach((field,f)=>{
+    if(field.type=="array"){
+      newBlock[field.key]=[];
+    }else{
+      newBlock[field.key]="";
+    }
+  })
+  return newBlock;
 }
