@@ -23,13 +23,14 @@ function postRequest(slug,mode){
     switch(mode){
       case 'contents':
       console.log(jsonResponse.contents);
+      handleContents(jsonResponse.contents);
       break;
       case 'meta':
       totalLength=jsonResponse.length;
       fillMeta(jsonResponse);
       break;
       case 'update':
-      channelContents=channelContents.concat(jsonResponse.contents);
+      // channelContents=channelContents.concat(jsonResponse.contents);
       break;
     }
 
@@ -67,4 +68,22 @@ function fillMeta(data){
   //note to self:put a check here for errors in the future
   goby=JSON.parse(data.contents[0].content);
   postRequest(slug,'contents');
+}
+
+function handleContents(contents){
+  let gobyChanged=false;
+  
+  
+  contents.forEach((block,b)=>{
+    if(goby.find(a=>a.id==block.ID)==undefined){
+      goby.push({
+        id:block.ID
+      })
+      gobyChanged=true;
+    }
+  })
+}
+
+function newGobyBlock(id){
+  let newBlock={id:block.id}
 }
