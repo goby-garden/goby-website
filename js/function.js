@@ -1,6 +1,8 @@
 let channelContents;
 let totalLength=0;
 let metaArray=[];
+let goby;
+
 
 // screens-are-scary
 // interesting-shapes
@@ -21,7 +23,6 @@ function postRequest(slug,mode){
     switch(mode){
       case 'contents':
       channelContents=jsonResponse.contents;
-
       break;
       case 'meta':
       totalLength=jsonResponse.length;
@@ -43,12 +44,13 @@ function postRequest(slug,mode){
     fetchurl=`https://api.are.na/v2/channels/${slug}?page=1&per=1`;
   }else{
     fetchurl=`https://api.are.na/v2/channels/${slug}/contents?sort=position&direction=desc&page=${currentPage}&per=${per}`;
-    console.log(fetchurl);
     currentPage++;
   }
   oReq.open("GET", fetchurl);
   oReq.send();
 }
+
+
 
 function fillMeta(data){
   //add channel name to header
