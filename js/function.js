@@ -9,7 +9,7 @@ let goby;
 // good-personal-blogs
 // printed-matter-o0fah7ijg3u
 // approaching-goby-u9rrzm6iqee
-let slug='printed-matter-o0fah7ijg3u';
+let slug='goby-test-channel';
 let currentPage=1;
 let per=10;
 let chanLength;
