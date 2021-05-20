@@ -97,6 +97,7 @@ function handleNewData(contents){
     }
   })
   console.log(blocks,goby);
+  fillWithBlocks();
 }
 
 function newGobyBlock(id){
@@ -113,13 +114,24 @@ function newGobyBlock(id){
 
 function fillWithBlocks(){
   let domBlocks=feed.selectAll('div')
-    .data(blocks,d => d)
+    .data(blocks.filter(a=>a.title!=="goby.json"),d => d)
     .join('div')
     .attr('id',d => 'bl-'+d.id)
     .attr('class','block')
   domBlocks.append('svg')
   .node().insertAdjacentHTML('afterbegin',chanLines);
-  domBlocks.filter()
+  domBlocks.filter((d, i) =>d.image)
+  .append("div")
+  .attr('class','img-wrap')
+  .append('img')
+  .attr('alt',d=>d.title)
+  .attr('srcset',d=>`${d.image.thumb.url} 1x, ${d.image.large.url} 2x`)
+  domBlocks.filter((d, i) =>d["content_html"])
+  .classed('text-block',true)
+  .append('div').classed('text-block-wrap',true)
+  .html(d=>d["content_html"]);
+  domBlocks.filter((d, i) =>d.class="Channel")
+  .classed('channel-block',true);
 }
 
 
