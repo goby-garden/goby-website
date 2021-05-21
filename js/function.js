@@ -3,14 +3,24 @@
 let feed=d3.select('#channel-feed');
 let chanLines='<line class="line" x1="0%" x2="100%" y1="0%" y2="100%"></line><line class="line" x1="100%" x2="0%" y1="0%" y2="100%"></line>';
 
+let options = {threshold: 0.24}
+let observer = new IntersectionObserver(loadMore, options);
+
 
 
 //data variables----------------
 let currentPage=1;
 let per=10;
 let chanLength;
+
+
+// this stores all the individual block data fetched from arena
 let blocks=[];
+
+// this stores the goby's special metadata for each block
 let goby;
+
+//this selects the channel that is fetched
 let slug='gobies';
 // screens-are-scary
 // interesting-shapes
@@ -19,12 +29,6 @@ let slug='gobies';
 // approaching-goby-u9rrzm6iqee
 // gobies
 
-
-let options = {
-  threshold: 0.24
-}
-
-let observer = new IntersectionObserver(loadMore, options);
 
 
 
@@ -122,7 +126,7 @@ function newGobyBlock(id){
   return newBlock;
 }
 
-// updates blocks in channel according to data with d3
+// updates blocks in channel according to data, using d3
 function fillWithBlocks(blockList){
   feed.selectAll('.block')
     .data(blockList,d => d)
@@ -156,35 +160,18 @@ function fillWithBlocks(blockList){
     if(blocks.length<chanLength){
       observer.observe(document.querySelector('.block:last-child'));
     }
-    
   
-  // let domBlocks=feed.selectAll('div')
-  //   .data(blocks.filter(a=>a.title!=="goby.json"),d => d)
-  //   .join('div')
-  //   .attr('id',d => 'bl-'+d.id)
-  //   .attr('class','block')
-  // domBlocks.append('svg').html(chanLines);
-  // domBlocks.filter((d, i) =>d.image)
-  // .append("div")
-  // .attr('class','img-wrap')
-  // .append('img')
-  // .attr('alt',d=>d.title)
-  // .attr('srcset',d=>`${d.image.thumb.url} 1x, ${d.image.large.url} 2x`)
-  // domBlocks.filter((d, i) =>d["content_html"])
-  // .classed('text-block',true)
-  // .append('div').classed('text-block-wrap',true)
-  // .html(d=>d["content_html"]);
-  // domBlocks.filter((d, i) =>d.class=="Channel")
-  // .classed('channel-block',true);
-  // domBlocks.append('p').attr('class','block-title emphasis').html(d=>d.title);
 }
 
 
 
+// this requests more blocks when someone scrolls down enough
 function loadMore(entries){
   if(entries[0].isIntersecting){
     console.log(entries[0],'time to load more baby')
     observer.unobserve(entries[0].target);
+    //I might add an event listener for scroll here that fires the postRequest
+    // that way if the layout changes and the last block happens to come into view, the request won't fire until the scroll down for more stuff
     postRequest(slug,'update');
   }
 }
