@@ -249,15 +249,16 @@ input:checked ~ svg #index-view {
 
 #submit-cancel{
   position:absolute;
-  top:0px;
+  bottom:0px;
   left:0px;
-  width:calc(100% - 40px);
+  width:100%;
   display:flex;
   flex-flow: row nowrap;
   padding-top: 15px;
   padding-bottom:4px;
   background-color: white;
   z-index: 10;
+  border-top:1px solid black;
 }
 
 #submit-cancel button:not(#edit-form){
@@ -272,9 +273,9 @@ input:checked ~ svg #index-view {
 #edit-form{
   display:block;
   width:100%;
-  text-align: left;
-  padding: 3px 0px;
-  padding-top:20px;
+  text-align: center;
+  padding: 10px 0px;
+  padding-bottom: 20px;
 }
 
 #submit-cancel.edit #edit-form{
@@ -289,7 +290,7 @@ input:checked ~ svg #index-view {
   margin-right: 10px;
 }
 #submit-cancel button p{
-  border-bottom: 1px solid var(--midtone);
+/*   border-bottom: 1px solid var(--midtone); */
 }
 #submit-form{
   background-color: var(--lightest);
