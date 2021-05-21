@@ -32,6 +32,7 @@ let slug='gobies';
 
 function startUp(){
   postRequest(slug,'meta');
+  setUpButtons();
 }
 
 // api requests--------------
@@ -150,6 +151,8 @@ function fillWithBlocks(blockList){
             .html(d=>d["content_html"]);
           nBlock.filter((d, i) =>d.class=="Channel")
           .classed('channel-block',true);
+          nBlock.on('click',openBlock)
+          
         }
     )
   
@@ -160,6 +163,28 @@ function fillWithBlocks(blockList){
   
 }
 
+
+// handles the event of clicking on a block
+function openBlock(){
+  // will need conditionals for bulk editing (checking if you're pressing the shift-key)
+  
+  let theBlock=d3.select(event.currentTarget);
+  d3.selectAll('.focused').classed('focused',false);
+  theBlock.classed('focused',true);
+  d3.select('#item-meta').classed('open',true);
+  updateForm(theBlock.datum());
+}
+
+
+function setUpButtons(){
+  d3.select('#close-item').on('click',function(){
+    d3.select('#item-meta').classed('open',false);
+  })
+}
+
+function updateForm(blockData){
+  console.log(blockData);
+}
 
 
 // this requests more blocks when someone scrolls down enough
