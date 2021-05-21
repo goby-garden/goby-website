@@ -6,13 +6,10 @@ let chanLines='<line class="line" x1="0%" x2="100%" y1="0%" y2="100%"></line><li
 let options = {threshold: 0.24}
 let observer = new IntersectionObserver(loadMore, options);
 
-
-
 //data variables----------------
 let currentPage=1;
 let per=10;
 let chanLength;
-
 
 // this stores all the individual block data fetched from arena
 let blocks=[];
@@ -77,7 +74,7 @@ function postRequest(slug,mode){
 
 // data reception and management--------------------------
 
-
+//fills in channel info on page
 function fillMeta(data){
   //add channel name to header
   document.querySelector('#channel-name').insertAdjacentHTML('beforeend',data.title);
@@ -113,7 +110,7 @@ function handleNewData(contents){
   fillWithBlocks(blocks.filter(a=>a.title!=="goby.json"));
 }
 
-// builds a new data entry for goby using an id
+// builds a new data entry for goby using an id and goby's existing fields
 function newGobyBlock(id){
   let newBlock={id:id};
   goby.manifest.forEach((field,f)=>{
