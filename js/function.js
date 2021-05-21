@@ -11,7 +11,7 @@ let per=10;
 let chanLength;
 let blocks=[];
 let goby;
-let slug='goby-test-channel';
+let slug='gobies';
 // screens-are-scary
 // interesting-shapes
 // good-personal-blogs
@@ -74,7 +74,7 @@ function fillMeta(data){
   d3.select('#username').text(data.user["full_name"]);
   
   if(data.metadata!==null){
-    d3.select('#channel-description').text(marked(data.metadata.description));
+    d3.select('#channel-description').html(marked(data.metadata.description));
   }
   //record channel length in global var
   chanLength=data.length;
