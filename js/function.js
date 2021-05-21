@@ -48,6 +48,7 @@ function postRequest(slug,mode){
       fillMeta(jsonResponse);
       break;
       case 'update':
+      handleNewData(jsonResponse.contents);
       // channelContents=channelContents.concat(jsonResponse.contents);
       break;
     }
@@ -151,7 +152,11 @@ function fillWithBlocks(blockList){
         }
     )
   
-    d3.select('.block:last-child')
+  
+    if(blocks.length<chanLength){
+      observer.observe(document.querySelector('.block:last-child'));
+    }
+    
   
   // let domBlocks=feed.selectAll('div')
   //   .data(blocks.filter(a=>a.title!=="goby.json"),d => d)
@@ -176,8 +181,12 @@ function fillWithBlocks(blockList){
 
 
 
-function loadMore(){
-  
+function loadMore(entries){
+  if(entries[0].isIntersecting){
+    console.log(entries[0],'time to load more baby')
+    observer.unobserve(entries[0].target);
+    postRequest(slug,'update');
+  }
 }
 
 
