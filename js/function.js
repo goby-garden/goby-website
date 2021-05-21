@@ -114,25 +114,51 @@ function newGobyBlock(id){
 }
 
 function fillWithBlocks(){
-  let domBlocks=feed.selectAll('div')
+  feed.selectAll('div')
     .data(blocks.filter(a=>a.title!=="goby.json"),d => d)
-    .join('div')
-    .attr('id',d => 'bl-'+d.id)
-    .attr('class','block')
-  domBlocks.append('svg').html(chanLines);
-  domBlocks.filter((d, i) =>d.image)
-  .append("div")
-  .attr('class','img-wrap')
-  .append('img')
-  .attr('alt',d=>d.title)
-  .attr('srcset',d=>`${d.image.thumb.url} 1x, ${d.image.large.url} 2x`)
-  domBlocks.filter((d, i) =>d["content_html"])
-  .classed('text-block',true)
-  .append('div').classed('text-block-wrap',true)
-  .html(d=>d["content_html"]);
-  domBlocks.filter((d, i) =>d.class=="Channel")
-  .classed('channel-block',true);
-  domBlocks.append('p').attr('class','block-title emphasis').html(d=>d.title);
+    .join(
+        enter => {
+          enter
+            .append('p').attr('class','block-title emphasis').html(d=>d.title);
+          enter.append('svg').html(chanLines);
+          enter.filter((d, i) =>d.image)
+            .append("div")
+            .attr('class','img-wrap')
+            .append('img')
+            .attr('alt',d=>d.title)
+            .attr('srcset',d=>`${d.image.thumb.url} 1x, ${d.image.large.url} 2x`);
+          enter.filter((d, i) =>d["content_html"])
+            .classed('text-block',true)
+            .append('div')
+            .classed('text-block-wrap',true)
+            .html(d=>d["content_html"]);
+          enter.filter((d, i) =>d.class=="Channel")
+          .classed('channel-block',true);
+        }
+      )
+  .attr('id',d => 'bl-'+d.id)
+  .attr('class','block')
+    
+  
+  // let domBlocks=feed.selectAll('div')
+  //   .data(blocks.filter(a=>a.title!=="goby.json"),d => d)
+  //   .join('div')
+  //   .attr('id',d => 'bl-'+d.id)
+  //   .attr('class','block')
+  // domBlocks.append('svg').html(chanLines);
+  // domBlocks.filter((d, i) =>d.image)
+  // .append("div")
+  // .attr('class','img-wrap')
+  // .append('img')
+  // .attr('alt',d=>d.title)
+  // .attr('srcset',d=>`${d.image.thumb.url} 1x, ${d.image.large.url} 2x`)
+  // domBlocks.filter((d, i) =>d["content_html"])
+  // .classed('text-block',true)
+  // .append('div').classed('text-block-wrap',true)
+  // .html(d=>d["content_html"]);
+  // domBlocks.filter((d, i) =>d.class=="Channel")
+  // .classed('channel-block',true);
+  // domBlocks.append('p').attr('class','block-title emphasis').html(d=>d.title);
 }
 
 
