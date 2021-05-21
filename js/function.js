@@ -17,6 +17,7 @@ let slug='goby-test-channel';
 // good-personal-blogs
 // printed-matter-o0fah7ijg3u
 // approaching-goby-u9rrzm6iqee
+// gobies
 
 
 
@@ -97,7 +98,7 @@ function handleNewData(contents){
     }
   })
   console.log(blocks,goby);
-  fillWithBlocks();
+  fillWithBlocks(blocks.filter(a=>a.title!=="goby.json"));
 }
 
 function newGobyBlock(id){
@@ -112,9 +113,9 @@ function newGobyBlock(id){
   return newBlock;
 }
 
-function fillWithBlocks(){
-  feed.selectAll('div')
-    .data(blocks.filter(a=>a.title!=="goby.json"),d => d)
+function fillWithBlocks(blockList){
+  feed.selectAll('.block')
+    .data(blockList,d => d)
     .join(
         enter => {
           let nBlock=enter.append('div')
@@ -139,7 +140,7 @@ function fillWithBlocks(){
           nBlock.filter((d, i) =>d.class=="Channel")
           .classed('channel-block',true);
         }
-      )
+    )
     
   
   // let domBlocks=feed.selectAll('div')
