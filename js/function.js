@@ -98,7 +98,7 @@ function handleNewData(contents){
   })
   console.log(blocks,goby);
   fillWithBlocks();
-  fillWithBlocks();
+  // fillWithBlocks();
 }
 
 function newGobyBlock(id){
@@ -119,8 +119,7 @@ function fillWithBlocks(){
     .join('div')
     .attr('id',d => 'bl-'+d.id)
     .attr('class','block')
-  domBlocks.append('svg')
-  .node().insertAdjacentHTML('afterbegin',chanLines);
+  domBlocks.append('svg').html(chanLines);
   domBlocks.filter((d, i) =>d.image)
   .append("div")
   .attr('class','img-wrap')
