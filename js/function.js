@@ -98,7 +98,6 @@ function handleNewData(contents){
   })
   console.log(blocks,goby);
   fillWithBlocks();
-  // fillWithBlocks();
 }
 
 function newGobyBlock(id){
@@ -118,26 +117,29 @@ function fillWithBlocks(){
     .data(blocks.filter(a=>a.title!=="goby.json"),d => d)
     .join(
         enter => {
-          enter
+          let nBlock=enter.append('div')
+          nBlock
             .append('p').attr('class','block-title emphasis').html(d=>d.title);
-          enter.append('svg').html(chanLines);
-          enter.filter((d, i) =>d.image)
+          nBlock
+            .attr('id',d => 'bl-'+d.id)
+            .attr('class','block');
+          nBlock.append('svg').html(chanLines);
+          console.log(nBlock);
+          nBlock.filter((d, i) =>d.image)
             .append("div")
             .attr('class','img-wrap')
             .append('img')
             .attr('alt',d=>d.title)
             .attr('srcset',d=>`${d.image.thumb.url} 1x, ${d.image.large.url} 2x`);
-          enter.filter((d, i) =>d["content_html"])
+          nBlock.filter((d, i) =>d["content_html"])
             .classed('text-block',true)
             .append('div')
             .classed('text-block-wrap',true)
             .html(d=>d["content_html"]);
-          enter.filter((d, i) =>d.class=="Channel")
+          nBlock.filter((d, i) =>d.class=="Channel")
           .classed('channel-block',true);
         }
       )
-  .attr('id',d => 'bl-'+d.id)
-  .attr('class','block')
     
   
   // let domBlocks=feed.selectAll('div')
