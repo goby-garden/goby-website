@@ -20,6 +20,12 @@ let slug='gobies';
 // gobies
 
 
+let options = {
+  threshold: 0.24
+}
+
+let observer = new IntersectionObserver(loadMore, options);
+
 
 
 
@@ -84,6 +90,7 @@ function fillMeta(data){
   postRequest(slug,'contents');
 }
 
+// adds each newly received block to blocks and goby based on 
 function handleNewData(contents){
   let gobyChanged=false;
   
@@ -101,6 +108,7 @@ function handleNewData(contents){
   fillWithBlocks(blocks.filter(a=>a.title!=="goby.json"));
 }
 
+// builds a new data entry for goby using an id
 function newGobyBlock(id){
   let newBlock={id:id};
   goby.manifest.forEach((field,f)=>{
@@ -113,6 +121,7 @@ function newGobyBlock(id){
   return newBlock;
 }
 
+// updates blocks in channel according to data with d3
 function fillWithBlocks(blockList){
   feed.selectAll('.block')
     .data(blockList,d => d)
@@ -141,7 +150,8 @@ function fillWithBlocks(blockList){
           .classed('channel-block',true);
         }
     )
-    
+  
+    d3.select('.block:last-child')
   
   // let domBlocks=feed.selectAll('div')
   //   .data(blocks.filter(a=>a.title!=="goby.json"),d => d)
@@ -166,7 +176,9 @@ function fillWithBlocks(blockList){
 
 
 
-
+function loadMore(){
+  
+}
 
 
 
