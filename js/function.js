@@ -197,13 +197,10 @@ function loadMore(entries){
 
 
 function updateForm(blockData){
-  let title=blockData.title.length>0?blockData.title:"<span class=''></span>"
-  d3.select('#item-title p').html(title)
-  
-  
-  
-  
+  let title=blockData.title.length>0?blockData.title:"<span class='no-emph'>untitled</span>"
+  d3.select('#item-title p').html(title);
   console.log(blockData);
+  
 }
 
 

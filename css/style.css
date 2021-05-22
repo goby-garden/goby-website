@@ -457,6 +457,10 @@ input:checked ~ svg #index-view {
 /* edit form ----------*/
 
 
+.form-section{
+  margin-bottom:5px;
+}
+
 .form-edit:not(.edit){
   display:none;
 }
@@ -464,6 +468,17 @@ input:checked ~ svg #index-view {
   display:none;
 }
 
+#item-title p.form-display{
+  font-weight: 700;
+}
+
+#item-title{
+  margin-bottom:10px;
+}
+
+p.form-display {
+  color:black;
+}
 
 
 
