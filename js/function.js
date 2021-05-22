@@ -182,9 +182,6 @@ function setUpButtons(){
   })
 }
 
-function updateForm(blockData){
-  console.log(blockData);
-}
 
 
 // this requests more blocks when someone scrolls down enough
@@ -197,6 +194,22 @@ function loadMore(entries){
     postRequest(slug,'update');
   }
 }
+
+
+function updateForm(blockData){
+  let title=blockData.title.length>0?blockData.title:"<span class=''></span>"
+  d3.select('#item-title p').html(title)
+  
+  
+  
+  
+  console.log(blockData);
+}
+
+
+
+
+
 
 
 

@@ -454,14 +454,30 @@ input:checked ~ svg #index-view {
 }
 
 
+/* edit form ----------*/
+
+
+.form-edit:not(.edit){
+  display:none;
+}
+.form-display.edit{
+  display:none;
+}
+
+
+
+
+
+
+
+
+
 /* interactive -------------- */
 
-input{
+#channel-name input[type="text"]{
   display:none;
 }
-textarea{
-  display:none;
-}
+
 
 
 /* .grid > div{
