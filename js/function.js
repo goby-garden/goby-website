@@ -186,18 +186,13 @@ function setUpButtons(){
       d3.select('#submit-cancel').classed('edit',true);
       textAreaHeights(true);
       document.querySelector('#item-title input').focus();
-    
-      // if(formOpen==false){
-      //   theForm.classed('edit',true);
-      //   d3.select('#submit-cancel').classed('edit',true);
-      //   textAreaHeights(true);
-      //   formOpen=true;
-      //   d3.select('#item-title').select('.form-edit').node().focus();
-      // }
+
     })
-  
 }
 
+function exitForm(){
+  
+}
 
 
 
