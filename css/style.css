@@ -470,9 +470,21 @@ form:not(.goby-edit) #arena-goby .form-edit{
 }
 
 
-.edit .form-display{
+.native-edit #arena-native .form-display{
   display:none;
 }
+
+.goby-edit #arena-goby .form-display{
+  display:none;
+}
+
+.type-par{
+  
+}
+
+
+
+
 
 #item-title p.form-display{
   font-weight: 700;

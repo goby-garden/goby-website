@@ -32,7 +32,7 @@
       
       <div id="item-meta">
         
-        <form action="" method="post">
+        <form action="" method="post" class="edit native-edit">
           <div id="submit-cancel">
             <button type="button" id="edit-form" name="edit"><p>Edit ✎</p></button>
             <button type="button" id="cancel-form" name="cancel"><p>Cancel</p></button>
@@ -40,12 +40,12 @@
           </div>
           <div id="scroll-wrapper">
             <div id="arena-native">
-              <div class="form-section" id="item-title">
-                <label for="item-title" class="form-edit">Title</label>
+              <div class="form-section type-string" id="item-title">
+                <label for="item-title" class="form-edit">Title:</label>
                 <p class="form-display"></p>
                 <input class="form-edit" tabindex="1" type="text" name="item-title" value="">
               </div>
-              <div class="form-section" id="item-desc">
+              <div class="form-section type-par" id="item-desc">
                 <label for="item-desc">Description:</label>
                 <p class="form-display"></p>
                 <textarea class="form-edit" tabindex="2" name="item-desc" ></textarea>
