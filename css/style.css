@@ -488,6 +488,12 @@ input:checked ~ svg #index-view {
 }
 
 
+form[data-blocktype="channel"] #item-desc{
+  display:none;
+}
+
+
+
 p.form-display {
   color:black;
 }
