@@ -461,10 +461,16 @@ input:checked ~ svg #index-view {
   margin-bottom:5px;
 }
 
-.form-edit:not(.edit){
+form:not(.native-edit) #arena-native .form-edit{
   display:none;
 }
-.form-display.edit{
+
+form:not(.goby-edit) #arena-goby .form-edit{
+  display:none;
+}
+
+
+.edit .form-display{
   display:none;
 }
 
