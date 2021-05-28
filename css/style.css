@@ -256,7 +256,7 @@ input:checked ~ svg #index-view {
   flex-flow: row nowrap;
 /*   padding-top: 15px; */
   padding-bottom:4px;
-  background-color: white;
+/*   background-color: white; */
   z-index: 10;
 /*   border-top:1px solid black; */
 }
@@ -280,6 +280,7 @@ input:checked ~ svg #index-view {
   margin: 10px 0px;
   margin-bottom: 20px;
   color: black;
+  background-color:white;
 }
 
 #submit-cancel.edit #edit-form{
@@ -319,6 +320,7 @@ input:checked ~ svg #index-view {
   z-index:5;
 }
 
+/* need to make this share space with submit-cancel using flexbox */
 #scroll-wrapper{
   position:absolute;
   top:0;
@@ -330,6 +332,9 @@ input:checked ~ svg #index-view {
   overflow:scroll;
   box-sizing: border-box;
 }
+
+
+
 
 #scroll-wrapper::-webkit-scrollbar {
   display: none;

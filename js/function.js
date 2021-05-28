@@ -227,13 +227,14 @@ function updateForm(blockData){
   d3.select('#item-title input').property('value',blockData.title);
   
   d3.select('#item-desc p').html(blockData["description_html"]);
-  d3.select('#item-desc textarea').property('value',blockData.description);
+  // d3.select('#item-desc textarea').property('value',blockData.description);
+  d3.select('#item-desc textarea').html(blockData.description);
   console.log(blockData);
   
   d3.selectAll('form textarea').each((d,i,nodes)=>{
     textAreaOnInput(nodes[i]);
   })
-  
+  document.querySelector('form').dataset.blocktype=
   
 }
 
