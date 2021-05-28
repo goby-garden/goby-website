@@ -254,32 +254,44 @@ input:checked ~ svg #index-view {
   width:100%;
   display:flex;
   flex-flow: row nowrap;
-/*   padding-top: 15px; */
   padding-bottom:4px;
-/*   background-color: white; */
   z-index: 10;
-/*   border-top:1px solid black; */
+  border: 1px solid var(--midtone);
+  border-top:1px solid black;
 }
 
-#submit-cancel button:not(#edit-form){
-  padding: 3px 7px;
-  display:none;
-  margin-top:20px;
+#submit-cancel button{
+  width:50%;
+  text-align: center;
+  padding: 10px 12px;
+  color: black;
+  margin: 10px 0px;
+  margin-bottom: 20px;
 }
+
+
+#submit-cancel button:not(#edit-form){
+  display:none;
+  color: black;
+}
+
+
+#submit-form{
+  background-color: var(--lightest);
+}
+
+#submit-form:focus{
+  background-color: var(--midtone);
+}
+
 #submit-cancel.edit button:not(#edit-form){
   display:block;
 }
 
-#edit-form{
+#submit-cancel #edit-form{
   display: block;
   width: 100%;
-  text-align: center;
-  padding: 10px 12px;
-  border: 1px solid var(--midtone);
-  border-top:1px solid black;
-  margin: 10px 0px;
-  margin-bottom: 20px;
-  color: black;
+  
   background-color:white;
 }
 
@@ -288,22 +300,9 @@ input:checked ~ svg #index-view {
 }
 
 
-#submit-cancel button:not(#edit-form){
-  border-radius: 8px;
-  /* border:1px solid black; */
-  color: black;
-  margin-right: 10px;
-}
-#submit-cancel button p{
-/*   border-bottom: 1px solid var(--midtone); */
-}
-#submit-form{
-  background-color: var(--lightest);
-}
 
-#submit-form:focus{
-  background-color: var(--midtone);
-}
+
+
 
 
 #close-item svg{

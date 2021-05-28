@@ -182,10 +182,10 @@ function setUpButtons(){
     d3.select('#item-meta').classed('open',false);
   });
   d3.select('#edit-form').on('click',function(){
-      d3.selectAll('data-grouping').classed('edit',true);
+      d3.selectAll('.data-grouping').classed('edit',true);
       d3.select('#submit-cancel').classed('edit',true);
       textAreaHeights(true);
-      d3.select('#item-title').select('input').node().focus();
+      document.querySelector('#item-title input').focus();
     
       // if(formOpen==false){
       //   theForm.classed('edit',true);
