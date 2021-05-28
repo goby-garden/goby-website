@@ -459,25 +459,18 @@ input:checked ~ svg #index-view {
 
 
 .form-section{
-  margin-bottom:5px;
+  margin-bottom:10px;
 }
 
-/* these styles make items appear/disappear according to when different parts of the form are edited */
+.edit .form-section{
+  margin-bottom:15px;
+}
 
-form:not(.native-edit) #arena-native .form-edit{
+.data-grouping:not(.edit) .form-edit{
   display:none;
 }
 
-form:not(.goby-edit) #arena-goby .form-edit{
-  display:none;
-}
-
-
-.native-edit #arena-native .form-display{
-  display:none;
-}
-
-.goby-edit #arena-goby .form-display{
+.data-grouping.edit .form-display{
   display:none;
 }
 
@@ -489,9 +482,6 @@ form:not(.goby-edit) #arena-goby .form-edit{
   font-weight: 700;
 }
 
-#item-title{
-  margin-bottom:10px;
-}
 
 p.form-display {
   color:black;
