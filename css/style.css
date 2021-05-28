@@ -254,10 +254,11 @@ input:checked ~ svg #index-view {
   width:100%;
   display:flex;
   flex-flow: row nowrap;
-  padding-bottom:4px;
   z-index: 10;
   border: 1px solid var(--midtone);
   border-top:1px solid black;
+  margin: 10px 0px;
+  margin-bottom: 24px;
 }
 
 #submit-cancel button{
@@ -265,8 +266,8 @@ input:checked ~ svg #index-view {
   text-align: center;
   padding: 10px 12px;
   color: black;
-  margin: 10px 0px;
-  margin-bottom: 20px;
+/*   margin: 10px 0px;
+  margin-bottom: 20px; */
 }
 
 
