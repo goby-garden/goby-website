@@ -230,7 +230,9 @@ function updateForm(blockData){
   d3.select('#item-desc textarea').property('value',blockData.description);
   console.log(blockData);
   
-  d3.selectAll('form textarea').each((d,u))
+  d3.selectAll('form textarea').each((d,i,nodes)=>{
+    textAreaOnInput(nodes[i]);
+  })
   
   
 }

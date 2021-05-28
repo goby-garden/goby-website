@@ -490,13 +490,13 @@ p.form-display {
 .form-section label{
   display: inline-block;
   margin-bottom: 3px;
+  margin-right:5px;
 }
 
 .edit .type-string{
   display:flex;
   flex-flow:row nowrap;
 }
-
 
 
 form input[type='text'],form textarea{
