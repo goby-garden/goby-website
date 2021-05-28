@@ -33,6 +33,7 @@ let slug='gobies';
 function startUp(){
   postRequest(slug,'meta');
   setUpButtons();
+  textAreaHeights(true);
 }
 
 // api requests--------------
@@ -182,6 +183,30 @@ function setUpButtons(){
   })
 }
 
+
+
+// These two functions resize textarea inputs to fit the content inside them, which browsers don't do by default
+//credit to DreamTeK on SO: https://stackoverflow.com/questions/454202/creating-a-textarea-with-auto-resize
+
+function textAreaHeights(first){
+  document.querySelectorAll('textarea').forEach((item, i) => {
+    item.setAttribute('style', 'height:' + (item.scrollHeight) + 'px;overflow-y:hidden;');
+    if(first){
+      item.addEventListener("input", textAreaOnInput, false);
+    }
+  });
+}
+
+function textAreaOnInput(node) {
+  if(this.style!==undefined){
+    this.style.height = 'auto';
+    this.style.height = (this.scrollHeight) + 'px';
+  }else{
+    node.setAttribute('style', 'height:' + (node.scrollHeight) + 'px;overflow-y:hidden;');
+    node.style.height = 'auto';
+    node.style.height = (node.scrollHeight) + 'px';
+  }
+}
 
 
 // this requests more blocks when someone scrolls down enough

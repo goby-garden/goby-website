@@ -457,9 +457,12 @@ input:checked ~ svg #index-view {
 /* edit form ----------*/
 
 
+
 .form-section{
   margin-bottom:5px;
 }
+
+/* these styles make items appear/disappear according to when different parts of the form are edited */
 
 form:not(.native-edit) #arena-native .form-edit{
   display:none;
@@ -476,10 +479,6 @@ form:not(.goby-edit) #arena-goby .form-edit{
 
 .goby-edit #arena-goby .form-display{
   display:none;
-}
-
-.type-par{
-  
 }
 
 
@@ -503,7 +502,44 @@ p.form-display {
   margin-bottom: 3px;
 }
 
+.edit .type-string{
+  display:flex;
+  flex-flow:row nowrap;
+}
 
+
+
+form input[type='text'],form textarea{
+  width: 100%;
+  font-family: "Public Sans";
+  font-size:17px;
+  line-height: 22px;
+  box-sizing: border-box;
+}
+
+form textarea{
+  min-height:50px;
+  padding:10px;
+  box-sizing: border-box;
+}
+
+
+form input[type='text'], input[type='text']:focus {
+  border: none;
+  border-bottom: solid var(--midtone) 1px;
+  outline: none;
+}
+
+textarea {
+  background-color: var(--lightest);
+  border: none;
+  overflow: auto;
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  resize: none;
+}
 
 
 
