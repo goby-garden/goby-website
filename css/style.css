@@ -328,7 +328,7 @@ input:checked ~ svg #index-view {
   width:calc(100% + 20px);
   padding:50px 10px 0px;
   z-index: 5;
-  height: calc(100% - 70px);
+  height: 100%;
   overflow:scroll;
   box-sizing: border-box;
 }
@@ -367,7 +367,7 @@ input:checked ~ svg #index-view {
   box-sizing: border-box;
   padding-bottom: calc(50% - 10px);
   margin-right:20px;
-  margin-bottom:80px;
+  margin-bottom:90px;
   position:relative;
   cursor:cell;
   border: 1px solid var(--midtone);
@@ -469,7 +469,8 @@ input:checked ~ svg #index-view {
   min-height:100px;
   position:relative;
   margin-top:30px;
-  padding: 20px 0px 10px;
+  margin-bottom:80px;
+  padding: 10px 0px 0px;
 /*   border-top: black solid 1px; */
 }
 
@@ -477,7 +478,7 @@ input:checked ~ svg #index-view {
   border:1px solid var(--midtone);
   position:absolute;
   height:100%;
-  width:calc(100% + 20px);
+  width:calc(100% + 18px);
   left:-10px;
   top:0;
   pointer-events:none;
@@ -527,7 +528,7 @@ p.form-display {
   color:black;
 }
 
-.form-section label{
+.form-section label, .form-section a{
   display: inline-block;
   margin-bottom: 3px;
   margin-right:5px;
