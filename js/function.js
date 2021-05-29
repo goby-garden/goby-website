@@ -181,17 +181,19 @@ function setUpButtons(){
   d3.select('#close-item').on('click',function(){
     d3.select('#item-meta').classed('open',false);
   });
+  
+  // enters edit mode
   d3.select('#edit-form').on('click',function(){
       d3.selectAll('.data-grouping').classed('edit',true);
       d3.select('#submit-cancel').classed('edit',true);
       textAreaHeights(true);
       document.querySelector('#item-title input').focus();
-
     })
 }
 
 function exitForm(){
-  
+  d3.selectAll('.data-grouping').classed('edit',false);
+  d3.select('#submit-cancel').classed('edit',false);
 }
 
 
