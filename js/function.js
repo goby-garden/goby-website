@@ -256,15 +256,25 @@ function updateForm(blockData){
   // arena goby
   let gobyBlock=goby.blocks.find(a=>a.id==blockData.id);
   
-  goby.manifest.forEach((sectionData,i)=>{
+  // this goes through each goby data field and makes a form section for it
+  goby.manifest.forEach((sData,i)=>{ 
     d3.select('#arena-goby')
       .append('div')
-      .attr('class',"form-section type-"+sectionData.type)
+      .attr('class',"form-section type-"+sData.type)
       .attr('id','section-'+i)
   
     let newSection=d3.select('#section-'+i);
-    newSection.append('label').text(sectionData.key+":");
-    
+    newSection.append('label').text(sData.key+":");
+    if(sData.type=="array"){
+      
+    }else{
+      
+      newSection.classed('text-section',true);
+      newSection.append('input').attr('class','form-edit').property('value',gobyBlock[sData.key]);
+      newSection.append('textarea').attr('class','form-edit').html(gobyBlock[sData.key]);
+      newSection.append('p').attr('class','form-display long-text').text(marked(gobyBlock[sData.key]));
+      newSection.append('p').attr('class','form-display short-text').text(gobyBlock[sData.key]);
+    }
     
 
   })
