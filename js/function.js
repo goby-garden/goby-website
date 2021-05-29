@@ -71,6 +71,7 @@ function postRequest(slug,mode){
     fetchurl=`https://api.are.na/v2/channels/${slug}/contents?sort=position&direction=desc&page=${currentPage}&per=${per}`;
     currentPage++;
   }
+  console.log(fetchurl);
   oReq.open("GET", fetchurl);
   oReq.send();
 }
@@ -99,7 +100,7 @@ function fillMeta(data){
 // adds each newly received block to blocks and goby based on 
 function handleNewData(contents){
   let gobyChanged=false;
-  
+  console.log('new items:', contents);
   
   contents.forEach((block,b)=>{
     if(goby.blocks.find(a=>a.id==block.id)==undefined&&block.title!=="goby.json"){
