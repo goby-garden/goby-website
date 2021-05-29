@@ -470,7 +470,7 @@ input:checked ~ svg #index-view {
   position:relative;
   margin-top:30px;
   margin-bottom:80px;
-  padding: 10px 0px 0px;
+  padding: 15px 0px 1px;
 /*   border-top: black solid 1px; */
 }
 
