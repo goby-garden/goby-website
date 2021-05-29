@@ -250,8 +250,8 @@ input:checked ~ svg #index-view {
 #submit-cancel{
   position:absolute;
   bottom:0px;
-  left: 20px;
-  width: calc(100% - 20px);
+  left:0px;
+  width:100%;
   display:flex;
   flex-flow: row nowrap;
   z-index: 10;
@@ -314,10 +314,9 @@ input:checked ~ svg #index-view {
 
 #item-meta form{
   box-sizing: border-box;
-  width:calc(100% - 20px);
+  width:calc(100% - 40px);
   height:100%;
   position:relative;
-  left:-20px;
   z-index:5;
 }
 
@@ -325,11 +324,10 @@ input:checked ~ svg #index-view {
 #scroll-wrapper{
   position:absolute;
   top:0;
-  left:0;
+  left:-10px;
+  width:calc(100% + 20px);
+  padding:50px 10px 0px;
   z-index: 5;
-  padding-top:50px;
-  padding-left: 20px;
-  width:100%;
   height: calc(100% - 70px);
   overflow:scroll;
   box-sizing: border-box;
@@ -472,6 +470,7 @@ input:checked ~ svg #index-view {
   position:relative;
   margin-top:30px;
   padding: 20px 0px 10px;
+/*   border-top: black solid 1px; */
 }
 
 .bounding-box{
