@@ -71,7 +71,6 @@ function postRequest(slug,mode){
     fetchurl=`https://api.are.na/v2/channels/${slug}/contents?sort=position&direction=desc&page=${currentPage}&per=${per}`;
     currentPage++;
   }
-  console.log(fetchurl);
   oReq.open("GET", fetchurl);
   oReq.send();
 }
@@ -272,7 +271,7 @@ function updateForm(blockData){
     }else if(sData.type=="url"){
       newSection.select('label').classed('form-edit',true);
       newSection.append('input').attr('class','form-edit').attr('type','text').property('value',gobyBlock[sData.key]);
-      newSection.append('a').attr('class','form-display').text(sData.key).attr('href',gobyBlock[sData.key]);
+      newSection.append('a').attr('target','_blank').attr('class','form-display').text(sData.key).attr('href',gobyBlock[sData.key]);
     }else{
       // the text sections need to be able to switch between short and long, so they contain html for both
       newSection.append('input').attr('type','text').attr('class','form-edit').property('value',gobyBlock[sData.key]);
