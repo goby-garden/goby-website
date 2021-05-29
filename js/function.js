@@ -257,9 +257,16 @@ function updateForm(blockData){
   let gobyBlock=goby.blocks.find(a=>a.id==blockData.id);
   
   goby.manifest.forEach((sectionData,i)=>{
-    let newSection=document.createElement('div');
-    newSection.class="form-section type-"+sectionData.type;
+    d3.select('#arena-goby')
+      .append('div')
+      .attr('class',"form-section type-"+sectionData.type)
+      .attr('id','section-'+i)
+  
+    let newSection=d3.select('#section-'+i);
+    newSection.append('label').text(sectionData.key+":");
     
+    
+
   })
   
   console.log(gobyBlock);
