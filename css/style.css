@@ -523,7 +523,7 @@ p.form-display {
   margin-right:5px;
 }
 
-.edit .type-string{
+.type-string{
   display:flex;
   flex-flow:row nowrap;
 }

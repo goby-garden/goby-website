@@ -242,15 +242,29 @@ function loadMore(entries){
 
 
 function updateForm(blockData){
+  
+  
+  // arena native ----------------
   let title=blockData.title.length>0?blockData.title:"<span class='no-emph'>untitled</span>"
   d3.select('#item-title p').html(title);
   d3.select('#item-title input').property('value',blockData.title);
   
   d3.select('#item-desc p').html(blockData["description_html"]);
-  // d3.select('#item-desc textarea').property('value',blockData.description);
   d3.select('#item-desc textarea').html(blockData.description);
   console.log(blockData);
   
+  // arena goby
+  let gobyBlock=goby.blocks.find(a=>a.id==blockData.id);
+  
+  goby.manifest.forEach((sectionData,i)=>{
+    let newSection=document.createElement('div');
+    newSection.class="form-section type-"+sectionData.type;
+    
+  })
+  
+  console.log(gobyBlock);
+  
+  // general----------------------
   d3.selectAll('form textarea').each((d,i,nodes)=>{
     textAreaOnInput(nodes[i]);
   })
