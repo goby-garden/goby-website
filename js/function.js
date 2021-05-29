@@ -197,6 +197,7 @@ function setUpButtons(){
 
 function exitForm(){
   d3.selectAll('.data-grouping').classed('edit',false);
+  d3.select('#arena-goby').selectAll('.form-section').remove();
   d3.select('#submit-cancel').classed('edit',false);
 }
 
@@ -265,11 +266,15 @@ function updateForm(blockData){
   
     let newSection=d3.select('#section-'+i);
     newSection.append('label').text(sData.key+":");
+    
     if(sData.type=="array"){
       
+    }else if(sData.type=="url"){
+      newSection.select('label').classed('form-edit',true);
+      newSection.append('input').attr('class','form-edit').property('value',gobyBlock[sData.key]);
+      newSection.append('a').attr('class','form-display').text(sData.key).attr('href',gobyBlock[sData.key]);
     }else{
-      
-      newSection.classed('text-section',true);
+      // the text sections need to be able to switch between short and long, so they contain html for both
       newSection.append('input').attr('class','form-edit').property('value',gobyBlock[sData.key]);
       newSection.append('textarea').attr('class','form-edit').html(gobyBlock[sData.key]);
       newSection.append('p').attr('class','form-display long-text').text(marked(gobyBlock[sData.key]));
