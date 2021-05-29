@@ -1,4 +1,6 @@
 
+/* global d3, marked */
+
 // dom variables--------------------
 let feed=d3.select('#channel-feed');
 let chanLines='<line class="line" x1="0%" x2="100%" y1="0%" y2="100%"></line><line class="line" x1="100%" x2="0%" y1="0%" y2="100%"></line>';
@@ -168,7 +170,7 @@ function fillWithBlocks(blockList){
 // handles the event of clicking on a block
 function openBlock(){
   // will need conditionals for bulk editing (checking if you're pressing the shift-key)
-  
+  exitForm();
   let theBlock=d3.select(event.currentTarget);
   d3.selectAll('.focused').classed('focused',false);
   theBlock.classed('focused',true);
