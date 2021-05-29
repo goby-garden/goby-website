@@ -191,6 +191,8 @@ function setUpButtons(){
       textAreaHeights(true);
       document.querySelector('#item-title input').focus();
     })
+  
+  d3.select('#cancel-form').on('click',exitForm);
 }
 
 function exitForm(){
