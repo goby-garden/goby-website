@@ -198,7 +198,6 @@ function setUpButtons(){
 
 function exitForm(){
   d3.selectAll('.data-grouping').classed('edit',false);
-  d3.select('#arena-goby').selectAll('.form-section').remove();
   d3.select('#submit-cancel').classed('edit',false);
 }
 
@@ -255,9 +254,9 @@ function updateForm(blockData){
   d3.select('#item-desc textarea').html(blockData.description);
   console.log(blockData);
   
-  // arena goby
+  // arena goby-------------------
   let gobyBlock=goby.blocks.find(a=>a.id==blockData.id);
-  
+  d3.select('#arena-goby').selectAll('.form-section').remove();
   // this goes through each goby data field and makes a form section for it
   goby.manifest.forEach((sData,i)=>{ 
     d3.select('#arena-goby')
@@ -272,11 +271,11 @@ function updateForm(blockData){
       
     }else if(sData.type=="url"){
       newSection.select('label').classed('form-edit',true);
-      newSection.append('input').attr('class','form-edit').property('value',gobyBlock[sData.key]);
+      newSection.append('input').attr('class','form-edit').attr('type','text').property('value',gobyBlock[sData.key]);
       newSection.append('a').attr('class','form-display').text(sData.key).attr('href',gobyBlock[sData.key]);
     }else{
       // the text sections need to be able to switch between short and long, so they contain html for both
-      newSection.append('input').attr('class','form-edit').property('value',gobyBlock[sData.key]);
+      newSection.append('input').attr('type','text').attr('class','form-edit').property('value',gobyBlock[sData.key]);
       newSection.append('textarea').attr('class','form-edit').html(gobyBlock[sData.key]);
       newSection.append('p').attr('class','form-display long-text').text(marked(gobyBlock[sData.key]));
       newSection.append('p').attr('class','form-display short-text').text(gobyBlock[sData.key]);

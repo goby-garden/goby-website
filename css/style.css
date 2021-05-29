@@ -469,7 +469,8 @@ input:checked ~ svg #index-view {
   min-height:100px;
   position:relative;
   margin-top:30px;
-  padding:10px 0px;
+  padding: 20px 10px 10px;
+  border:1px solid var(--midtone);
 }
 
 .bounding-box{
@@ -532,7 +533,7 @@ p.form-display {
   margin-right:5px;
 }
 
-.type-string{
+.type-string,.type-url{
   display:flex;
   flex-flow:row nowrap;
 }
