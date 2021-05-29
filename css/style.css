@@ -250,8 +250,8 @@ input:checked ~ svg #index-view {
 #submit-cancel{
   position:absolute;
   bottom:0px;
-  left:0px;
-  width:100%;
+  left: 20px;
+  width: calc(100% - 20px);
   display:flex;
   flex-flow: row nowrap;
   z-index: 10;
@@ -314,9 +314,10 @@ input:checked ~ svg #index-view {
 
 #item-meta form{
   box-sizing: border-box;
-  width:calc(100% - 40px);
+  width:calc(100% - 20px);
   height:100%;
   position:relative;
+  left:-20px;
   z-index:5;
 }
 
@@ -327,6 +328,7 @@ input:checked ~ svg #index-view {
   left:0;
   z-index: 5;
   padding-top:50px;
+  padding-left: 20px;
   width:100%;
   height: calc(100% - 70px);
   overflow:scroll;
@@ -470,10 +472,9 @@ input:checked ~ svg #index-view {
   position:relative;
   margin-top:30px;
   padding: 20px 0px 10px;
-  border-top: black solid 1px;
 }
 
-/* .bounding-box{
+.bounding-box{
   border:1px solid var(--midtone);
   position:absolute;
   height:100%;
@@ -481,7 +482,7 @@ input:checked ~ svg #index-view {
   left:-10px;
   top:0;
   pointer-events:none;
-} */
+}
 
 
 
@@ -536,8 +537,12 @@ p.form-display {
 .type-string,.type-url{
   display:flex;
   flex-flow:row nowrap;
+  
 }
 
+.edit .type-string,.edit .type-url{
+  border-bottom: solid var(--midtone) 1px;
+}
 
 form input[type='text'],form textarea{
   width: 100%;
@@ -551,13 +556,15 @@ form textarea{
   min-height:50px;
   padding:10px;
   box-sizing: border-box;
+  border-top: solid var(--midtone) 1px;
+  
 }
 
 
 form input[type='text'], input[type='text']:focus {
   border: none;
-  border-bottom: solid var(--midtone) 1px;
   outline: none;
+  padding-bottom: 2px;
 }
 
 textarea {
