@@ -520,9 +520,9 @@ input:checked ~ svg #index-view {
 
 
 
-#item-title p.form-display{
+/* #item-title p.form-display{
   font-weight: 700;
-}
+} */
 
 
 form[data-blocktype="channel"] #item-desc{
