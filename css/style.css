@@ -270,6 +270,12 @@ input:checked ~ svg #index-view {
   margin-bottom: 20px; */
 }
 
+#cancel-form{
+  background-color:white;
+  border-right:1px solid black;
+}
+
+
 
 #submit-cancel button:not(#edit-form){
   display:none;
