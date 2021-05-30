@@ -3,6 +3,7 @@
   --header-height:100px;
   --lightest:#F2F2F2;
   --midtone:#E0E0E0;
+  --darkgrey:#818181;
 }
 
 
@@ -14,7 +15,7 @@ body{
   line-height: 22px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color:rgba(0,0,0,0.5);
+  color:var(--darkgrey);
 }
 
 h2{
@@ -546,6 +547,7 @@ p.form-display {
 }
 .form-section label>svg.inline{
   margin-right:7px;
+  stroke:var(--darkgrey);
 }
 
 
@@ -580,7 +582,8 @@ form textarea{
 form input[type='text'], input[type='text']:focus {
   border: none;
   outline: none;
-  padding-bottom: 5px;
+  height: 20px;
+  padding-top: 3px;
 }
 
 textarea {
