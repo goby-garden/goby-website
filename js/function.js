@@ -257,7 +257,7 @@ function updateForm(blockData){
   d3.select('#item-desc p').html(blockData["description_html"]);
   
   d3.select('#item-desc textarea').html(blockData.description);
-  d3.select('#item-desc textarea').property('value',d3.select('#item-desc textarea').html());
+  d3.select('#item-desc textarea').property('value',d3.select('#item-desc textarea').text());
   console.log(blockData);
   
   // arena goby-------------------
