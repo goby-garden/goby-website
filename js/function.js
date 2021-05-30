@@ -176,6 +176,7 @@ function openBlock(){
   theBlock.classed('focused',true);
   d3.select('#item-meta').classed('open',true);
   updateForm(theBlock.datum());
+  document.querySelector('form').dataset.editing=theBlock.datum().id;
 }
 
 
@@ -192,7 +193,11 @@ function setUpButtons(){
       document.querySelector('#item-title input').focus();
     })
   
-  d3.select('#cancel-form').on('click',exitForm);
+  d3.select('#cancel-form').on('click',function(){
+    let theBlock=blocks.find(a=>a.id==parseInt(document.querySelector('form').dataset.editing))
+    updateForm(theBlock);
+    exitForm();
+  });
 }
 
 function exitForm(){
