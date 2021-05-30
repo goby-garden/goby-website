@@ -333,7 +333,7 @@ input:checked ~ svg #index-view {
   top:0;
   left:-10px;
   width:calc(100% + 20px);
-  padding:50px 10px 0px;
+  padding:20px 10px 0px;
   z-index: 5;
   height: 100%;
   overflow:scroll;
@@ -496,12 +496,12 @@ input:checked ~ svg #index-view {
 
 .form-section{
 /*   margin-bottom:10px; */
-  padding: 12px 0px 10px;
+  padding: 18px 0px 10px;
   border-bottom: 1px solid var(--midtone);
 }
 
 .edit .form-section{
-  margin-bottom:15px;
+/*   margin-bottom:15px; */
 }
 
 .data-grouping:not(.edit) .form-edit{
@@ -559,7 +559,7 @@ p.form-display {
 .type-string,.type-url{
   display:flex;
   flex-flow:row nowrap;
-  padding: 12px 0px 0px;
+  padding: 18px 0px 0px;
 }
 
 .edit .type-string,.edit .type-url{
