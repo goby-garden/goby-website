@@ -263,16 +263,18 @@ function updateForm(blockData){
       .attr('class',"form-section type-"+sData.type)
       .attr('id','section-'+i)
   
+    
+    let svg=`<svg class="inline" width="33" height="30"><use href="#${sData.type}-icon"></svg>`
     let newSection=d3.select('#section-'+i);
     newSection.append('label')
-      .text(sData.key+":");
-    
-    let lab=newSection.select('label').node();
-    let 
-    
+      .text(sData.key+":")
+      .node()
+      .insertAdjacentHTML('afterbegin',svg);
     
     
-      // .insertBefore(document.createElement(""), parentEl.childNodes[0]);
+      
+    
+
     
     if(sData.type=="array"){
       
