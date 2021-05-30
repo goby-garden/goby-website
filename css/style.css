@@ -331,9 +331,9 @@ input:checked ~ svg #index-view {
 #scroll-wrapper{
   position:absolute;
   top:0;
-  left:-10px;
-  width:calc(100% + 20px);
-  padding:50px 10px 0px;
+  left: -20px;
+  width: calc(100% + 40px);
+  padding: 50px 20px 0px;
   z-index: 5;
   height: 100%;
   overflow:scroll;
@@ -485,8 +485,8 @@ input:checked ~ svg #index-view {
   border:1px solid var(--midtone);
   position:absolute;
   height:100%;
-  width:calc(100% + 18px);
-  left:-10px;
+  width:calc(100% + 30px);
+  left:-15px;
   top:0;
   pointer-events:none;
 }
@@ -621,11 +621,13 @@ textarea {
     color:black;
   }
   
-  .type-string svg:hover, .type-par svg:hover{
-    stroke:black;
+/*   .type-string svg.inline:hover, .type-par svg.inline:hover{
     background-color:var(--lightest);
-  }
-  
+    stroke:black;
+    cursor:pointer;
+    padding: 2px;
+  } */
+
 }
 
 
