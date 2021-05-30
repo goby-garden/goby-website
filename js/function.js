@@ -264,7 +264,15 @@ function updateForm(blockData){
       .attr('id','section-'+i)
   
     let newSection=d3.select('#section-'+i);
-    newSection.append('label').text(sData.key+":");
+    newSection.append('label')
+      .text(sData.key+":");
+    
+    let lab=newSection.select('label').node();
+    let 
+    
+    
+    
+      // .insertBefore(document.createElement(""), parentEl.childNodes[0]);
     
     if(sData.type=="array"){
       
