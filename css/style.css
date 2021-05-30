@@ -655,6 +655,10 @@ textarea {
   display:inline-block;
 }
 
+.type-array label{
+  display:block;
+}
+
 .type-array input[type='text']{
   margin-bottom:15px;
 }

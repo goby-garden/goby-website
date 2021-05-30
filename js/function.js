@@ -255,7 +255,9 @@ function updateForm(blockData){
   d3.select('#item-title input').property('value',blockData.title);
   
   d3.select('#item-desc p').html(blockData["description_html"]);
+  
   d3.select('#item-desc textarea').html(blockData.description);
+  d3.select('#item-desc textarea').property('value',d3.select('#item-desc textarea').html());
   console.log(blockData);
   
   // arena goby-------------------
@@ -266,7 +268,7 @@ function updateForm(blockData){
     d3.select('#arena-goby')
       .append('div')
       .attr('class',"form-section type-"+sData.type)
-      .attr('id','section-'+i)
+      .attr('id','section-'+i);
   
     
     let svg=`<svg class="inline form-edit" width="24" height="22"><use href="#${sData.type}-icon"></svg>`
