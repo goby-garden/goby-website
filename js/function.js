@@ -274,7 +274,17 @@ function updateForm(blockData){
     
     switch(sData.type){
       case "array":
+        sData.values.forEach((tag,t)=>{
+          newSection.append('div').attr('class','tag').node().dataset.tag=t;
+          let newTag=newSection.select(`[data-tag="${t}"]`);
+          newTag.append('input').attr('type','checkbox');
+          newTag.append('p').text(tag);
+          if(gobyBlock[sData.key].find(a=>a==tag)!==undefined){
+            newTag.select('input').property('checked',true);
+          }
+        })
         
+      //<div class="tag" id="tag-lifestyle"><input type="checkbox" data-tag="lifestyle"><p>lifestyle</p></div>
       break;
       case "url":
         newSection.select('label').classed('form-edit',true);
