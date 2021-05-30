@@ -264,16 +264,12 @@ function updateForm(blockData){
       .attr('id','section-'+i)
   
     
-    let svg=`<svg class="inline" width="33" height="30"><use href="#${sData.type}-icon"></svg>`
+    let svg=`<svg class="inline" width="24" height="22"><use href="#${sData.type}-icon"></svg>`
     let newSection=d3.select('#section-'+i);
     newSection.append('label')
       .text(sData.key+":")
       .node()
       .insertAdjacentHTML('afterbegin',svg);
-    
-    
-      
-    
 
     
     if(sData.type=="array"){
