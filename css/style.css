@@ -538,7 +538,17 @@ p.form-display {
   display: inline-block;
   margin-bottom: 3px;
   margin-right:5px;
+  white-space:nowrap;
 }
+
+.form-section label>* {
+    vertical-align: middle;
+}
+.form-section label>svg.inline{
+  margin-right:7px;
+}
+
+
 
 .type-string,.type-url{
   display:flex;
@@ -570,7 +580,7 @@ form textarea{
 form input[type='text'], input[type='text']:focus {
   border: none;
   outline: none;
-  padding-bottom: 2px;
+  padding-bottom: 5px;
 }
 
 textarea {
