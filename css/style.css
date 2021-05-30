@@ -620,6 +620,12 @@ textarea {
   #you-question:hover{
     color:black;
   }
+  
+  .type-string svg:hover, .type-par svg:hover{
+    stroke:black;
+    background-color:var(--lightest);
+  }
+  
 }
 
 
