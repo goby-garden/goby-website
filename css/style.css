@@ -477,8 +477,8 @@ input:checked ~ svg #index-view {
   position:relative;
 /*   margin-top:30px; */
   margin-bottom:80px;
-  padding: 15px 0px 1px;
-  border-top: var(--darkgrey) solid 1px;
+  padding: 0px 0px 1px;
+/*   border-top: var(--darkgrey) solid 1px; */
 }
 
 .bounding-box{
