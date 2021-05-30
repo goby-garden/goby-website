@@ -264,7 +264,7 @@ function updateForm(blockData){
       .attr('id','section-'+i)
   
     
-    let svg=`<svg class="inline form-edit" width="24" height="22"><use href="#${sData.type}-icon"></svg>`
+    let svg=`<svg class="inline" width="24" height="22"><use href="#${sData.type}-icon"></svg>`
     let newSection=d3.select('#section-'+i);
     newSection.append('label')
       .text(sData.key+":")
@@ -272,20 +272,26 @@ function updateForm(blockData){
       .insertAdjacentHTML('afterbegin',svg);
 
     
-    if(sData.type=="array"){
-      
-    }else if(sData.type=="url"){
-      newSection.select('label').classed('form-edit',true);
-      newSection.append('input').attr('class','form-edit').attr('type','text').property('value',gobyBlock[sData.key]);
-      newSection.append('a').attr('target','_blank').attr('class','form-display').text(sData.key).attr('href',gobyBlock[sData.key]);
-    }else{
-      // the text sections need to be able to switch between short and long, so they contain html for both
-      newSection.append('input').attr('type','text').attr('class','form-edit').property('value',gobyBlock[sData.key]);
-      newSection.append('textarea').attr('class','form-edit').html(gobyBlock[sData.key]);
-      newSection.append('p').attr('class','form-display long-text').text(marked(gobyBlock[sData.key]));
-      newSection.append('p').attr('class','form-display short-text').text(gobyBlock[sData.key]);
+    switch(sData.type){
+      case "array":
+      break;
+      case "url":
+        newSection.select('label').classed('form-edit',true);
+        newSection.append('input').attr('class','form-edit').attr('type','text').property('value',gobyBlock[sData.key]);
+        newSection.append('a').attr('target','_blank').attr('class','form-display').text(sData.key).attr('href',gobyBlock[sData.key])
+        .node()
+        .insertAdjacentHTML('afterbegin',svg);
+      break;
+      case "string":
+        newSection.append('input').attr('type','text').attr('class','form-edit').property('value',gobyBlock[sData.key]);
+        newSection.append('p').attr('class','form-display short-text').text(gobyBlock[sData.key]);
+      break;
+      case "par":
+        newSection.append('textarea').attr('class','form-edit').html(gobyBlock[sData.key]);
+        newSection.append('p').attr('class','form-display long-text').text(marked(gobyBlock[sData.key]));
+      break;
+        
     }
-    
 
   })
   

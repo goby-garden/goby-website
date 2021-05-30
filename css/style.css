@@ -331,9 +331,9 @@ input:checked ~ svg #index-view {
 #scroll-wrapper{
   position:absolute;
   top:0;
-  left: -20px;
-  width: calc(100% + 40px);
-  padding: 50px 20px 0px;
+  left:-10px;
+  width:calc(100% + 20px);
+  padding:50px 10px 0px;
   z-index: 5;
   height: 100%;
   overflow:scroll;
@@ -485,8 +485,8 @@ input:checked ~ svg #index-view {
   border:1px solid var(--midtone);
   position:absolute;
   height:100%;
-  width:calc(100% + 30px);
-  left:-15px;
+  width:calc(100% + 18px);
+  left:-10px;
   top:0;
   pointer-events:none;
 }
@@ -509,12 +509,12 @@ input:checked ~ svg #index-view {
   display:none;
 }
 
-.type-string textarea,.type-string .long-text{
+/* .type-string textarea,.type-string .long-text{
   display:none;
 }
 .type-par input,.type-par .short-text{
   display:none;
-}
+} */
 
 
 
@@ -542,10 +542,10 @@ p.form-display {
   white-space:nowrap;
 }
 
-.form-section label>* {
+.form-section label>*,a>* {
     vertical-align: middle;
 }
-.form-section label>svg.inline{
+.form-section svg.inline{
   margin-right:7px;
   stroke:var(--darkgrey);
 }
