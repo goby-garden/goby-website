@@ -478,10 +478,11 @@ input:checked ~ svg #index-view {
   margin-top:30px;
   margin-bottom:80px;
   padding: 15px 0px 1px;
-/*   border-top: black solid 1px; */
+  border-top: var(--darkgrey) solid 1px;
 }
 
 .bounding-box{
+  display:none;
   border:1px solid var(--midtone);
   position:absolute;
   height:100%;
