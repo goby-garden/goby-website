@@ -469,7 +469,9 @@ input:checked ~ svg #index-view {
 /* edit form ----------*/
 
 
-
+#arena-native .form-section svg{
+  margin-bottom: 3px;
+}
 
 
 #arena-goby{
@@ -480,6 +482,8 @@ input:checked ~ svg #index-view {
   padding: 0px 0px 1px;
 /*   border-top: var(--darkgrey) solid 1px; */
 }
+
+
 
 .bounding-box{
   display:none;
@@ -603,7 +607,6 @@ textarea {
 #arena-icon{
   fill:var(--darkgrey);
   stroke-width:0px;
-  margin-bottom: 3px;
 }
 
 

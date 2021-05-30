@@ -274,6 +274,7 @@ function updateForm(blockData){
     
     switch(sData.type){
       case "array":
+        
       break;
       case "url":
         newSection.select('label').classed('form-edit',true);
