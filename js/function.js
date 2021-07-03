@@ -360,7 +360,9 @@ function generateSection(type,key,value,index,existing){
     }
 
     if(newField){
-      newSection.append('button').attr('class','delete-field plus-button').html('⨉');
+      newSection.append('button').attr('type','button').attr('class','delete-field plus-button').html('⨉').on('click',function(){
+        newSection.remove();
+      })
     }
 }
 
