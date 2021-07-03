@@ -74,6 +74,23 @@ em{
   margin-bottom:15px;
 }
 
+
+
+
+/* components -------------------*/
+.plus-button{
+  border:solid var(--midtone) 1px;
+  border-radius:50%;
+  padding: 12px 8px;
+  line-height: 0;
+  align-self: center;
+  margin-left:5px;
+}
+
+
+
+
+
 /* overall grid layout---------- */
 
 .grid{
@@ -682,14 +699,7 @@ textarea {
   height: 30px;
 }
 
-.add-new-tag button{
-  border:solid var(--midtone) 1px;
-  border-radius:50%;
-  padding: 12px 8px;
-  line-height: 0;
-  align-self: center;
-  margin-left:5px;
-}
+
 
 .icon-stack{
   display:flex;

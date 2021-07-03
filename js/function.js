@@ -295,7 +295,7 @@ function updateForm(blockData){
         .append('input').attr('class','new-tag-input').attr('type','text').attr('data-fieldname',sData.key).attr('data-index',i).attr('tabindex',i+2);
           
         newSection.select('.add-new-tag')
-        .append('button').attr('type','button').html('+').on('click',function(){
+        .append('button').attr('class','').attr('type','button').html('+').on('click',function(){
           let newString=d3.select(d3.event.target.parentNode).select('input').property('value');
           generateTag(newString,d3.select(d3.event.target.parentNode).select('input').node())
         });
@@ -343,6 +343,10 @@ function updateForm(blockData){
   
 }
 
+d3.selectAll('button.choose-type').on('click',function(){
+  d3.select('#add-new').attr('data-type',d3.event.currentTarget.dataset.type);
+  d3.select('#add-new').classed('panel-2',true)
+})
 
 
 
