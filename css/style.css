@@ -718,6 +718,7 @@ textarea {
 .icon-stack input[type="text"]{
   border-bottom:solid var(--midtone) 1px;
   max-width: 100px;
+  height: 30px;
 }
 
 
