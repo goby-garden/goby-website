@@ -687,6 +687,13 @@ textarea {
   margin-left:5px;
 }
 
+.icon-stack{
+  display:flex;
+  flex-flow:row nowrap;
+}
+
+
+
 
 
 /* interactive -------------- */
