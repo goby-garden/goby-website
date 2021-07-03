@@ -291,8 +291,10 @@ function updateForm(blockData){
           }
         })
         newSection.append('div').attr('class','add-new-tag form-edit')
-        .append('button').attr('type','button').html('+').on('click',generateTag);
-        newSection.select('.add-new-tag').append('input').attr('type','text')
+        .append('button').attr('type','button').html('+').on('click',function(){
+          
+        });
+        newSection.select('.add-new-tag').append('input').attr('class','new-tag-input').attr('type','text')
 
       //<div class="tag" id="tag-lifestyle"><input type="checkbox" data-tag="lifestyle"><p>lifestyle</p></div>
       break;
@@ -337,13 +339,15 @@ function updateForm(blockData){
 
 
 
-function generateTag(){
-  
+function generateTag(string){
+  console.log(string);
 }
 
 window.addEventListener('keydown',function(){
-  if(event.key=="Enter"){
-    
+  if(event.key=="Enter" &&document.activeElement){
+    if(d3.select(document.activeElement).classed('new-tag-input')){
+      generateTag(d3.select(document.activeElement).html());
+    }
   }
 })
 
