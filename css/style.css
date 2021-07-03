@@ -478,11 +478,15 @@ input:checked ~ svg #index-view {
   min-height:100px;
   position:relative;
 /*   margin-top:30px; */
-  margin-bottom:80px;
+  
   padding: 0px 0px 1px;
 /*   border-top: var(--darkgrey) solid 1px; */
 }
 
+.data-grouping:last-of-type{
+  margin-top:20px;
+  margin-bottom:80px;
+}
 
 
 .bounding-box{
@@ -552,7 +556,7 @@ p.form-display {
 .form-section label>*,a>* {
     vertical-align: middle;
 }
-.form-section svg.inline{
+.form-section svg.inline, #add-new svg.inline{
   margin-right:7px;
   margin-left:0px;
   stroke:var(--darkgrey);
@@ -690,6 +694,13 @@ textarea {
 .icon-stack{
   display:flex;
   flex-flow:row nowrap;
+}
+
+.icon-stack button{
+  padding:8px;
+  border:solid var(--midtone) 1px;
+  margin-right:0px;
+  border-radius:50%;
 }
 
 
