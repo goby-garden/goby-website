@@ -185,7 +185,7 @@ function setUpButtons(){
     d3.select('#item-meta').classed('open',false);
   });
   
-  // enters edit mode
+  // enters block edit mode
   d3.select('#edit-form').on('click',function(){
       d3.selectAll('.data-grouping').classed('edit',true);
       d3.select('#submit-cancel').classed('edit',true);
