@@ -712,6 +712,20 @@ textarea {
 }
 
 
+.add-key{
+  display:none;
+}
+
+.panel-2 .add-key{
+  display:block;
+}
+
+.panel-2 .choose-type{
+  display:none;
+}
+
+
+
 
 
 /* interactive -------------- */
