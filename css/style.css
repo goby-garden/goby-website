@@ -707,7 +707,7 @@ textarea {
   align-items:center;
 }
 
-.icon-stack button{
+.icon-stack button.choose-type{
   padding: 6px 6px 4px;
   border:solid var(--midtone) 1px;
   margin-right:4px;
@@ -735,7 +735,22 @@ textarea {
 }
 
 
+p.add-key use{
+  display:none;
+}
 
+#add-new[data-type="string"] p.add-key use[data-type="string"]{
+  display:none;
+}
+#add-new[data-type="par"] p.add-key use[data-type="par"]{
+  display:none;
+}
+#add-new[data-type="url"] p.add-key use[data-type="url"]{
+  display:none;
+}
+#add-new[data-type="array"] p.add-key use[data-type="array"]{
+  display:none;
+}
 
 
 /* interactive -------------- */

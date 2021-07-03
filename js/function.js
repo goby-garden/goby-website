@@ -295,7 +295,7 @@ function updateForm(blockData){
         .append('input').attr('class','new-tag-input').attr('type','text').attr('data-fieldname',sData.key).attr('data-index',i).attr('tabindex',i+2);
           
         newSection.select('.add-new-tag')
-        .append('button').attr('class','').attr('type','button').html('+').on('click',function(){
+        .append('button').attr('class','plus-button').attr('type','button').html('+').on('click',function(){
           let newString=d3.select(d3.event.target.parentNode).select('input').property('value');
           generateTag(newString,d3.select(d3.event.target.parentNode).select('input').node())
         });
