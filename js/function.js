@@ -291,8 +291,9 @@ function updateForm(blockData){
           }
         })
         newSection.append('div').attr('class','add-new-tag form-edit')
-        .append('button').html('+')
+        .append('button').attr('type','button').html('+').on('click',generateTag);
         newSection.select('.add-new-tag').append('input').attr('type','text')
+
       //<div class="tag" id="tag-lifestyle"><input type="checkbox" data-tag="lifestyle"><p>lifestyle</p></div>
       break;
       case "url":
@@ -336,9 +337,15 @@ function updateForm(blockData){
 
 
 
+function generateTag(){
+  
+}
 
-
-
+window.addEventListener('keydown',function(){
+  if(event.key=="Enter"){
+    
+  }
+})
 
 
 window.addEventListener('load',startUp);

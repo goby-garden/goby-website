@@ -667,12 +667,14 @@ textarea {
 .add-new-tag{
   display:flex;
   flex-flow:row nowrap;
-  border-bottom: solid var(--midtone) 1px;
   max-width:200px;
+  padding-bottom:5px;
 }
 
 .add-new-tag input[type="text"]{
   margin-bottom:0px;
+  border-bottom: solid var(--midtone) 1px;
+  margin-top: 4px;
 }
 
 .add-new-tag button{
@@ -681,6 +683,7 @@ textarea {
   padding: 12px 8px;
   line-height: 0;
   align-self: center;
+  margin-right:5px;
 }
 
 
@@ -710,6 +713,10 @@ textarea {
     cursor:pointer;
     padding: 2px;
   } */
+  
+  .add-new-tag button:hover{
+    background-color:var(--lightest);
+  }
 
 }
 
