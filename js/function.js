@@ -14,6 +14,7 @@ let currentPage=1;
 let per=10;
 let chanLength;
 
+
 // this stores all the individual block data fetched from arena
 let blocks=[];
 
@@ -29,6 +30,7 @@ let slug='gobies';
 // approaching-goby-u9rrzm6iqee
 // gobies
 
+let newKeys=[];
 
 
 
@@ -388,6 +390,7 @@ function addField(type,key){
     console.log('here comes a new one:',type,key);
     d3.select('#add-new input').property('value','');
     d3.select('#add-new').classed('panel-2',false);
+    newKeys.push(key);
     generateSection(type,key,'');
     
   }
