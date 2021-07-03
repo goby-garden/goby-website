@@ -3,6 +3,7 @@
 
 // dom variables--------------------
 let feed=d3.select('#channel-feed');
+let formQs=document.querySelector('form');
 let chanLines='<line class="line" x1="0%" x2="100%" y1="0%" y2="100%"></line><line class="line" x1="100%" x2="0%" y1="0%" y2="100%"></line>';
 
 let options = {threshold: 0.24}
@@ -176,7 +177,7 @@ function openBlock(){
   theBlock.classed('focused',true);
   d3.select('#item-meta').classed('open',true);
   updateForm(theBlock.datum());
-  document.querySelector('form').dataset.editing=theBlock.datum().id;
+  formQs.dataset.editing=theBlock.datum().id;
 }
 
 
@@ -194,7 +195,7 @@ function setUpButtons(){
     })
   
   d3.select('#cancel-form').on('click',function(){
-    let theBlock=blocks.find(a=>a.id==parseInt(document.querySelector('form').dataset.editing))
+    let theBlock=blocks.find(a=>a.id==parseInt(formQs.dataset.editing))
     updateForm(theBlock);
     exitForm();
   });
@@ -291,7 +292,7 @@ function updateForm(blockData){
           }
         })
         newSection.append('div').attr('class','add-new-tag form-edit')
-        .append('input').attr('class','new-tag-input').attr('type','text').attr('data-index',i)
+        .append('input').attr('class','new-tag-input').attr('type','text').attr('data-fieldname',sData.key)
           
         newSection.select('.add-new-tag')
         .append('button').attr('type','button').html('+').on('click',function(){
@@ -338,7 +339,7 @@ function updateForm(blockData){
   d3.selectAll('form textarea').each((d,i,nodes)=>{
     textAreaOnInput(nodes[i]);
   })
-  document.querySelector('form').dataset.blocktype=blockData.class.toLowerCase();
+  formQs.dataset.blocktype=blockData.class.toLowerCase();
   
 }
 
@@ -347,7 +348,10 @@ function updateForm(blockData){
 
 
 function generateTag(string,input){
-  console.log(string,input.dataset.index);
+  let currentGoby=goby.blocks.find(b=>b.id==formQs.dataset.editing)
+  
+  
+  console.log(string,input.dataset.fieldname,currentGoby);
 }
 
 window.addEventListener('keydown',function(){
