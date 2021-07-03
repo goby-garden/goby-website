@@ -281,6 +281,7 @@ function updateForm(blockData){
     
     switch(sData.type){
       case "array":
+        newSection.datum({taglist:[...sData.values],index:i})
         sData.values.forEach((tag,t)=>{
           newSection.append('div').attr('class','tag').node().dataset.tag=t;
           let newTag=newSection.select(`[data-tag="${t}"]`);
@@ -296,7 +297,7 @@ function updateForm(blockData){
         newSection.select('.add-new-tag')
         .append('button').attr('type','button').html('+').on('click',function(){
           let newString=d3.select(d3.event.target.parentNode).select('input').property('value');
-          generateTag(newString)
+          generateTag(newString,d3.select(d3.event.target.parentNode).select('input'))
         });
         
           
@@ -346,14 +347,15 @@ function updateForm(blockData){
 
 
 
-function generateTag(string){
-  console.log(string);
+function generateTag(string,input){
+  console.log(string,input.datum());
+  input.datum().taglist.push('test');
 }
 
 window.addEventListener('keydown',function(){
   if(event.key=="Enter" &&document.activeElement){
     if(d3.select(document.activeElement).classed('new-tag-input')){
-      generateTag(d3.select(document.activeElement).property('value'));
+      generateTag(d3.select(document.activeElement).property('value'),d3.select(document.activeElement));
     }
   }
 })
