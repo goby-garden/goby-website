@@ -271,7 +271,7 @@ function updateForm(blockData){
   // this goes through each goby data field and makes a form section for it
   goby.manifest.forEach((sData,i)=>{ 
     
-    generateField(sData.type,sData.key,gobyBlock[sData.key],i,sData.values)
+    generateSection(sData.type,sData.key,gobyBlock[sData.key],i,sData.values)
     
 
 
@@ -288,8 +288,13 @@ function updateForm(blockData){
 }
 
 
-function generateField(type,key,value,index,existing){
+function generateSection(type,key,value,index,existing){
   //add check for if index is defined and existing
+  if(!index){
+    index=document.querySelectorAll('#arena-goby .form-section').length;
+    existing=[];
+  }
+  
   d3.select('#arena-goby')
       .append('div')
       .attr('class',"form-section type-"+type)
@@ -368,6 +373,10 @@ function addNewSetUp(){
 function addField(type,key){
   if(!goby.manifest.find(a=>a.key==key)&&key!==''){
     console.log('here comes a new one:',type,key);
+    d3.select('#add-new input').property('value','');
+    d3.select('#add-new').classed('panel-2',false);
+    generateSection(type,key,'');
+    
   }
 }
 
