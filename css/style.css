@@ -664,6 +664,25 @@ textarea {
 }
 
 
+.add-new-tag{
+  display:flex;
+  flex-flow:row nowrap;
+  border-bottom: solid var(--midtone) 1px;
+  max-width:200px;
+}
+
+.add-new-tag input[type="text"]{
+  margin-bottom:0px;
+}
+
+.add-new-tag button{
+  border:solid var(--midtone) 1px;
+  border-radius:50%;
+  padding: 12px 8px;
+  line-height: 0;
+  align-self: center;
+}
+
 
 
 /* interactive -------------- */
