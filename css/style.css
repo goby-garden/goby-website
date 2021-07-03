@@ -713,6 +713,13 @@ textarea {
   margin-right:4px;
 }
 
+
+.icon-stack input{
+  border-bottom:solid var(--midtone) 1px;
+  max-width:200px;
+}
+
+
 .icon-stack p{
   margin-right:10px;
 }
@@ -734,22 +741,35 @@ textarea {
   display:none;
 }
 
-
-p.add-key use{
+.back-to-select{
   display:none;
+  text-decoration-line:underline;
+}
+.panel-2 .back-to-select{
+  display:block;
 }
 
-#add-new[data-type="string"] p.add-key use[data-type="string"]{
+
+.add-key use{
   display:none;
 }
-#add-new[data-type="par"] p.add-key use[data-type="par"]{
-  display:none;
+
+.add-key svg{
+  width: 30px;
+  height: 22px;
 }
-#add-new[data-type="url"] p.add-key use[data-type="url"]{
-  display:none;
+
+#add-new[data-type="string"] .add-key use[data-type="string"]{
+  display:block;
 }
-#add-new[data-type="array"] p.add-key use[data-type="array"]{
-  display:none;
+#add-new[data-type="par"] .add-key use[data-type="par"]{
+  display:block;
+}
+#add-new[data-type="url"] .add-key use[data-type="url"]{
+  display:block;
+}
+#add-new[data-type="array"] .add-key use[data-type="array"]{
+  display:block;
 }
 
 
