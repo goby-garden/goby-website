@@ -485,7 +485,7 @@ input:checked ~ svg #index-view {
 
 .data-grouping:last-of-type{
   margin-top:20px;
-  margin-bottom:80px;
+  margin-bottom:100px;
 }
 
 
@@ -701,8 +701,6 @@ textarea {
   padding: 6px 6px 4px;
   border:solid var(--midtone) 1px;
   margin-right:4px;
-}
-  
 }
 
 .icon-stack p{
