@@ -705,6 +705,7 @@ textarea {
   display:flex;
   flex-flow:row nowrap;
   align-items:center;
+  margin-bottom:5px;
 }
 
 .icon-stack button.choose-type{
@@ -714,9 +715,9 @@ textarea {
 }
 
 
-.icon-stack input{
+.icon-stack input[type="text"]{
   border-bottom:solid var(--midtone) 1px;
-  max-width:200px;
+  max-width: 100px;
 }
 
 

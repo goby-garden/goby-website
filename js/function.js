@@ -204,6 +204,7 @@ function setUpButtons(){
 function exitForm(){
   d3.selectAll('.data-grouping').classed('edit',false);
   d3.select('#submit-cancel').classed('edit',false);
+  d3.select('#add-new').classed('panel-2',false);
 }
 
 
@@ -347,7 +348,9 @@ d3.selectAll('button.choose-type').on('click',function(){
   d3.select('#add-new').attr('data-type',d3.event.currentTarget.dataset.type);
   d3.select('#add-new').classed('panel-2',true)
 })
-
+d3.select('button.back-to-select').on('click',function(){
+  d3.select('#add-new').classed('panel-2',false);
+})
 
 
 
