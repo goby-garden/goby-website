@@ -291,10 +291,17 @@ function updateForm(blockData){
           }
         })
         newSection.append('div').attr('class','add-new-tag form-edit')
-        .append('button').attr('type','button').html('+').on('click',function(){
+        .append('input').attr('class','new-tag-input').attr('type','text')
           
+        newSection.select('.add-new-tag')
+        .append('button').attr('type','button').html('+').on('click',function(){
+          let newString=d3.select(d3.event.target.parentNode).select('input').property('value');
+          generateTag(newString)
         });
-        newSection.select('.add-new-tag').append('input').attr('class','new-tag-input').attr('type','text')
+        
+          
+          
+          
 
       //<div class="tag" id="tag-lifestyle"><input type="checkbox" data-tag="lifestyle"><p>lifestyle</p></div>
       break;
@@ -346,7 +353,7 @@ function generateTag(string){
 window.addEventListener('keydown',function(){
   if(event.key=="Enter" &&document.activeElement){
     if(d3.select(document.activeElement).classed('new-tag-input')){
-      generateTag(d3.select(document.activeElement).html());
+      generateTag(d3.select(document.activeElement).property('value'));
     }
   }
 })
