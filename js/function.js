@@ -292,7 +292,7 @@ function updateForm(blockData){
           }
         })
         newSection.append('div').attr('class','add-new-tag form-edit')
-        .append('input').attr('class','new-tag-input').attr('type','text').attr('data-fieldname',sData.key).attr('data-index',i)
+        .append('input').attr('class','new-tag-input').attr('type','text').attr('data-fieldname',sData.key).attr('data-index',i).attr('tabindex',i+2);
           
         newSection.select('.add-new-tag')
         .append('button').attr('type','button').html('+').on('click',function(){
@@ -349,8 +349,7 @@ function updateForm(blockData){
 
 function generateTag(string,input){
   let currentGoby=goby.blocks.find(b=>b.id==formQs.dataset.editing)
-  if(!goby.manifest.find(a=>a.key==input.dataset.fieldname).values.includes(string)){
-    console.log('new!');
+  if(!goby.manifest.find(a=>a.key==input.dataset.fieldname).values.includes(string)&&string.length>0){
     input.value="";
     let countTags=document.querySelectorAll(`#section-${input.dataset.index} .tag`).length
     
@@ -359,7 +358,9 @@ function generateTag(string,input){
     newTag.append('input').attr('type','checkbox');
     newTag.append('p').text(string);
     newTag.select('input').property('checked',true);
-    
+    newTag.on('change',function(){
+      d3.select(d3.event.currentTarget).remove();
+    })
   }
 }
 
