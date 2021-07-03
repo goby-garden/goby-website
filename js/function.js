@@ -291,7 +291,9 @@ function updateForm(blockData){
 function generateSection(type,key,value,index,existing){
   //add check for if index is defined and existing
   let newField=false;
-  if(!index){
+  
+  if(!index&&index!==0){
+    console.log(key,index);
     index=document.querySelectorAll('#arena-goby .form-section').length;
     existing=[];
     newField=true;
@@ -350,8 +352,15 @@ function generateSection(type,key,value,index,existing){
           .html(value)
           .attr('tabindex',index+2);
         newSection.append('p').attr('class','form-display long-text').text(marked(value));
+        if(newField){
+          textAreaOnInput(newSection.select('textarea').node())
+        }
       break;
         
+    }
+
+    if(newField){
+      newSection.append('button').attr('class','delete-field plus-button').html('⨉');
     }
 }
 

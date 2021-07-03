@@ -88,7 +88,14 @@ em{
 }
 
 
-
+.delete-field{
+  border-radius:0%;
+  position:absolute;
+  top:-1px;
+  right:0;
+  color:red;
+  
+}
 
 
 /* overall grid layout---------- */
@@ -523,6 +530,7 @@ input:checked ~ svg #index-view {
 /*   margin-bottom:10px; */
   padding: 18px 0px 10px;
   border-bottom: 1px solid var(--midtone);
+  position:relative;
 }
 
 .edit .form-section{
