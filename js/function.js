@@ -290,14 +290,16 @@ function updateForm(blockData){
 
 function generateSection(type,key,value,index,existing){
   //add check for if index is defined and existing
+  let newField='';
   if(!index){
     index=document.querySelectorAll('#arena-goby .form-section').length;
     existing=[];
+    newField='new-field';
   }
   
   d3.select('#arena-goby')
       .append('div')
-      .attr('class',"form-section type-"+type)
+      .attr('class',`form-section type-${type} ${newField}`)
       .attr('id','section-'+index);
   let svg=`<svg class="inline form-edit" width="24" height="22"><use href="#${type}-icon"></svg>`;
   let newSection=d3.select('#section-'+index);
