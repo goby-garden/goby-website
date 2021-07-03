@@ -349,9 +349,9 @@ function updateForm(blockData){
 
 function generateTag(string,input){
   let currentGoby=goby.blocks.find(b=>b.id==formQs.dataset.editing)
-  
-  
-  console.log(string,input.dataset.fieldname,currentGoby);
+  if(!goby.manifest.find(a=>a.key==input.dataset.fieldname).includes(string)){
+    console.log('new!');
+  }
 }
 
 window.addEventListener('keydown',function(){
