@@ -295,17 +295,24 @@ function updateForm(blockData){
       break;
       case "url":
         newSection.select('label').classed('form-edit',true);
-        newSection.append('input').attr('class','form-edit').attr('type','text').property('value',gobyBlock[sData.key]);
+        newSection.append('input').attr('class','form-edit').attr('type','text')
+          .property('value',gobyBlock[sData.key])
+          .attr('tabindex',i+2);
         newSection.append('a').attr('target','_blank').attr('class','form-display').text(sData.key).attr('href',gobyBlock[sData.key])
         .node()
         .insertAdjacentHTML('afterbegin',svg);
       break;
       case "string":
-        newSection.append('input').attr('type','text').attr('class','form-edit').property('value',gobyBlock[sData.key]);
+        newSection.append('input').attr('type','text').attr('class','form-edit')
+          .property('value',gobyBlock[sData.key])
+          .attr('tabindex',i+2);
         newSection.append('p').attr('class','form-display short-text').text(gobyBlock[sData.key]);
       break;
       case "par":
-        newSection.append('textarea').attr('class','form-edit').html(gobyBlock[sData.key]);
+        newSection.append('textarea')
+          .attr('class','form-edit')
+          .html(gobyBlock[sData.key])
+          .attr('tabindex',i+2);
         newSection.append('p').attr('class','form-display long-text').text(marked(gobyBlock[sData.key]));
       break;
         
