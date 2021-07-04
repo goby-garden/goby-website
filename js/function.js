@@ -413,8 +413,9 @@ function generateTag(string,input){
     input.value="";
     let countTags=document.querySelectorAll(`#section-${input.dataset.index} .tag`).length
     d3.select(input).datum().push(string);
+    console.log(input.dataset.index,d3.select('#section-'+input.dataset.index));
     d3.select('#section-'+input.dataset.index).insert('div','.add-new-tag').attr('class','tag').node().dataset.tag=countTags;
-    let newTag=d3.select(`.tag[data-tag="${countTags}"]`)
+    let newTag=d3.select('#section-'+input.dataset.index).select(`.tag[data-tag="${countTags}"]`)
     newTag.append('input').attr('type','checkbox');
     newTag.append('p').text(string);
     newTag.select('input').property('checked',true);
