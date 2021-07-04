@@ -210,6 +210,7 @@ function exitForm(){
   d3.selectAll('.data-grouping').classed('edit',false);
   d3.select('#submit-cancel').classed('edit',false);
   d3.select('#add-new').classed('panel-2',false);
+  newKeys=[];
 }
 
 
@@ -364,6 +365,9 @@ function generateSection(type,key,value,index,existing){
     if(newField){
       newSection.append('button').attr('type','button').attr('class','delete-field plus-button').html('⨉').on('click',function(){
         newSection.remove();
+        newKeys = newKeys.filter(function(item) {
+            return item !== key;
+        })
       })
     }
 }
@@ -386,7 +390,7 @@ function addNewSetUp(){
 }
 
 function addField(type,key){
-  if(!goby.manifest.find(a=>a.key==key)&&key!==''){
+  if(!goby.manifest.find(a=>a.key==key)&&!newKeys.find(b=>b==key)&&key!==''){
     console.log('here comes a new one:',type,key);
     d3.select('#add-new input').property('value','');
     d3.select('#add-new').classed('panel-2',false);
