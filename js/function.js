@@ -407,8 +407,9 @@ function addField(type,key){
 
 function generateTag(string,input){
   let currentGoby=goby.blocks.find(b=>b.id==formQs.dataset.editing);
+  let existingTags=goby.manifest.find(a=>a.key==input.dataset.fieldname)?goby.manifest.find(a=>a.key==input.dataset.fieldname).values:[];
   
-  if(!goby.manifest.find(a=>a.key==input.dataset.fieldname).values.includes(string)&&!d3.select(input).datum().includes(string)&&string.length>0){
+  if(!existingTags.includes(string)&&!d3.select(input).datum().includes(string)&&string.length>0){
     input.value="";
     let countTags=document.querySelectorAll(`#section-${input.dataset.index} .tag`).length
     d3.select(input).datum().push(string);
