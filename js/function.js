@@ -325,7 +325,7 @@ function generateSection(type,key,value,index,existing){
           }
         })
         newSection.append('div').attr('class','add-new-tag form-edit')
-        .append('input').attr('class','new-tag-input').attr('type','text').attr('data-fieldname',key).attr('data-index',index).attr('tabindex',index+2);
+        .append('input').datum([]).attr('class','new-tag-input').attr('type','text').attr('data-fieldname',key).attr('data-index',index).attr('tabindex',index+2);
           
         newSection.select('.add-new-tag')
         .append('button').attr('class','plus-button').attr('type','button').html('+').on('click',function(){
@@ -408,10 +408,10 @@ function addField(type,key){
 function generateTag(string,input){
   let currentGoby=goby.blocks.find(b=>b.id==formQs.dataset.editing);
   
-  if(!goby.manifest.find(a=>a.key==input.dataset.fieldname).values.includes(string)&&string.length>0){
+  if(!goby.manifest.find(a=>a.key==input.dataset.fieldname).values.includes(string)&&!d3.select(input).datum().includes(string)&&string.length>0){
     input.value="";
     let countTags=document.querySelectorAll(`#section-${input.dataset.index} .tag`).length
-    
+    d3.select(input).datum().push(string);
     d3.select('#section-'+input.dataset.index).insert('div','.add-new-tag').attr('class','tag').node().dataset.tag=countTags;
     let newTag=d3.select(`.tag[data-tag="${countTags}"]`)
     newTag.append('input').attr('type','checkbox');
@@ -419,6 +419,12 @@ function generateTag(string,input){
     newTag.select('input').property('checked',true);
     newTag.on('change',function(){
       d3.select(d3.event.currentTarget).remove();
+      
+      d3.select(input).datum(
+        d3.select(input).datum().filter(function(item) { return item !== string;})
+      )
+      
+      
     })
   }
 }
@@ -427,6 +433,7 @@ window.addEventListener('keydown',function(){
   if(event.key=="Enter" &&document.activeElement){
     if(d3.select(document.activeElement).classed('new-tag-input')){
       generateTag(d3.select(document.activeElement).property('value'),d3.select(document.activeElement).node());
+      
     }
   }
 })
