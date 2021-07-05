@@ -574,9 +574,16 @@ p.form-display {
 
 .form-section label, .form-section a{
   display: inline-block;
-/*   margin-bottom: 3px; */
+  margin-bottom: 3px;
   margin-right:5px;
   white-space:nowrap;
+}
+
+
+.type-string label,.type-url label{
+  margin-bottom: 0px;
+  margin-top: 4px;
+  margin-right: 10px;
 }
 
 .form-section label>*,a>* {
@@ -594,6 +601,12 @@ p.form-display {
   display:flex;
   flex-flow:row nowrap;
   padding: 18px 0px 0px;
+  height: 30px;
+  align-items: center;
+}
+
+.type-par{
+  padding-bottom: 0px;
 }
 
 .type-string input,.type-url input{
@@ -610,12 +623,15 @@ form input[type='text'],form textarea{
   font-size:17px;
   line-height: 22px;
   box-sizing: border-box;
+  padding-left: 5px;
 }
 
 form textarea{
   min-height:50px;
   padding:10px;
   box-sizing: border-box;
+  position: relative;
+  bottom: -5px;
 /*   border-top: solid var(--midtone) 1px; */
   
 }
