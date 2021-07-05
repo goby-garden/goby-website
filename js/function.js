@@ -266,7 +266,7 @@ function updateForm(blockData){
   d3.select('#item-title p').html(title);
   d3.select('#item-title input').property('value',blockData.title);
   
-  d3.select('#item-desc p').html(blockData["description_html"]);
+  d3.select('#item-desc p').html(blockData.description?marked(blockData.description):"");
   
   d3.select('#item-desc textarea').html(blockData.description);
   d3.select('#item-desc textarea').property('value',d3.select('#item-desc textarea').text());
@@ -438,6 +438,10 @@ function checkForm(){
   let arenaChanged=false;
   let gobyChanged=false;
   
+  
+  
+  
+  
   d3.selectAll('#arena-goby .form-section').each((d,i,nodes)=>{
     let section=d3.select(nodes[i]);
     let key=nodes[i].dataset.key;
@@ -490,11 +494,31 @@ function checkForm(){
   
 
   })
-  console.log('goby changed?',gobyChanged);
-  console.log("goby block: ",gobyBlock);
-
   
-  function compareArrays(arrayA,arrayB){
+}
+
+
+function submitNewField(newKey,newType,newVal,currentBlock){
+  // add new field to manifest
+  goby.manifest.push({
+    key:newKey,
+    type:newType
+  })
+  // adds existing values to list if array
+  if(newType=="array"){
+    goby.manifest.find(a=>a.key==newKey).values=newVal;
+  }
+
+  //loop through blocks and create the keys
+  goby.blocks.forEach((block,b)=>{
+    block[newKey]=(newType=="array")?[]:"";
+  })
+
+  // change value on current block
+  currentBlock[newKey]=newVal;
+}
+
+function compareArrays(arrayA,arrayB){
     let different=false
     //returns false if they are the same (order doesn't matter), true if they are different
     if(!array1ContainsArray2(arrayA,arrayB)){
@@ -518,30 +542,6 @@ function checkForm(){
     return contains;
     
   }
-  
-  function submitNewField(newKey,newType,newVal,currentBlock){
-    // add new field to manifest
-    goby.manifest.push({
-      key:newKey,
-      type:newType
-    })
-    // adds existing values to list if array
-    if(newType=="array"){
-      goby.manifest.find(a=>a.key==newKey).values=newVal;
-    }
-  
-    //loop through blocks and create the keys
-    goby.blocks.forEach((block,b)=>{
-      block[newKey]=(newType=="array")?[]:"";
-    })
-    
-    // change value on current block
-    currentBlock[newKey]=newVal;
-  }
-  
-  
-}
-
 
 
 
