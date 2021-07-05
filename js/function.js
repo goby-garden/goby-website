@@ -453,15 +453,26 @@ function checkForm(){
         return item.querySelector('input').checked;
       })
       let newTags=domArray.map(x=>x.dataset.val);
-      console.log(newTags);
+
+      //compare the array with the goby stored array of values
       let tagsChanged=compareArrays(newTags,gobyBlock[key]);
       if(tagsChanged){
+        gobyChanged=true;
+        let unsavedTags=domArray.filter()
+        
+         //check if any of the tags are new, and store them in the goby log if so
+        
+        
+//         if(array1ContainsArray2(goby.manifest.find(a=>a.key==key).values,newTags)){
+          
+//         }
+        
         
       }
       
       
-      //compare the array with the goby stored array of values
-      //check if any of the tags are new, and store them in the goby log if so
+      
+     
       
     }else{
       let comparable=nodes[i].dataset.type=='par'?section.select('textarea').property('value'):section.select('input').property('value');
@@ -482,19 +493,40 @@ function checkForm(){
   function compareArrays(arrayA,arrayB){
     let different=false
     //returns false if they are the same (order doesn't matter), true if they are different
-    for(let i=0;i<arrayB.length;i++){
-      if(!arrayA.includes(arrayB[i])){
-        different=true;
-        break;
-      }
+    if(!array1ContainsArray2(arrayA,arrayB)){
+      different=true;
     }
-    for(let i=0;i<arrayA.length;i++){
-      if(!arrayB.includes(arrayA[i])){
-        different=true;
-        break;
-      }
+    if(!array1ContainsArray2(arrayB,arrayA)){
+      different=true;
     }
     return different;
+    
+//     for(let i=0;i<arrayB.length;i++){
+//       if(!arrayA.includes(arrayB[i])){
+//         different=true;
+//         break;
+//       }
+//     }
+//     for(let i=0;i<arrayA.length;i++){
+//       if(!arrayB.includes(arrayA[i])){
+//         different=true;
+//         break;
+//       }
+//     }
+    
+  }
+  
+  function array1ContainsArray2(array1,array2){
+    //returns true if all the values in array 2 are in array1, false if not
+    let contains=true;
+    for(let i=0;i<array2.length;i++){
+      if(!array1.includes(array2[i])){
+        contains=false;
+        break;
+      }
+    }
+    return contains;
+    
   }
   
 }
