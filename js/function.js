@@ -462,9 +462,9 @@ function checkForm(){
           let unsavedTags=domArray.filter(function(item){
             return item.classList.contains('new-tag');
           })
-          console.log(unsavedTags)
           unsavedTags=unsavedTags.map(x=>x.dataset.val);
-          goby.manifest.find(a=>a.key==key).values.concat(unsavedTags);
+
+          goby.manifest.find(a=>a.key==key).values=goby.manifest.find(a=>a.key==key).values.concat(unsavedTags);
 
         }
       }else{

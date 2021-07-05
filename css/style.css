@@ -574,7 +574,7 @@ p.form-display {
 
 .form-section label, .form-section a{
   display: inline-block;
-  margin-bottom: 3px;
+/*   margin-bottom: 3px; */
   margin-right:5px;
   white-space:nowrap;
 }
@@ -594,6 +594,10 @@ p.form-display {
   display:flex;
   flex-flow:row nowrap;
   padding: 18px 0px 0px;
+}
+
+.type-string input,.type-url input{
+  height:100%;
 }
 
 .edit .type-string,.edit .type-url{
@@ -620,8 +624,10 @@ form textarea{
 form input[type='text'], input[type='text']:focus {
   border: none;
   outline: none;
-  height: 20px;
+/*   height: 20px; */
+  height:100%;
   padding-top: 3px;
+  background-color: var(--lightest);
 }
 
 textarea {
