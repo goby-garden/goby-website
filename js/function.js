@@ -322,6 +322,7 @@ function generateSection(type,key,value,index,existing){
         existing.forEach((tag,t)=>{
           newSection.append('div').attr('class','tag').node().dataset.tag=t;
           let newTag=newSection.select(`[data-tag="${t}"]`);
+          newTag.attr('data-val',tag);
           newTag.append('input').attr('type','checkbox');
           newTag.append('p').text(tag);
           // gobyBlock[sData.key]
@@ -446,9 +447,19 @@ function checkForm(){
     let key=nodes[i].dataset.key;
     
     if(nodes[i].dataset.type=='arr'){
-      nodes[i].querySelectorAll('.tag')
+      //first find the tags with checked checkboxes and create an array of string values
+      let domArray=Array.from(nodes[i].querySelectorAll('.tag'));
+      domArray=domArray.filter(function(item){
+        return item.querySelector('input').checked;
+      })
+      let newTags=domArray.map(x=>x.dataset.val);
+      console.log(newTags);
+      let tagsChanged=compareArrays(newTags,gobyBlock[key]);
+      if(tagsChanged){
+        
+      }
       
-      //first count the tags with checked checkboxes and create an array of string values
+      
       //compare the array with the goby stored array of values
       //check if any of the tags are new, and store them in the goby log if so
       
@@ -469,21 +480,21 @@ function checkForm(){
   
   
   function compareArrays(arrayA,arrayB){
-    let same=true;
-    //returns true if they are the same (order doesn't matter), false if they are different
+    let different=false
+    //returns false if they are the same (order doesn't matter), true if they are different
     for(let i=0;i<arrayB.length;i++){
       if(!arrayA.includes(arrayB[i])){
-        same=false;
+        different=true;
         break;
       }
     }
     for(let i=0;i<arrayA.length;i++){
       if(!arrayB.includes(arrayA[i])){
-        same=false;
+        different=true;
         break;
       }
     }
-    return same;
+    return different;
   }
   
 }
