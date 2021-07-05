@@ -202,6 +202,13 @@ function setUpButtons(){
     exitForm();
   });
   
+  d3.select('#submit-form').on('click',function(){
+    checkForm();
+    let theBlock=blocks.find(a=>a.id==parseInt(formQs.dataset.editing))
+    updateForm(theBlock);
+    exitForm();
+  })
+  
   addNewSetUp();
   
 }
@@ -416,7 +423,7 @@ function generateTag(string,input){
     let countTags=document.querySelectorAll(`#section-${input.dataset.index} .tag`).length
     d3.select(input).datum().push(string);
     console.log(input.dataset.index,d3.select('#section-'+input.dataset.index));
-    d3.select('#section-'+input.dataset.index).insert('div','.add-new-tag').attr('class','tag').node().dataset.tag=countTags;
+    d3.select('#section-'+input.dataset.index).insert('div','.add-new-tag').attr('class','tag new-tag').node().dataset.tag=countTags;
     let newTag=d3.select('#section-'+input.dataset.index).select(`.tag[data-tag="${countTags}"]`)
     newTag.attr('data-val',string);
     newTag.append('input').attr('type','checkbox');
@@ -458,35 +465,31 @@ function checkForm(){
       let tagsChanged=compareArrays(newTags,gobyBlock[key]);
       if(tagsChanged){
         gobyChanged=true;
-        let unsavedTags=domArray.filter()
-        
-         //check if any of the tags are new, and store them in the goby log if so
-        
-        
-//         if(array1ContainsArray2(goby.manifest.find(a=>a.key==key).values,newTags)){
-          
-//         }
-        
+        gobyBlock[key]=newTags;
+        console.log(key+" changed");
+        //check if any of the tags are new, and store them in the goby log if so
+        let unsavedTags=domArray.filter(function(item){
+          return item.classList.contains('new-tag');
+        })
+        unsavedTags=unsavedTags.map(x=>x.dataset.val);
+        goby.manifest.find(a=>a.key==key).values.concat(unsavedTags);
         
       }
-      
-      
-      
-     
-      
+
     }else{
       let comparable=nodes[i].dataset.type=='par'?section.select('textarea').property('value'):section.select('input').property('value');
       
       if(comparable!==gobyBlock[key]){
         gobyChanged=true;
-        gobyBlock[key]=gobyChanged;
+        console.log(key+" changed");
+        gobyBlock[key]=comparable;
       }
       
     }
-    
-    
+    console.log('goby changed?',gobyChanged);
+    console.log(gobyBlock);
 
-    
+
   })
   
   
@@ -499,6 +502,7 @@ function checkForm(){
     if(!array1ContainsArray2(arrayB,arrayA)){
       different=true;
     }
+    console.log('arrays compared:',arrayA,arrayB);
     return different;
     
 //     for(let i=0;i<arrayB.length;i++){
