@@ -46,10 +46,8 @@ function startUp(){
 function postRequest(slug,mode){
   function reqListener () {
     var jsonResponse=JSON.parse(this.responseText);
-    console.log(jsonResponse)
     switch(mode){
       case 'contents':
-      console.log(jsonResponse.contents);
       handleNewData(jsonResponse.contents);
       break;
       case 'meta':
@@ -102,7 +100,6 @@ function fillMeta(data){
 // adds each newly received block to blocks and goby based on 
 function handleNewData(contents){
   let gobyChanged=false;
-  console.log('new items:', contents);
   
   contents.forEach((block,b)=>{
     if(goby.blocks.find(a=>a.id==block.id)==undefined&&block.title!=="goby.json"){
@@ -113,7 +110,6 @@ function handleNewData(contents){
       blocks.push(block);
     }
   })
-  console.log(blocks,goby);
   fillWithBlocks(blocks.filter(a=>a.title!=="goby.json"));
 }
 
@@ -143,7 +139,6 @@ function fillWithBlocks(blockList){
             .attr('id',d => 'bl-'+d.id)
             .attr('class','block');
           nBlock.append('svg').html(chanLines);
-          console.log(nBlock);
           nBlock.filter((d, i) =>d.image)
             .append("div")
             .attr('class','img-wrap')
@@ -252,7 +247,6 @@ function textAreaOnInput(node) {
 // this requests more blocks when someone scrolls down enough
 function loadMore(entries){
   if(entries[0].isIntersecting){
-    console.log(entries[0],'time to load more baby')
     observer.unobserve(entries[0].target);
     //I might add an event listener for scroll here that fires the postRequest
     // that way if the layout changes and the last block happens to come into view, the request won't fire until the scroll down for more stuff
@@ -276,7 +270,6 @@ function updateForm(blockData){
   
   d3.select('#item-desc textarea').html(blockData.description);
   d3.select('#item-desc textarea').property('value',d3.select('#item-desc textarea').text());
-  console.log(blockData);
   
   // arena goby-------------------
   let gobyBlock=goby.blocks.find(a=>a.id==blockData.id);
@@ -290,7 +283,6 @@ function updateForm(blockData){
 
   })
   
-  console.log(gobyBlock);
   
   // general----------------------
   d3.selectAll('form textarea').each((d,i,nodes)=>{
@@ -306,7 +298,6 @@ function generateSection(type,key,value,index,existing){
   let newField=false;
   
   if(!index&&index!==0){
-    console.log(key,index);
     index=document.querySelectorAll('#arena-goby .form-section').length;
     existing=[];
     newField=true;
@@ -404,7 +395,6 @@ function addNewSetUp(){
 
 function addField(type,key){
   if(!goby.manifest.find(a=>a.key==key)&&!newKeys.find(b=>b==key)&&key!==''){
-    console.log('here comes a new one:',type,key);
     d3.select('#add-new input').property('value','');
     d3.select('#add-new').classed('panel-2',false);
     newKeys.push(key);
@@ -422,7 +412,6 @@ function generateTag(string,input){
     input.value="";
     let countTags=document.querySelectorAll(`#section-${input.dataset.index} .tag`).length
     d3.select(input).datum().push(string);
-    console.log(input.dataset.index,d3.select('#section-'+input.dataset.index));
     d3.select('#section-'+input.dataset.index).insert('div','.add-new-tag').attr('class','tag new-tag').node().dataset.tag=countTags;
     let newTag=d3.select('#section-'+input.dataset.index).select(`.tag[data-tag="${countTags}"]`)
     newTag.attr('data-val',string);
@@ -457,11 +446,9 @@ function checkForm(){
     if(nodes[i].dataset.type=='array'){
       //first find the tags with checked checkboxes and create an array of string values
       let domArray=Array.from(nodes[i].querySelectorAll('.tag'));
-      console.log('domarray unfiltered:', domArray)
       domArray=domArray.filter(function(item){
         return item.querySelector('input').checked;
       })
-      console.log('domarray filtered:', domArray)
       let newTags=domArray.map(x=>x.dataset.val);
       
       
@@ -471,24 +458,17 @@ function checkForm(){
         if(tagsChanged){
           gobyChanged=true;
           gobyBlock[key]=newTags;
-          console.log(key+" changed");
           //check if any of the tags are new, and store them in the goby log if so
           let unsavedTags=domArray.filter(function(item){
             return item.classList.contains('new-tag');
           })
+          console.log(unsavedTags)
           unsavedTags=unsavedTags.map(x=>x.dataset.val);
           goby.manifest.find(a=>a.key==key).values.concat(unsavedTags);
 
         }
       }else{
-        // add new array field to manifest
-        goby.manifest.push({
-          key:key,
-          type:"array",
-          values:newTags
-        })
-        // add it to block
-        gobyBlock[key]=newTags;
+        submitNewField(key,nodes[i].dataset.type,newTags,gobyBlock);
         gobyChanged=true;
       }
       
@@ -498,25 +478,20 @@ function checkForm(){
       if(!isNewField){
         if(comparable!==gobyBlock[key]){
           gobyChanged=true;
-          console.log(key+" changed");
           gobyBlock[key]=comparable;
         }
       }else{
-        // add new field to manifest
-        goby.manifest.push({
-          key:key,
-          type:nodes[i].dataset.type
-        })
-        // add it to block
-        gobyBlock[key]=comparable;
+        
+        submitNewField(key,nodes[i].dataset.type,comparable,gobyBlock);
         gobyChanged=true;
+      
       }
     }
   
 
   })
   console.log('goby changed?',gobyChanged);
-  console.log(gobyBlock);
+  console.log("goby block: ",gobyBlock);
 
   
   function compareArrays(arrayA,arrayB){
@@ -528,7 +503,6 @@ function checkForm(){
     if(!array1ContainsArray2(arrayB,arrayA)){
       different=true;
     }
-    console.log('arrays compared:',arrayA,arrayB);
     return different;
   }
   
@@ -545,7 +519,7 @@ function checkForm(){
     
   }
   
-  function createNewField(newKey,newType,newVal,currentBlock){
+  function submitNewField(newKey,newType,newVal,currentBlock){
     // add new field to manifest
     goby.manifest.push({
       key:newKey,
@@ -558,9 +532,8 @@ function checkForm(){
   
     //loop through blocks and create the keys
     goby.blocks.forEach((block,b)=>{
-      block[newKey]=newType=="array"?[]:"";
+      block[newKey]=(newType=="array")?[]:"";
     })
-    
     
     // change value on current block
     currentBlock[newKey]=newVal;
