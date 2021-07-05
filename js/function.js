@@ -481,18 +481,36 @@ function checkForm(){
 
         }
       }else{
-        goby.manifest
+        // add new array field to manifest
+        goby.manifest.push({
+          key:key,
+          type:"array",
+          values:newTags
+        })
+        // add it to block
+        gobyBlock[key]=newTags;
+        gobyChanged=true;
       }
       
     }else{
       let comparable=nodes[i].dataset.type=='par'?section.select('textarea').property('value'):section.select('input').property('value');
       
-      if(comparable!==gobyBlock[key]){
-        gobyChanged=true;
-        console.log(key+" changed");
+      if(!isNewField){
+        if(comparable!==gobyBlock[key]){
+          gobyChanged=true;
+          console.log(key+" changed");
+          gobyBlock[key]=comparable;
+        }
+      }else{
+        // add new field to manifest
+        goby.manifest.push({
+          key:key,
+          type:nodes[i].dataset.type
+        })
+        // add it to block
         gobyBlock[key]=comparable;
+        gobyChanged=true;
       }
-      
     }
   
 
@@ -526,6 +544,28 @@ function checkForm(){
     return contains;
     
   }
+  
+  function createNewField(newKey,newType,newVal,currentBlock){
+    // add new field to manifest
+    goby.manifest.push({
+      key:newKey,
+      type:newType
+    })
+    // adds existing values to list if array
+    if(newType=="array"){
+      goby.manifest.find(a=>a.key==newKey).values=newVal;
+    }
+  
+    //loop through blocks and create the keys
+    goby.blocks.forEach((block,b)=>{
+      block[newKey]=newType=="array"?[]:"";
+    })
+    
+    
+    // change value on current block
+    currentBlock[newKey]=newVal;
+  }
+  
   
 }
 
