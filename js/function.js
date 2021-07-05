@@ -417,6 +417,7 @@ function generateTag(string,input){
     console.log(input.dataset.index,d3.select('#section-'+input.dataset.index));
     d3.select('#section-'+input.dataset.index).insert('div','.add-new-tag').attr('class','tag').node().dataset.tag=countTags;
     let newTag=d3.select('#section-'+input.dataset.index).select(`.tag[data-tag="${countTags}"]`)
+    newTag.attr('data-val',string);
     newTag.append('input').attr('type','checkbox');
     newTag.append('p').text(string);
     newTag.select('input').property('checked',true);
@@ -445,6 +446,11 @@ function checkForm(){
     let key=nodes[i].dataset.key;
     
     if(nodes[i].dataset.type=='arr'){
+      nodes[i].querySelectorAll('.tag')
+      
+      //first count the tags with checked checkboxes and create an array of string values
+      //compare the array with the goby stored array of values
+      //check if any of the tags are new, and store them in the goby log if so
       
     }else{
       let comparable=nodes[i].dataset.type=='par'?section.select('textarea').property('value'):section.select('input').property('value');
@@ -462,27 +468,24 @@ function checkForm(){
   })
   
   
-//   function compareArrays(){
-    
-//   }
+  function compareArrays(arrayA,arrayB){
+    let same=true;
+    //returns true if they are the same (order doesn't matter), false if they are different
+    for(let i=0;i<arrayB.length;i++){
+      if(!arrayA.includes(arrayB[i])){
+        same=false;
+        break;
+      }
+    }
+    for(let i=0;i<arrayA.length;i++){
+      if(!arrayB.includes(arrayA[i])){
+        same=false;
+        break;
+      }
+    }
+    return same;
+  }
   
-  
-//   function checkAforB(arrayA,arrayB){
-//     for(let i=0;i<arrayB.length;i++){
-      
-      
-      
-      
-//       if(arrayA.includes(arrayB[i])==false){
-//         gobyChanged=true;
-//         break;
-//       }
-//     }
-//     if(gobyChanged){
-//       // oldData.g.tags=newArr;
-//     }
-//   }
-  //check each form section for changes
 }
 
 
