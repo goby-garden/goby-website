@@ -442,18 +442,46 @@ function checkForm(){
   
   d3.selectAll('#arena-goby .form-section').each((d,i,nodes)=>{
     let section=d3.select(nodes[i]);
-    switch(nodes[i].dataset.type){
-      case "array":
-        console.log('arr')
-      break;
-      case "par":
-        
-      break;
-      default:
+    let key=nodes[i].dataset.key;
+    
+    if(nodes[i].dataset.type=='arr'){
+      
+    }else{
+      let comparable=nodes[i].dataset.type=='par'?section.select('textarea').property('value'):section.select('input').property('value');
+      
+      if(comparable!==gobyBlock[key]){
+        gobyChanged=true;
+        gobyBlock[key]=gobyChanged;
+      }
       
     }
     
+    
+
+    
   })
+  
+  
+//   function compareArrays(){
+    
+//   }
+  
+  
+//   function checkAforB(arrayA,arrayB){
+//     for(let i=0;i<arrayB.length;i++){
+      
+      
+      
+      
+//       if(arrayA.includes(arrayB[i])==false){
+//         gobyChanged=true;
+//         break;
+//       }
+//     }
+//     if(gobyChanged){
+//       // oldData.g.tags=newArr;
+//     }
+//   }
   //check each form section for changes
 }
 
