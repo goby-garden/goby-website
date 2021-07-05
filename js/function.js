@@ -308,6 +308,8 @@ function generateSection(type,key,value,index,existing){
   d3.select('#arena-goby')
       .append('div')
       .attr('class',`form-section type-${type} ${newField?'new-field':''}`)
+      .attr('data-type',type)
+      .attr('data-key',key)
       .attr('id','section-'+index);
   let svg=`<svg class="inline form-edit" width="24" height="22"><use href="#${type}-icon"></svg>`;
   let newSection=d3.select('#section-'+index);
@@ -433,6 +435,25 @@ function generateTag(string,input){
 
 
 function checkForm(){
+  let arenaBlock=blocks.find(a=>a.id==parseInt(formQs.dataset.editing));
+  let gobyBlock=goby.blocks.find(a=>a.id==parseInt(formQs.dataset.editing));
+  let arenaChanged=false;
+  let gobyChanged=false;
+  
+  d3.selectAll('#arena-goby .form-section').each((d,i,nodes)=>{
+    let section=d3.select(nodes[i]);
+    switch(nodes[i].dataset.type){
+      case "array":
+        console.log('arr')
+      break;
+      case "par":
+        
+      break;
+      default:
+      
+    }
+    
+  })
   //check each form section for changes
 }
 
