@@ -254,6 +254,9 @@ function loadMore(entries){
 }
 
 
+
+// form editing---------------------------------
+
 function updateForm(blockData){
   
   
@@ -401,10 +404,6 @@ function addField(type,key){
 }
 
 
-
-
-
-
 function generateTag(string,input){
   let currentGoby=goby.blocks.find(b=>b.id==formQs.dataset.editing);
   let existingTags=goby.manifest.find(a=>a.key==input.dataset.fieldname)?goby.manifest.find(a=>a.key==input.dataset.fieldname).values:[];
@@ -430,6 +429,23 @@ function generateTag(string,input){
     })
   }
 }
+
+
+
+function checkForm(){
+  //check each form section for changes
+}
+
+
+
+
+
+
+
+
+
+
+
 
 window.addEventListener('keydown',function(){
   if(event.key=="Enter" &&document.activeElement){
