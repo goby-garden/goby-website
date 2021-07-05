@@ -452,6 +452,7 @@ function checkForm(){
   d3.selectAll('#arena-goby .form-section').each((d,i,nodes)=>{
     let section=d3.select(nodes[i]);
     let key=nodes[i].dataset.key;
+    let isNewField=section.classed('new-field');
     
     if(nodes[i].dataset.type=='array'){
       //first find the tags with checked checkboxes and create an array of string values
@@ -462,23 +463,27 @@ function checkForm(){
       })
       console.log('domarray filtered:', domArray)
       let newTags=domArray.map(x=>x.dataset.val);
-      console.log('new tags:', newTags);
+      
+      
+      if(!isNewField){
+        //compare the array with the goby stored array of values
+        let tagsChanged=compareArrays(newTags,gobyBlock[key]);
+        if(tagsChanged){
+          gobyChanged=true;
+          gobyBlock[key]=newTags;
+          console.log(key+" changed");
+          //check if any of the tags are new, and store them in the goby log if so
+          let unsavedTags=domArray.filter(function(item){
+            return item.classList.contains('new-tag');
+          })
+          unsavedTags=unsavedTags.map(x=>x.dataset.val);
+          goby.manifest.find(a=>a.key==key).values.concat(unsavedTags);
 
-      //compare the array with the goby stored array of values
-      let tagsChanged=compareArrays(newTags,gobyBlock[key]);
-      if(tagsChanged){
-        gobyChanged=true;
-        gobyBlock[key]=newTags;
-        console.log(key+" changed");
-        //check if any of the tags are new, and store them in the goby log if so
-        let unsavedTags=domArray.filter(function(item){
-          return item.classList.contains('new-tag');
-        })
-        unsavedTags=unsavedTags.map(x=>x.dataset.val);
-        goby.manifest.find(a=>a.key==key).values.concat(unsavedTags);
-        
+        }
+      }else{
+        goby.manifest
       }
-
+      
     }else{
       let comparable=nodes[i].dataset.type=='par'?section.select('textarea').property('value'):section.select('input').property('value');
       
@@ -507,20 +512,6 @@ function checkForm(){
     }
     console.log('arrays compared:',arrayA,arrayB);
     return different;
-    
-//     for(let i=0;i<arrayB.length;i++){
-//       if(!arrayA.includes(arrayB[i])){
-//         different=true;
-//         break;
-//       }
-//     }
-//     for(let i=0;i<arrayA.length;i++){
-//       if(!arrayB.includes(arrayA[i])){
-//         different=true;
-//         break;
-//       }
-//     }
-    
   }
   
   function array1ContainsArray2(array1,array2){
