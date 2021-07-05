@@ -580,7 +580,7 @@ p.form-display {
 }
 
 
-.type-string label,.type-url label{
+.edit .type-string label,.edit .type-url label{
   margin-bottom: 0px;
   margin-top: 4px;
   margin-right: 10px;
@@ -601,11 +601,16 @@ p.form-display {
   display:flex;
   flex-flow:row nowrap;
   padding: 18px 0px 0px;
+  
+}
+
+
+.edit .type-string,.edit .type-url{
   height: 30px;
   align-items: center;
 }
 
-.type-par{
+.edit .type-par{
   padding-bottom: 0px;
 }
 
