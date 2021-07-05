@@ -367,7 +367,7 @@ function generateSection(type,key,value,index,existing){
           .attr('class','form-edit')
           .html(value)
           .attr('tabindex',index+2);
-        newSection.append('p').attr('class','form-display long-text').text(marked(value));
+        newSection.append('p').attr('class','form-display long-text').html(marked(value));
         if(newField){
           textAreaOnInput(newSection.select('textarea').node())
         }
@@ -453,13 +453,16 @@ function checkForm(){
     let section=d3.select(nodes[i]);
     let key=nodes[i].dataset.key;
     
-    if(nodes[i].dataset.type=='arr'){
+    if(nodes[i].dataset.type=='array'){
       //first find the tags with checked checkboxes and create an array of string values
       let domArray=Array.from(nodes[i].querySelectorAll('.tag'));
+      console.log('domarray unfiltered:', domArray)
       domArray=domArray.filter(function(item){
         return item.querySelector('input').checked;
       })
+      console.log('domarray filtered:', domArray)
       let newTags=domArray.map(x=>x.dataset.val);
+      console.log('new tags:', newTags);
 
       //compare the array with the goby stored array of values
       let tagsChanged=compareArrays(newTags,gobyBlock[key]);
@@ -486,12 +489,12 @@ function checkForm(){
       }
       
     }
-    console.log('goby changed?',gobyChanged);
-    console.log(gobyBlock);
-
+  
 
   })
-  
+  console.log('goby changed?',gobyChanged);
+  console.log(gobyBlock);
+
   
   function compareArrays(arrayA,arrayB){
     let different=false
