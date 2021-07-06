@@ -440,8 +440,23 @@ function checkForm(){
   
   
   
+  //checks arena native changes (title and description)
+  
+  d3.selectAll('#arena-native .form-section').each((d,i,nodes)=>{
+    // this is a snippet taken from the larger conditional below to check goby fields
+    // I may want to generalize it later so i don't have to repeat the same input value comparison code twice
+    let section=d3.select(nodes[i]);
+    let key=nodes[i].dataset.key;
+    let comparable=nodes[i].dataset.type=='par'?section.select('textarea').property('value'):section.select('input').property('value');
+    if(comparable!==arenaBlock[key]){
+      arenaChanged=true;
+      arenaBlock[key]=comparable;
+    }
+  })
   
   
+  
+  // checks goby for changes-------------
   d3.selectAll('#arena-goby .form-section').each((d,i,nodes)=>{
     let section=d3.select(nodes[i]);
     let key=nodes[i].dataset.key;
