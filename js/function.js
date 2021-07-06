@@ -307,6 +307,7 @@ function generateSection(type,key,value,index,existing){
       .append('div')
       .attr('class',`form-section type-${type} ${newField?'new-field':''}`)
       .attr('data-type',type)
+      .attr('data-domain','goby')
       .attr('data-key',key)
       .attr('id','section-'+index);
   let svg=`<svg class="inline form-edit" width="24" height="22"><use href="#${type}-icon"></svg>`;
@@ -444,7 +445,7 @@ function checkForm(){
   
   d3.selectAll('#arena-native .form-section').each((d,i,nodes)=>{
     // this is a snippet taken from the larger conditional below to check goby fields
-    // I may want to generalize it later so i don't have to repeat the same input value comparison code twice
+    // I may want to generalize it later so it doesn't repeat the same input value comparison code twice
     let section=d3.select(nodes[i]);
     let key=nodes[i].dataset.key;
     let comparable=nodes[i].dataset.type=='par'?section.select('textarea').property('value'):section.select('input').property('value');
@@ -460,7 +461,10 @@ function checkForm(){
   d3.selectAll('#arena-goby .form-section').each((d,i,nodes)=>{
     let section=d3.select(nodes[i]);
     let key=nodes[i].dataset.key;
+    let refBlock=nodes[i].dataset.domain=='native'?arenaBlock
     let isNewField=section.classed('new-field');
+    
+    
     
     if(nodes[i].dataset.type=='array'){
       //first find the tags with checked checkboxes and create an array of string values
