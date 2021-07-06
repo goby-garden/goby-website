@@ -443,27 +443,27 @@ function checkForm(){
   
   //checks arena native changes (title and description)
   
-  d3.selectAll('#arena-native .form-section').each((d,i,nodes)=>{
-    // this is a snippet taken from the larger conditional below to check goby fields
-    // I may want to generalize it later so it doesn't repeat the same input value comparison code twice
-    let section=d3.select(nodes[i]);
-    let key=nodes[i].dataset.key;
-    let comparable=nodes[i].dataset.type=='par'?section.select('textarea').property('value'):section.select('input').property('value');
-    if(comparable!==arenaBlock[key]){
-      arenaChanged=true;
-      arenaBlock[key]=comparable;
-    }
-  })
+  // d3.selectAll('#arena-native .form-section').each((d,i,nodes)=>{
+  //   // this is a snippet taken from the larger conditional below to check goby fields
+  //   // I may want to generalize it later so it doesn't repeat the same input value comparison code twice
+  //   let section=d3.select(nodes[i]);
+  //   let key=nodes[i].dataset.key;
+  //   let comparable=nodes[i].dataset.type=='par'?section.select('textarea').property('value'):section.select('input').property('value');
+  //   if(comparable!==arenaBlock[key]){
+  //     arenaChanged=true;
+  //     arenaBlock[key]=comparable;
+  //   }
+  // })
   
   
   
   // checks goby for changes-------------
-  d3.selectAll('#arena-goby .form-section').each((d,i,nodes)=>{
+  d3.selectAll('#scroll-wrapper .form-section').each((d,i,nodes)=>{
     let section=d3.select(nodes[i]);
     let key=nodes[i].dataset.key;
-    let refBlock=nodes[i].dataset.domain=='native'?arenaBlock
+    let refBlock=nodes[i].dataset.domain=='native'?arenaBlock:gobyBlock;
     let isNewField=section.classed('new-field');
-    
+    let somethingChanged=false;
     
     
     if(nodes[i].dataset.type=='array'){
@@ -477,10 +477,11 @@ function checkForm(){
       
       if(!isNewField){
         //compare the array with the goby stored array of values
-        let tagsChanged=compareArrays(newTags,gobyBlock[key]);
+        let tagsChanged=compareArrays(newTags,refBlock[key]);
         if(tagsChanged){
-          gobyChanged=true;
-          gobyBlock[key]=newTags;
+          somethingChanged=true;
+          // gobyChanged=true;
+          refBlock[key]=newTags;
           //check if any of the tags are new, and store them in the goby log if so
           let unsavedTags=domArray.filter(function(item){
             return item.classList.contains('new-tag');
@@ -491,27 +492,41 @@ function checkForm(){
 
         }
       }else{
-        submitNewField(key,nodes[i].dataset.type,newTags,gobyBlock);
-        gobyChanged=true;
+        submitNewField(key,nodes[i].dataset.type,newTags,refBlock);
+        somethingChanged=true;
+        // gobyChanged=true;
       }
       
     }else{
       let comparable=nodes[i].dataset.type=='par'?section.select('textarea').property('value'):section.select('input').property('value');
       
       if(!isNewField){
-        if(comparable!==gobyBlock[key]){
-          gobyChanged=true;
-          gobyBlock[key]=comparable;
+        if(comparable!==refBlock[key]){
+          somethingChanged=true;
+          // gobyChanged=true;
+          refBlock[key]=comparable;
         }
       }else{
         
-        submitNewField(key,nodes[i].dataset.type,comparable,gobyBlock);
-        gobyChanged=true;
+        submitNewField(key,nodes[i].dataset.type,comparable,refBlock);
+        somethingChanged=true;
+        // gobyChanged=true;
       
       }
     }
   
 
+    if(somethingChanged){
+      switch(nodes[i].dataset.domain){
+        case 'native':
+          arenaChanged=true;
+          break;
+        case 'goby':
+          gobyChanged=true;
+          break;
+      }
+    }
+    
   })
   
 }
