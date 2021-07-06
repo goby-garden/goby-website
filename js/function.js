@@ -440,21 +440,8 @@ function checkForm(){
   let gobyChanged=false;
   
   
-  
-  //checks arena native changes (title and description)
-  
-  // d3.selectAll('#arena-native .form-section').each((d,i,nodes)=>{
-  //   // this is a snippet taken from the larger conditional below to check goby fields
-  //   // I may want to generalize it later so it doesn't repeat the same input value comparison code twice
-  //   let section=d3.select(nodes[i]);
-  //   let key=nodes[i].dataset.key;
-  //   let comparable=nodes[i].dataset.type=='par'?section.select('textarea').property('value'):section.select('input').property('value');
-  //   if(comparable!==arenaBlock[key]){
-  //     arenaChanged=true;
-  //     arenaBlock[key]=comparable;
-  //   }
-  // })
-  
+  //going to have to make accomodations for bulk editing here eventually
+  //I think enough can stay the same that it's worth trying to generalize it with some conditionals and functions
   
   
   // checks goby for changes-------------
@@ -480,7 +467,6 @@ function checkForm(){
         let tagsChanged=compareArrays(newTags,refBlock[key]);
         if(tagsChanged){
           somethingChanged=true;
-          // gobyChanged=true;
           refBlock[key]=newTags;
           //check if any of the tags are new, and store them in the goby log if so
           let unsavedTags=domArray.filter(function(item){
@@ -494,7 +480,6 @@ function checkForm(){
       }else{
         submitNewField(key,nodes[i].dataset.type,newTags,refBlock);
         somethingChanged=true;
-        // gobyChanged=true;
       }
       
     }else{
@@ -503,14 +488,12 @@ function checkForm(){
       if(!isNewField){
         if(comparable!==refBlock[key]){
           somethingChanged=true;
-          // gobyChanged=true;
           refBlock[key]=comparable;
         }
       }else{
         
         submitNewField(key,nodes[i].dataset.type,comparable,refBlock);
         somethingChanged=true;
-        // gobyChanged=true;
       
       }
     }
@@ -529,6 +512,8 @@ function checkForm(){
     
   })
   
+  console.log(gobyChanged?"goby changed":"goby did not change");
+  console.log(arenaChanged?"arena native changed":"arena native did not change");
 }
 
 
