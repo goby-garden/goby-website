@@ -1,6 +1,4 @@
 
-/* global d3, marked */
-
 // dom variables--------------------
 let feed=d3.select('#channel-feed');
 let formQs=document.querySelector('form');
@@ -60,7 +58,7 @@ function postRequest(slug,mode){
     }
 
   }
-  
+
   var oReq = new XMLHttpRequest();
   oReq.addEventListener("load", reqListener);
 
@@ -85,7 +83,7 @@ function fillMeta(data){
   document.querySelector('#channel-name').insertAdjacentHTML('beforeend',data.title);
   //add username to header
   d3.select('#username').text(data.user["full_name"]);
-  
+
   if(data.metadata!==null){
     d3.select('#channel-description').html(marked(data.metadata.description));
   }
@@ -97,10 +95,10 @@ function fillMeta(data){
   postRequest(slug,'contents');
 }
 
-// adds each newly received block to blocks and goby based on 
+// adds each newly received block to blocks and goby based on
 function handleNewData(contents){
   let gobyChanged=false;
-  
+
   contents.forEach((block,b)=>{
     if(goby.blocks.find(a=>a.id==block.id)==undefined&&block.title!=="goby.json"){
       goby.blocks.push(newGobyBlock(block.id));
@@ -153,15 +151,15 @@ function fillWithBlocks(blockList){
           nBlock.filter((d, i) =>d.class=="Channel")
           .classed('channel-block',true);
           nBlock.on('click',openBlock)
-          
+
         }
     )
-  
-  
+
+
     if(blocks.length<chanLength){
       observer.observe(document.querySelector('.block:last-child'));
     }
-  
+
 }
 
 
@@ -182,7 +180,7 @@ function setUpButtons(){
   d3.select('#close-item').on('click',function(){
     d3.select('#item-meta').classed('open',false);
   });
-  
+
   // enters block edit mode
   d3.select('#edit-form').on('click',function(){
       d3.selectAll('.data-grouping').classed('edit',true);
@@ -190,22 +188,22 @@ function setUpButtons(){
       textAreaHeights(true);
       document.querySelector('#item-title input').focus();
     })
-  
+
   d3.select('#cancel-form').on('click',function(){
     let theBlock=blocks.find(a=>a.id==parseInt(formQs.dataset.editing))
     updateForm(theBlock);
     exitForm();
   });
-  
+
   d3.select('#submit-form').on('click',function(){
     checkForm();
     let theBlock=blocks.find(a=>a.id==parseInt(formQs.dataset.editing))
     updateForm(theBlock);
     exitForm();
   })
-  
+
   addNewSetUp();
-  
+
 }
 
 function exitForm(){
@@ -259,50 +257,50 @@ function loadMore(entries){
 // form editing---------------------------------
 
 function updateForm(blockData){
-  
-  
+
+
   // arena native ----------------
   let title=blockData.title.length>0?blockData.title:"<span class='no-emph'>untitled</span>"
   d3.select('#item-title p').html(title);
   d3.select('#item-title input').property('value',blockData.title);
-  
+
   d3.select('#item-desc p').html(blockData.description?marked(blockData.description):"");
-  
+
   d3.select('#item-desc textarea').html(blockData.description);
   d3.select('#item-desc textarea').property('value',d3.select('#item-desc textarea').text());
-  
+
   // arena goby-------------------
   let gobyBlock=goby.blocks.find(a=>a.id==blockData.id);
   d3.select('#arena-goby').selectAll('.form-section').remove();
   // this goes through each goby data field and makes a form section for it
-  goby.manifest.forEach((sData,i)=>{ 
-    
+  goby.manifest.forEach((sData,i)=>{
+
     generateSection(sData.type,sData.key,gobyBlock[sData.key],i,sData.values)
-    
+
 
 
   })
-  
-  
+
+
   // general----------------------
   d3.selectAll('form textarea').each((d,i,nodes)=>{
     textAreaOnInput(nodes[i]);
   })
   formQs.dataset.blocktype=blockData.class.toLowerCase();
-  
+
 }
 
 
 function generateSection(type,key,value,index,existing){
   //add check for if index is defined and existing
   let newField=false;
-  
+
   if(!index&&index!==0){
     index=document.querySelectorAll('#arena-goby .form-section').length;
     existing=[];
     newField=true;
   }
-  
+
   d3.select('#arena-goby')
       .append('div')
       .attr('class',`form-section type-${type} ${newField?'new-field':''}`)
@@ -331,13 +329,13 @@ function generateSection(type,key,value,index,existing){
         })
         newSection.append('div').attr('class','add-new-tag form-edit')
         .append('input').datum([]).attr('class','new-tag-input').attr('type','text').attr('data-fieldname',key).attr('data-index',index).attr('tabindex',index+2);
-          
+
         newSection.select('.add-new-tag')
         .append('button').attr('class','plus-button').attr('type','button').html('+').on('click',function(){
           let newString=d3.select(d3.event.target.parentNode).select('input').property('value');
           generateTag(newString,d3.select(d3.event.target.parentNode).select('input').node())
         });
-        
+
       break;
       case "url":
         newSection.select('label').classed('form-edit',true);
@@ -364,7 +362,7 @@ function generateSection(type,key,value,index,existing){
           textAreaOnInput(newSection.select('textarea').node())
         }
       break;
-        
+
     }
 
     if(newField){
@@ -386,7 +384,7 @@ function addNewSetUp(){
   d3.select('button.back-to-select').on('click',function(){
     d3.select('#add-new').classed('panel-2',false);
   })
-  
+
   d3.select('#add-field').on('click',function(){
     let newType=d3.select('#add-new').attr('data-type');
     let newKey=d3.select('#add-new input').property('value')
@@ -400,7 +398,7 @@ function addField(type,key){
     d3.select('#add-new').classed('panel-2',false);
     newKeys.push(key);
     generateSection(type,key,'');
-    
+
   }
 }
 
@@ -408,7 +406,7 @@ function addField(type,key){
 function generateTag(string,input){
   let currentGoby=goby.blocks.find(b=>b.id==formQs.dataset.editing);
   let existingTags=goby.manifest.find(a=>a.key==input.dataset.fieldname)?goby.manifest.find(a=>a.key==input.dataset.fieldname).values:[];
-  
+
   if(!existingTags.includes(string)&&!d3.select(input).datum().includes(string)&&string.length>0){
     input.value="";
     let countTags=document.querySelectorAll(`#section-${input.dataset.index} .tag`).length
@@ -421,12 +419,12 @@ function generateTag(string,input){
     newTag.select('input').property('checked',true);
     newTag.on('change',function(){
       d3.select(d3.event.currentTarget).remove();
-      
+
       d3.select(input).datum(
         d3.select(input).datum().filter(function(item) { return item !== string;})
       )
-      
-      
+
+
     })
   }
 }
@@ -438,12 +436,12 @@ function checkForm(){
   let gobyBlock=goby.blocks.find(a=>a.id==parseInt(formQs.dataset.editing));
   let arenaChanged=false;
   let gobyChanged=false;
-  
-  
+
+
   //going to have to make accomodations for bulk editing here eventually
   //I think enough can stay the same that it's worth trying to generalize it with some conditionals and functions
-  
-  
+
+
   // checks goby for changes-------------
   d3.selectAll('#scroll-wrapper .form-section').each((d,i,nodes)=>{
     let section=d3.select(nodes[i]);
@@ -451,8 +449,8 @@ function checkForm(){
     let refBlock=nodes[i].dataset.domain=='native'?arenaBlock:gobyBlock;
     let isNewField=section.classed('new-field');
     let somethingChanged=false;
-    
-    
+
+
     if(nodes[i].dataset.type=='array'){
       //first find the tags with checked checkboxes and create an array of string values
       let domArray=Array.from(nodes[i].querySelectorAll('.tag'));
@@ -460,8 +458,8 @@ function checkForm(){
         return item.querySelector('input').checked;
       })
       let newTags=domArray.map(x=>x.dataset.val);
-      
-      
+
+
       if(!isNewField){
         //compare the array with the goby stored array of values
         let tagsChanged=compareArrays(newTags,refBlock[key]);
@@ -481,23 +479,23 @@ function checkForm(){
         submitNewField(key,nodes[i].dataset.type,newTags,refBlock);
         somethingChanged=true;
       }
-      
+
     }else{
       let comparable=nodes[i].dataset.type=='par'?section.select('textarea').property('value'):section.select('input').property('value');
-      
+
       if(!isNewField){
         if(comparable!==refBlock[key]){
           somethingChanged=true;
           refBlock[key]=comparable;
         }
       }else{
-        
+
         submitNewField(key,nodes[i].dataset.type,comparable,refBlock);
         somethingChanged=true;
-      
+
       }
     }
-  
+
 
     if(somethingChanged){
       switch(nodes[i].dataset.domain){
@@ -509,9 +507,9 @@ function checkForm(){
           break;
       }
     }
-    
+
   })
-  
+
   console.log(gobyChanged?"goby changed":"goby did not change");
   console.log(arenaChanged?"arena native changed":"arena native did not change");
 }
@@ -548,7 +546,7 @@ function compareArrays(arrayA,arrayB){
     }
     return different;
   }
-  
+
   function array1ContainsArray2(array1,array2){
     //returns true if all the values in array 2 are in array1, false if not
     let contains=true;
@@ -559,24 +557,14 @@ function compareArrays(arrayA,arrayB){
       }
     }
     return contains;
-    
+
   }
-
-
-
-
-
-
-
-
-
-
 
 window.addEventListener('keydown',function(){
   if(event.key=="Enter" &&document.activeElement){
     if(d3.select(document.activeElement).classed('new-tag-input')){
       generateTag(d3.select(document.activeElement).property('value'),d3.select(document.activeElement).node());
-      
+
     }
   }
 })

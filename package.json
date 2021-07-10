@@ -1,0 +1,27 @@
+{
+  "name": "goby",
+  "version": "0.0.5",
+  "description": "A web app that will enrich Are.na channels with more complex ontology-building tools",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup --config",
+    "start": "npx nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nchilla/goby.git"
+  },
+  "author": "Nico Chilla",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nchilla/goby/issues"
+  },
+  "homepage": "https://github.com/nchilla/goby#readme",
+  "devDependencies": {
+    "rollup": "^2.53.0"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
