@@ -95,7 +95,7 @@ em{
   right:0;
   background-color:white;
   color:red;
-  
+
 }
 
 
@@ -324,7 +324,7 @@ input:checked ~ svg #index-view {
 #submit-cancel #edit-form{
   display: block;
   width: 100%;
-  
+
   background-color:white;
 }
 
@@ -503,7 +503,7 @@ input:checked ~ svg #index-view {
   min-height:100px;
   position:relative;
 /*   margin-top:30px; */
-  
+
   padding: 0px 0px 1px;
 /*   border-top: var(--darkgrey) solid 1px; */
 }
@@ -601,7 +601,7 @@ p.form-display {
   display:flex;
   flex-flow:row nowrap;
   padding: 18px 0px 0px;
-  
+
 }
 
 
@@ -638,7 +638,7 @@ form textarea{
   position: relative;
   bottom: -5px;
 /*   border-top: solid var(--midtone) 1px; */
-  
+
 }
 
 
@@ -829,19 +829,19 @@ textarea {
   #you-question:hover{
     color:black;
   }
-  
+
 /*   .type-string svg.inline:hover, .type-par svg.inline:hover{
     background-color:var(--lightest);
     stroke:black;
     cursor:pointer;
     padding: 2px;
   } */
-  
+
   .add-new-tag button:hover{
     background-color:var(--lightest);
   }
 
-  
+
   .icon-stack button:hover{
     background-color:var(--lightest);
   }
@@ -886,12 +886,14 @@ textarea {
 
 @font-face {
   font-family: 'Public Sans';
-  src: url('https://cdn.glitch.com/a41e174e-1b9d-422e-9b2f-8772ed8c3a17%2FPublicSans-VariableFont_wght.ttf?v=1612696025839') format('truetype');
+  src: url('../assets/public-sans-variable.ttf') format('truetype');
+  /* src: url('https://cdn.glitch.com/a41e174e-1b9d-422e-9b2f-8772ed8c3a17%2FPublicSans-VariableFont_wght.ttf?v=1612696025839') format('truetype'); */
   font-weight: 1 999;
 }
 @font-face {
   font-family: 'Public Sans';
-  src: url('https://cdn.glitch.com/a41e174e-1b9d-422e-9b2f-8772ed8c3a17%2FPublicSans-Italic-VariableFont_wght.ttf?v=1612696025733') format('truetype');
+  src:url('../assets/public-sans-variable-italic.ttf')
+  /* src: url('https://cdn.glitch.com/a41e174e-1b9d-422e-9b2f-8772ed8c3a17%2FPublicSans-Italic-VariableFont_wght.ttf?v=1612696025733') format('truetype'); */
   font-weight: 1 999;
   font-style: italic;
 }
