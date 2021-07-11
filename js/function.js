@@ -1,3 +1,7 @@
+// import 'd3';
+// import marked from 'marked';
+
+
 
 // dom variables--------------------
 let feed=d3.select('#channel-feed');

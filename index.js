@@ -1,6 +1,19 @@
 const express = require('express');
 const app = express();
 
+// javascript compilation
+const rollup = require('rollup');
+const inputOptions = {
+  'input':'js/function.js'
+};
+const outputOptions = {
+  'format':'iife',
+  'file':'_site/js/function.js'
+};
+
+
+
+
 
 app.use(express.static('_site'));
 
