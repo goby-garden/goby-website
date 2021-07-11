@@ -75,7 +75,13 @@ em{
 }
 
 
+.edit-only{
+  display:none !important;
+}
 
+.edit-mode .edit-only{
+  display:inherit;
+}
 
 /* components -------------------*/
 .plus-button{
