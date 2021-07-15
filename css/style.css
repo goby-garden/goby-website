@@ -3,7 +3,8 @@
   --header-height:100px;
   --lightest:#F2F2F2;
   --midtone:#E0E0E0;
-  --darkgrey:#818181;
+  /* --darkgrey:#818181; */
+  --darkgrey:black;
 }
 
 
@@ -75,13 +76,10 @@ em{
 }
 
 
-.edit-only{
+.edit-only:not(.edit-mode .edit-only){
   display:none !important;
 }
 
-.edit-mode .edit-only{
-  display:inherit;
-}
 
 /* components -------------------*/
 .plus-button{
@@ -259,9 +257,95 @@ input:checked ~ svg #index-view {
   fill:black;
 }
 
+#login-prompt{
+  text-decoration-line: underline;
+  color:black;
+  padding-top:10px;
+}
+
+#account-stuff{
+  position:fixed;
+  top:0;
+  right:40px;
+  z-index: 10;
+  padding-top: 32px;
+}
+
+#avatar-wrapper{
+  width:30px;
+  height:30px;
+  display:flex;
+  flex-flow:row nowrap;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--lightest);
+}
+
+
+#avatar-wrapper svg{
+  position:absolute;
+  width:30px;
+  height:22px;
+  right:30px;
+  stroke:black;
+  fill: black;
+}
 
 
 
+#avatar-wrapper img{
+  width:100%;
+}
+
+#avatar-wrapper,.show-on-click{
+  display:none;
+}
+
+
+#account-stuff.logged-in #avatar-wrapper{
+  display:flex;
+}
+
+
+#pop-up{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100vh;
+  align-items: center;
+  z-index:10;
+  /* width: 400px; */
+  /* top:50%;
+  left:50%;
+  transform:translate(-50%,-50%); */
+  background-color: rgba(255,255,255, 0.9);
+  border:1px solid var(--midtone);
+  padding: 20px;
+  color: black;
+  display:none;
+  flex-flow:column nowrap;
+  justify-content: center;
+}
+
+#pop-up>*{
+  max-width:400px;
+  margin-bottom:20px;
+  width:400px;
+}
+
+#pop-up button{
+  text-decoration-line:underline;
+}
+
+/* this should be generalized at some point */
+.flex-row{
+  display:flex;
+  flex-flow:row nowrap;
+}
+.flex-row button{
+  margin-left:20px;
+}
 
 
 
@@ -291,6 +375,11 @@ input:checked ~ svg #index-view {
   border-top:1px solid black;
   margin: 10px 0px;
   margin-bottom: 24px;
+}
+
+#submit-cancel svg{
+  stroke:black;
+  height:21px;
 }
 
 #submit-cancel button{
@@ -628,13 +717,17 @@ p.form-display {
   border-bottom: solid var(--midtone) 1px;
 }
 
-form input[type='text'],form textarea{
+input[type='text'],input[type='url'], form textarea{
   width: 100%;
   font-family: "Public Sans";
   font-size:17px;
   line-height: 22px;
   box-sizing: border-box;
   padding-left: 5px;
+}
+
+button{
+  white-space:nowrap;
 }
 
 form textarea{
@@ -648,7 +741,7 @@ form textarea{
 }
 
 
-form input[type='text'], input[type='text']:focus {
+input[type='text'], input[type='url'],input[type='text']:focus,input[type='url']:focus {
   border: none;
   outline: none;
 /*   height: 20px; */

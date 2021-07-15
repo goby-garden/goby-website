@@ -16,15 +16,160 @@ let currentPage=1;
 let per=10;
 let chanLength;
 
+let userid;
+
+
+
+let slugRegex=/\/(?:.(?!\/))+$/g;
+const redirect = window.location.hostname === "localhost"
+  ? "http://localhost:8000/"
+  : "https://goby.garden";
+
+  const proxy = window.location.hostname === "localhost"
+    ? "https://wnsr-cors.herokuapp.com/"
+    : "https://wnsr-cors.herokuapp.com/";
 
 // this stores all the individual block data fetched from arena
 let blocks=[];
 
 // this stores the goby's special metadata for each block
 let goby;
+let gobyid;
 
 //this selects the channel that is fetched
-let slug='gobies';
+let slug;
+
+function checkSlug(){
+  var params=new URLSearchParams(window.location.search);
+  let isSlug=params.get('channel')?true:false;
+  if(isSlug){
+    slug=params.get('channel');
+
+  }else{
+    slug='gobies';
+  }
+  console.log("slug:",slug);
+}
+
+
+//auth stuff
+let token;
+
+
+function authentication(){
+  let apple='b7e90305232837caf2fd24598c3de3970819b57e2639574a652dffd4329afd19';
+  let salsa='0f72500f45894e3e3b20dd035fa5fb942db18aa2bd2f0cca563193840a732aed';
+
+  if(localStorage.getItem('token')){
+    token=localStorage.getItem('token');
+    login();
+  }else{
+    var queryString=new URLSearchParams(window.location.search);
+    if(queryString.get('code')){
+      let code=queryString.get('code');
+      getAccessToken(code);
+    }
+  }
+
+
+  // change for netlify proxy
+  function getAccessToken(code){
+    var oReq = new XMLHttpRequest();
+        oReq.addEventListener("load", accessTokenCallback);
+        let fetchurl=`${proxy}/https://dev.are.na/oauth/token?client_id=${apple}&client_secret=${salsa}&code=${code}&grant_type=authorization_code&redirect_uri=${redirect}`;
+        oReq.open("POST", fetchurl);
+        oReq.send();
+
+    function accessTokenCallback(){
+      token=JSON.parse(this.responseText)["access_token"];
+      localStorage.setItem('token',token);
+      login();
+    }
+  }
+
+  //check if there's a token in local storage
+  // Y? procede logged-in
+  // N ? check if there's a code in local storage or the url params
+  // Y? do request to get token, including slug and user id and procede logged-in
+  // N? procede without log-in
+  d3.select('#initiate-login').on('click',function(){
+    console.log('clicked');
+    let profileString=document.querySelector('#profile-url').value;
+
+    if(validURL(profileString)){
+      let userSlug=profileString.match(slugRegex)[0].replace('/','');
+      console.log(userSlug);
+      localStorage.setItem('user',userSlug);
+      window.location.href = `http://dev.are.na/oauth/authorize?client_id=${apple}&redirect_uri=${redirect}&response_type=code`;
+    }else{
+      console.log('failed');
+    }
+
+    // redirect
+    // "http://dev.are.na/oauth/authorize?client_id=a05374c81efe233cb167bf381902d931210d6c737ce8df19e443fffb860de6a3&redirect_uri=https://channel-duplicator.glitch.me/&response_type=code";
+  })
+
+
+}
+
+function login(){
+  //make this more complex later
+  console.log('successfully authenticated, get user data');
+  if(localStorage.getItem('userid')){
+    setDomUser()
+  }else{
+    var oReq = new XMLHttpRequest();
+        oReq.addEventListener("load", userDataCallback);
+        let fetchurl=`http://api.are.na/v2/users/${localStorage.getItem('user')}`;
+        oReq.open("GET", fetchurl);
+        oReq.send();
+
+    function userDataCallback(){
+      let jsonResponse=JSON.parse(this.responseText);
+      localStorage.setItem('avatar',jsonResponse.avatar);
+      localStorage.setItem('initials',jsonResponse.initials);
+      localStorage.setItem('username',jsonResponse.username);
+      localStorage.setItem('userid',jsonResponse.id);
+    }
+  }
+
+  function setDomUser(){
+    let avatar=localStorage.getItem('avatar');
+    let username=localStorage.getItem('username');
+    let initials=localStorage.getItem('initials');
+    userid=localStorage.getItem('userid');
+    d3.select('#account-stuff').classed('logged-in',true);
+    d3.select('#initials').text(initials);
+    d3.select('#account-stuff img').attr('src',avatar);
+    d3.select('#editor-username').text(username);
+    d3.select('#login-prompt').classed('show-on-click',true)
+
+  }
+
+
+}
+
+function validURL(str) {
+  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+  return !!pattern.test(str);
+}
+
+
+
+
+
+
+// log-in button
+// window should prompt you to enter arena profile link and hit login
+// login sends code request
+
+
+
 // screens-are-scary
 // interesting-shapes
 // good-personal-blogs
@@ -38,14 +183,16 @@ let newKeys=[];
 
 
 function startUp(){
-  postRequest(slug,'meta');
+  authentication();
+  checkSlug();
+  getRequest(slug,'meta');
   setUpButtons();
   textAreaHeights(true);
 }
 
 // api requests--------------
 
-function postRequest(slug,mode){
+function getRequest(slug,mode){
   function reqListener () {
     var jsonResponse=JSON.parse(this.responseText);
     switch(mode){
@@ -83,6 +230,11 @@ function postRequest(slug,mode){
 
 //fills in channel info on page
 function fillMeta(data){
+  console.log(data);
+  if(data.owner.id==userid){
+    d3.select('body').classed('edit-mode',true);
+    d3.select('#avatar-wrapper').select('use').attr('href','#pencil-icon');
+  }
   //add channel name to header
   document.querySelector('#channel-name').insertAdjacentHTML('beforeend',data.title);
   //add username to header
@@ -96,7 +248,9 @@ function fillMeta(data){
 
   //note to self:put a check here for errors in the future
   goby=JSON.parse(data.contents[0].content);
-  postRequest(slug,'contents');
+  gobyid=data.contents[0].id;
+  console.log('gobyid:',gobyid);
+  getRequest(slug,'contents');
 }
 
 // adds each newly received block to blocks and goby based on
@@ -206,6 +360,15 @@ function setUpButtons(){
     exitForm();
   })
 
+  d3.select('#login-prompt').on('click',function(){
+    d3.select('#pop-up').style('display','flex');
+  })
+
+  d3.select('#cancel-popup').on('click',function(){
+    d3.select('#pop-up').style('display','none');
+  })
+
+
   addNewSetUp();
 
 }
@@ -250,9 +413,9 @@ function textAreaOnInput(node) {
 function loadMore(entries){
   if(entries[0].isIntersecting){
     observer.unobserve(entries[0].target);
-    //I might add an event listener for scroll here that fires the postRequest
+    //I might add an event listener for scroll here that fires the getRequest
     // that way if the layout changes and the last block happens to come into view, the request won't fire until the scroll down for more stuff
-    postRequest(slug,'update');
+    getRequest(slug,'update');
   }
 }
 
@@ -434,6 +597,27 @@ function generateTag(string,input){
 }
 
 
+function putRequest(id,data){
+  var oReq = new XMLHttpRequest();
+  oReq.addEventListener("load", updateBlockCallback);
+
+  // build fetch:
+  let putTitle=data.title?`title=${encodeURIComponent(data.title)}&`:'';
+  let putDescription=data.description?`description=${encodeURIComponent(data.description)}&`:'';
+  let putContent=data.content?`content=${encodeURIComponent(data.content)}&`:'';
+  let fetchurl=`${proxy}http://api.are.na/v2/blocks/${id}?${putTitle}${putDescription}${putContent}access_token=${token}`;
+
+
+  oReq.open("PUT", fetchurl);
+  console.log('sending...')
+  oReq.send();
+
+  function updateBlockCallback(){
+    console.log('did it work?',this.responseText);
+  }
+}
+
+
 
 function checkForm(){
   let arenaBlock=blocks.find(a=>a.id==parseInt(formQs.dataset.editing));
@@ -453,7 +637,7 @@ function checkForm(){
     let refBlock=nodes[i].dataset.domain=='native'?arenaBlock:gobyBlock;
     let isNewField=section.classed('new-field');
     let somethingChanged=false;
-
+//
 
     if(nodes[i].dataset.type=='array'){
       //first find the tags with checked checkboxes and create an array of string values
@@ -500,7 +684,6 @@ function checkForm(){
       }
     }
 
-
     if(somethingChanged){
       switch(nodes[i].dataset.domain){
         case 'native':
@@ -514,8 +697,21 @@ function checkForm(){
 
   })
 
-  console.log(gobyChanged?"goby changed":"goby did not change");
-  console.log(arenaChanged?"arena native changed":"arena native did not change");
+
+  if(gobyChanged){
+    console.log('goby changed');
+    putRequest(gobyid,{content:JSON.stringify(goby)})
+  }
+  if(arenaChanged){
+    console.log('arena changed');
+    if(arenaBlock.class!=="Channel"){
+      putRequest(arenaBlock.id,{
+        title:arenaBlock.title,
+        description:arenaBlock.description
+      })
+    }
+    // putRequest(gobyid,{content:JSON.stringify(goby)})
+  }
 }
 
 
