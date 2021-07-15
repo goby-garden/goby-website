@@ -35,6 +35,7 @@ let blocks=[];
 // this stores the goby's special metadata for each block
 let goby;
 let gobyid;
+let ownerid;
 
 //this selects the channel that is fetched
 let slug;
@@ -117,8 +118,10 @@ function login(){
   //make this more complex later
   console.log('successfully authenticated, get user data');
   if(localStorage.getItem('userid')){
+    console.log('set dom user');
     setDomUser()
   }else{
+    console.log('made request for user')
     var oReq = new XMLHttpRequest();
         oReq.addEventListener("load", userDataCallback);
         let fetchurl=`https://api.are.na/v2/users/${localStorage.getItem('user')}`;
@@ -126,11 +129,13 @@ function login(){
         oReq.send();
 
     function userDataCallback(){
+      console.log('user returned')
       let jsonResponse=JSON.parse(this.responseText);
       localStorage.setItem('avatar',jsonResponse.avatar);
       localStorage.setItem('initials',jsonResponse.initials);
       localStorage.setItem('username',jsonResponse.username);
       localStorage.setItem('userid',jsonResponse.id);
+      setDomUser();
     }
   }
 
@@ -144,7 +149,11 @@ function login(){
     d3.select('#account-stuff img').attr('src',avatar);
     d3.select('#editor-username').text(username);
     d3.select('#login-prompt').classed('show-on-click',true)
-
+    console.log(userid,ownerid);
+    if(ownerid!==undefined && parseInt(ownerid)==userid){
+      d3.select('body').classed('edit-mode',true);
+      d3.select('#avatar-wrapper').select('use').attr('href','#pencil-icon');
+    }
   }
 
 
@@ -231,10 +240,12 @@ function getRequest(slug,mode){
 
 //fills in channel info on page
 function fillMeta(data){
-  if(data.owner.id==userid){
+  ownerid=data.owner.id;
+  if(ownerid==userid){
     d3.select('body').classed('edit-mode',true);
     d3.select('#avatar-wrapper').select('use').attr('href','#pencil-icon');
   }
+
   //add channel name to header
   document.querySelector('#channel-name').insertAdjacentHTML('beforeend',data.title);
   //add username to header
