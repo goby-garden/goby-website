@@ -101,7 +101,7 @@ function authentication(){
       let userSlug=profileString.match(slugRegex)[0].replace('/','');
       console.log(userSlug);
       localStorage.setItem('user',userSlug);
-      window.location.href = `http://dev.are.na/oauth/authorize?client_id=${apple}&redirect_uri=${redirect}&response_type=code`;
+      window.location.href = `https://dev.are.na/oauth/authorize?client_id=${apple}&redirect_uri=${redirect}&response_type=code`;
     }else{
       console.log('failed');
     }
@@ -121,7 +121,7 @@ function login(){
   }else{
     var oReq = new XMLHttpRequest();
         oReq.addEventListener("load", userDataCallback);
-        let fetchurl=`http://api.are.na/v2/users/${localStorage.getItem('user')}`;
+        let fetchurl=`https://api.are.na/v2/users/${localStorage.getItem('user')}`;
         oReq.open("GET", fetchurl);
         oReq.send();
 
@@ -255,7 +255,7 @@ function fillMeta(data){
   function getGobyAgain(id){
     var oReq = new XMLHttpRequest();
         oReq.addEventListener("load", gobyGot);
-        let fetchurl=`http://api.are.na/v2/blocks/${id}`;
+        let fetchurl=`https://api.are.na/v2/blocks/${id}`;
         oReq.open("GET", fetchurl);
         oReq.send();
 
