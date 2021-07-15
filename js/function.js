@@ -81,6 +81,7 @@ function authentication(){
         oReq.send();
 
     function accessTokenCallback(){
+      console.log(this.responseText);
       token=JSON.parse(this.responseText)["access_token"];
       localStorage.setItem('token',token);
       login();
