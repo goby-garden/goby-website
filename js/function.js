@@ -76,7 +76,7 @@ function authentication(){
   function getAccessToken(code){
     var oReq = new XMLHttpRequest();
         oReq.addEventListener("load", accessTokenCallback);
-        let fetchurl=`${proxy}/https://dev.are.na/oauth/token?client_id=${apple}&client_secret=${salsa}&code=${code}&grant_type=authorization_code&redirect_uri=${redirect}`;
+        let fetchurl=`${proxy}https://dev.are.na/oauth/token?client_id=${apple}&client_secret=${salsa}&code=${code}&grant_type=authorization_code&redirect_uri=${redirect}`;
         oReq.open("POST", fetchurl);
         oReq.send();
 
