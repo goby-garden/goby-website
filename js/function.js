@@ -616,13 +616,12 @@ function generateTag(string,input){
 function putRequest(id,data){
   var oReq = new XMLHttpRequest();
   oReq.addEventListener("load", updateBlockCallback);
-
   // build fetch:
-  let putTitle=data.title?`title=${encodeURIComponent(data.title)}&`:'';
-  let putDescription=data.description?`description=${encodeURIComponent(data.description)}&`:'';
-  let putContent=data.content?`content=${encodeURIComponent(data.content)}&`:'';
+  let putTitle=data.title!==undefined?`title=${encodeURIComponent(data.title)}&`:'';
+  let putDescription=data.description!==undefined?`description=${encodeURIComponent(data.description)}&`:'';
+  let putContent=data.content!==undefined?`content=${encodeURIComponent(data.content)}&`:'';
   let fetchurl=`${proxy}http://api.are.na/v2/blocks/${id}?${putTitle}${putDescription}${putContent}access_token=${token}`;
-
+  console.log(fetchurl);
 
   oReq.open("PUT", fetchurl);
   console.log('sending...')
