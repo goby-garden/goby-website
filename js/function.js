@@ -620,7 +620,7 @@ function putRequest(id,data){
   let putTitle=data.title!==undefined?`title=${encodeURIComponent(data.title)}&`:'';
   let putDescription=data.description!==undefined?`description=${encodeURIComponent(data.description)}&`:'';
   let putContent=data.content!==undefined?`content=${encodeURIComponent(data.content)}&`:'';
-  let fetchurl=`${proxy}http://api.are.na/v2/blocks/${id}?${putTitle}${putDescription}${putContent}access_token=${token}`;
+  let fetchurl=`${proxy}https://api.are.na/v2/blocks/${id}?${putTitle}${putDescription}${putContent}access_token=${token}`;
   console.log(fetchurl);
 
   oReq.open("PUT", fetchurl);
