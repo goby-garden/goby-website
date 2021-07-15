@@ -230,7 +230,6 @@ function getRequest(slug,mode){
 
 //fills in channel info on page
 function fillMeta(data){
-  console.log(data);
   if(data.owner.id==userid){
     d3.select('body').classed('edit-mode',true);
     d3.select('#avatar-wrapper').select('use').attr('href','#pencil-icon');
@@ -249,6 +248,23 @@ function fillMeta(data){
   //note to self:put a check here for errors in the future
   goby=JSON.parse(data.contents[0].content);
   gobyid=data.contents[0].id;
+  getGobyAgain(gobyid)
+
+  //caching issues with the API require me to make a second call to get goby
+  function getGobyAgain(id){
+    var oReq = new XMLHttpRequest();
+        oReq.addEventListener("load", gobyGot);
+        let fetchurl=`http://api.are.na/v2/blocks/${id}`;
+        oReq.open("GET", fetchurl);
+        oReq.send();
+
+    function gobyGot(){
+      console.log(JSON.parse(this.responseText));
+      goby=JSON.parse(JSON.parse(this.responseText).content);
+    }
+  }
+
+
   console.log('gobyid:',gobyid);
   getRequest(slug,'contents');
 }
