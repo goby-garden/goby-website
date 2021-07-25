@@ -1,0 +1,24 @@
+<div id="account-stuff">
+  <div id="avatar-wrapper">
+    <img src="" alt="" class="show-on-click">
+    <p id="initials"></p>
+    <svg class="inline">
+      <use href="#eye-icon"></use>
+    </svg>
+  </div>
+  <div id="login-info" class='show-on-click'>
+    <p id="editor-username"></p>
+  </div>
+
+  <button id="login-prompt" type="button" name="button">log in to edit</button>
+</div>
+<div id="pop-up">
+  <p>To edit goby channels, you'll need to give  read/write access through Are.na.</p>
+  <p>Enter your are.na profile URL and click 'log in' to be taken to an authentication page.</p>
+  <div class="flex-row">
+    <input id="profile-url" type="text" name="" value="" placeholder="https://are.na/<username slug>">
+    <button type="button" name="button" id="initiate-login">log in</button>
+  </div>
+  <p>None of your credentials will leave the app. See the source code <a href="https://github.com/nchilla/goby" target="_blank">here</a></p>
+  <p><button type="button" name="button" id="cancel-popup">&lt; Stay in view mode</button></p>
+</div>

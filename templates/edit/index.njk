@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;" charset="utf-8" >
+    <meta name="viewport" charset="UTF-8" content="width=device-width, initial-scale=1">
+    <title>Goby 0.5</title>
+    <!-- stylesheets -->
+    <link rel="stylesheet" href="../css/clearstyle.css">
+    <link rel="stylesheet" href="../css/edit.css">
+    <!-- external fonts -->
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet"> -->
+  </head>
+  <body class="">
+      <!-- <a href="http://dev.are.na/oauth/authorize?client_id=b7e90305232837caf2fd24598c3de3970819b57e2639574a652dffd4329afd19&redirect_uri=https://goby.glitch.me/?slug=test&response_type=code">Give Goby permission to read and write to Are.na</a> -->
+    <div class="grid">
+      <div id="title-bar">
+        <p>Are.na / <span id="username"></span> /</p>
+        <p class="emphasis">
+          <span id="channel-name" class="input-area">
+            <input type="text" name="channel-name" value="">
+          </span>
+        </p>
+      </div>
+
+      <div id="channel-meta">
+        <div class="info">
+          <h2>Info</h2>
+          <p id="channel-description" class="emphasis"></p>
+        </div>
+      </div>
+
+      <div id="item-meta">
+
+        <form action="" method="post">
+          <div id="submit-cancel" class='edit-only'>
+            <button type="button" id="edit-form" name="edit"><p>Edit <svg class="inline form-edit" width="24" height="22"><use href="#pencil-icon"></use></svg></p></button>
+            <button type="button" id="cancel-form" name="cancel"><p>Cancel</p></button>
+            <button id="submit-form" type="button" ><p>Submit</p></button>
+          </div>
+          <div id="scroll-wrapper">
+            <div id="arena-native" class="data-grouping">
+              <div class="form-section type-string" id="item-title" data-key="title" data-type="string" data-domain="native">
+                <label for="item-title" class=""><svg class="inline form-edit" width="24" height="22"><use href="#arena-icon"></use></svg>title:</label>
+                <p class="form-display"></p>
+                <input class="form-edit" tabindex="1" type="text" name="item-title" value="">
+              </div>
+              <div class="form-section type-par" id="item-desc" data-key="description" data-type="par" data-domain="native">
+                <label for="item-desc"><svg class="inline form-edit" width="24" height="22"><use href="#arena-icon"></use></svg>description:</label>
+                <p class="form-display"></p>
+                <textarea class="form-edit" tabindex="2" name="item-desc" ></textarea>
+              </div>
+            </div>
+            <div id="arena-goby" class="data-grouping">
+              <div class="bounding-box"></div>
+            </div>
+            <div id="add-new" class="data-grouping">
+              <div class="form-edit icon-stack">
+                <p class="choose-type">Add new:</p>
+                <button class="choose-type" type="button" data-type="string"><svg class="inline" width="24" height="22"><use href="#string-icon"></use></svg></button>
+                <button class="choose-type" type="button" data-type="url"><svg class="inline" width="24" height="22"><use href="#url-icon"></use></svg></button>
+                <button class="choose-type" type="button" data-type="par"><svg class="inline" width="24" height="22"><use href="#par-icon"></use></svg></button>
+                <button class="choose-type" type="button" data-type="array"><svg class="inline" width="24" height="22"><use href="#array-icon"></use></svg></button>
+                <p class="add-key">New field:</p>
+                <div class="add-key">
+                  <svg class="inline" >
+                    <use data-type="string" href="#string-icon"></use>
+                    <use data-type="url" href="#url-icon"></use>
+                    <use data-type="par" href="#par-icon"></use>
+                    <use data-type="array" href="#array-icon"></use>
+                  </svg>
+                </div>
+                <input class="add-key" type="text">
+                <button class="add-key plus-button" type="button" id="add-field">+</button>
+              </div>
+              <button class="back-to-select" type="button">&lt; choose different type</button>
+            </div>
+          </div>
+
+        </form>
+        <div id="close-item">
+          <svg>
+            <line class="line" x1="0%" x2="100%" y1="0%" y2="100%"></line><line class="line" x1="100%" x2="0%" y1="0%" y2="100%"></line>
+          </svg>
+        </div>
+      </div>
+      <div id="channel-feed" class="blockmode">
+      </div>
+      <div id="top-bar">
+        <div id="control-strip">
+          <div id="filtering">
+
+          </div>
+        </div>
+      </div>
+    </div>
+    {% include 'login.html' %}
+    {% include 'icons.html' %}
+
+
+    <script src="../js/marked.min.js" defer></script>
+    <script src="../js/d3.min.js" defer></script>
+    <!-- <script src="js/lodash.js"></script> -->
+    <script src="../js/global.js" charset="utf-8" defer></script>
+    <script src="../js/edit.js" charset="utf-8" defer></script>
+  </body>
+</html>

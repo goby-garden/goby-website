@@ -4,9 +4,7 @@
   "description": "A web app that will enrich Are.na channels with more complex ontology-building tools",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rollup --config",
-    "start": "npx nodemon server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -18,6 +16,8 @@
     "url": "https://github.com/nchilla/goby/issues"
   },
   "homepage": "https://github.com/nchilla/goby#readme",
-  "devDependencies": {},
+  "devDependencies": {
+    "@11ty/eleventy": "^0.12.1"
+  },
   "dependencies": {}
 }

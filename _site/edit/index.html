@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;" charset="utf-8" >
+    <meta name="viewport" charset="UTF-8" content="width=device-width, initial-scale=1">
+    <title>Goby 0.5</title>
+    <!-- stylesheets -->
+    <link rel="stylesheet" href="../css/clearstyle.css">
+    <link rel="stylesheet" href="../css/edit.css">
+    <!-- external fonts -->
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet"> -->
+  </head>
+  <body class="">
+      <!-- <a href="http://dev.are.na/oauth/authorize?client_id=b7e90305232837caf2fd24598c3de3970819b57e2639574a652dffd4329afd19&redirect_uri=https://goby.glitch.me/?slug=test&response_type=code">Give Goby permission to read and write to Are.na</a> -->
+    <div class="grid">
+      <div id="title-bar">
+        <p>Are.na / <span id="username"></span> /</p>
+        <p class="emphasis">
+          <span id="channel-name" class="input-area">
+            <input type="text" name="channel-name" value="">
+          </span>
+        </p>
+      </div>
+
+      <div id="channel-meta">
+        <div class="info">
+          <h2>Info</h2>
+          <p id="channel-description" class="emphasis"></p>
+        </div>
+      </div>
+
+      <div id="item-meta">
+
+        <form action="" method="post">
+          <div id="submit-cancel" class='edit-only'>
+            <button type="button" id="edit-form" name="edit"><p>Edit <svg class="inline form-edit" width="24" height="22"><use href="#pencil-icon"></use></svg></p></button>
+            <button type="button" id="cancel-form" name="cancel"><p>Cancel</p></button>
+            <button id="submit-form" type="button" ><p>Submit</p></button>
+          </div>
+          <div id="scroll-wrapper">
+            <div id="arena-native" class="data-grouping">
+              <div class="form-section type-string" id="item-title" data-key="title" data-type="string" data-domain="native">
+                <label for="item-title" class=""><svg class="inline form-edit" width="24" height="22"><use href="#arena-icon"></use></svg>title:</label>
+                <p class="form-display"></p>
+                <input class="form-edit" tabindex="1" type="text" name="item-title" value="">
+              </div>
+              <div class="form-section type-par" id="item-desc" data-key="description" data-type="par" data-domain="native">
+                <label for="item-desc"><svg class="inline form-edit" width="24" height="22"><use href="#arena-icon"></use></svg>description:</label>
+                <p class="form-display"></p>
+                <textarea class="form-edit" tabindex="2" name="item-desc" ></textarea>
+              </div>
+            </div>
+            <div id="arena-goby" class="data-grouping">
+              <div class="bounding-box"></div>
+            </div>
+            <div id="add-new" class="data-grouping">
+              <div class="form-edit icon-stack">
+                <p class="choose-type">Add new:</p>
+                <button class="choose-type" type="button" data-type="string"><svg class="inline" width="24" height="22"><use href="#string-icon"></use></svg></button>
+                <button class="choose-type" type="button" data-type="url"><svg class="inline" width="24" height="22"><use href="#url-icon"></use></svg></button>
+                <button class="choose-type" type="button" data-type="par"><svg class="inline" width="24" height="22"><use href="#par-icon"></use></svg></button>
+                <button class="choose-type" type="button" data-type="array"><svg class="inline" width="24" height="22"><use href="#array-icon"></use></svg></button>
+                <p class="add-key">New field:</p>
+                <div class="add-key">
+                  <svg class="inline" >
+                    <use data-type="string" href="#string-icon"></use>
+                    <use data-type="url" href="#url-icon"></use>
+                    <use data-type="par" href="#par-icon"></use>
+                    <use data-type="array" href="#array-icon"></use>
+                  </svg>
+                </div>
+                <input class="add-key" type="text">
+                <button class="add-key plus-button" type="button" id="add-field">+</button>
+              </div>
+              <button class="back-to-select" type="button">&lt; choose different type</button>
+            </div>
+          </div>
+
+        </form>
+        <div id="close-item">
+          <svg>
+            <line class="line" x1="0%" x2="100%" y1="0%" y2="100%"></line><line class="line" x1="100%" x2="0%" y1="0%" y2="100%"></line>
+          </svg>
+        </div>
+      </div>
+      <div id="channel-feed" class="blockmode">
+      </div>
+      <div id="top-bar">
+        <div id="control-strip">
+          <div id="filtering">
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="account-stuff">
+  <div id="avatar-wrapper">
+    <img src="" alt="" class="show-on-click">
+    <p id="initials"></p>
+    <svg class="inline">
+      <use href="#eye-icon"></use>
+    </svg>
+  </div>
+  <div id="login-info" class='show-on-click'>
+    <p id="editor-username"></p>
+  </div>
+
+  <button id="login-prompt" type="button" name="button">log in to edit</button>
+</div>
+<div id="pop-up">
+  <p>To edit goby channels, you'll need to give  read/write access through Are.na.</p>
+  <p>Enter your are.na profile URL and click 'log in' to be taken to an authentication page.</p>
+  <div class="flex-row">
+    <input id="profile-url" type="text" name="" value="" placeholder="https://are.na/<username slug>">
+    <button type="button" name="button" id="initiate-login">log in</button>
+  </div>
+  <p>None of your credentials will leave the app. See the source code <a href="https://github.com/nchilla/goby" target="_blank">here</a></p>
+  <p><button type="button" name="button" id="cancel-popup">&lt; Stay in view mode</button></p>
+</div>
+
+    <svg class="hide" xmlns="http://www.w3.org/2000/svg" width="13.846" height="10.581" viewBox="0 0 13.846 10.581">
+  <path id="fields-icon" data-name="Path 8" d="M741.161,144.035l2.244,9.971h8.469l2.157-9.971" transform="translate(-740.673 -143.925)" fill="none" stroke="#000" stroke-width="1"/>
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23.75737 22.34781" class="hide">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+
+      .cls-2, .cls-3 {
+        fill: none;
+        stroke-linecap: round;
+      }
+
+      .cls-3 {
+        stroke-miterlimit: 10;
+      }
+
+      /* .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6 {
+        stroke: #000;
+      } */
+
+      /* new */
+      .cls-3, .cls-4, .cls-5, .cls-6 {
+        fill: none;
+      }
+      .cls-3, .cls-4, .cls-6 {
+        stroke-linecap: round;
+      }
+
+      .cls-4 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-6 {
+        stroke-linejoin: round;
+      }
+    </style>
+  </defs>
+  <g id="array-icon">
+    <circle class="cls-1" cx="7.13686" cy="9.13686" r="6"/>
+    <circle class="cls-1" cx="16.13686" cy="7.13686" r="6"/>
+    <circle class="cls-1" cx="13.13686" cy="15.13686" r="6"/>
+  </g>
+  <g id="par-icon">
+    <path id="Path_50" data-name="Path 50" class="cls-3" d="M11.24644,19.02436V2.55618"/>
+    <path id="Path_50-2" data-name="Path 50" class="cls-3" d="M14.824,19.02436V2.55618"/>
+    <path class="cls-3" d="M10.21792,2.55618H14.824a0,0,0,0,1,0,0v9.21221a0,0,0,0,1,0,0H10.21792a4.6061,4.6061,0,0,1-4.6061-4.6061v0a4.6061,4.6061,0,0,1,4.6061-4.6061Z"/>
+<!--         <path id="Path_31" data-name="Path 31" class="cls-2" d="M2.29885,8.52637h19.251"/>
+    <path id="Path_41" data-name="Path 41" class="cls-2" d="M2.42873,4.19437h19.251"/>
+    <path id="Path_32" data-name="Path 32" class="cls-2" d="M2.29885,12.85737h19.251"/>
+    <path id="Path_33" data-name="Path 33" class="cls-2" d="M2.29885,17.18937h10.946"/> -->
+  </g>
+  <g id="string-icon">
+    <path id="Path_50" data-name="Path 50" class="cls-3" d="M12.08735,19.02436V2.55618"/>
+    <path id="Path_51" data-name="Path 51" class="cls-3" d="M5.54535,2.55618h12.758"/>
+  </g>
+  <g id="url-icon">
+    <path id="Path_39" data-name="Path 39" class="cls-3" d="M10.37375,12.73729c-1.494-1.494-.7-4.711,1.773-7.185s5.691-3.268,7.185-1.773.7,4.711-1.773,7.185"/>
+    <path id="Path_40" data-name="Path 40" class="cls-3" d="M13.80091,9.31132c1.494,1.494.7,4.711-1.773,7.185s-5.691,3.268-7.185,1.773-.7-4.711,1.774-7.185"/>
+  </g>
+  <g id="arena-icon">
+    <path d="M21.832,13.99329l-2.8139-2.21149a.29882.29882,0,0,1,0-.492l2.814-2.211a.42492.42492,0,0,0,.16063-.50752.43461.43461,0,0,0-.52372-.11338L18.12291,9.79072a.29839.29839,0,0,1-.42559-.247l-.5032-3.57222a.36394.36394,0,1,0-.72525-.00013L15.9654,9.54385a.29874.29874,0,0,1-.42586.247L12.24876,8.48021a1.15389,1.15389,0,0,0-.74009,0L8.21734,9.79086a.2986.2986,0,0,1-.42573-.247L7.28882,5.97136a.43.43,0,0,0-.36256-.39482.42911.42911,0,0,0-.36282.39482L6.06,9.54385a.29849.29849,0,0,1-.42559.247l-3.346-1.33252a.43374.43374,0,0,0-.52344.11312.425.425,0,0,0,.15981.50752l2.81431,2.211a.29883.29883,0,0,1,0,.49214L1.92475,13.99329a.46009.46009,0,0,0-.16008.53776.4189.4189,0,0,0,.52331.14362L5.604,13.343a.29477.29477,0,0,1,.42181.24675l.47836,3.6034a.422.422,0,0,0,.84227,0l.47918-3.6034A.29472.29472,0,0,1,8.247,13.343l3.26164,1.309a1.1442,1.1442,0,0,0,.73927,0l3.2611-1.309a.29508.29508,0,0,1,.42181.24674l.47917,3.6034a.42167.42167,0,0,0,.8416,0l.47917-3.6034a.29508.29508,0,0,1,.42168-.24675l3.31643,1.33171a.41919.41919,0,0,0,.52318-.14349.45936.45936,0,0,0-.16-.53748Zm-7.15928-2.18342L12.19449,13.7178a.54653.54653,0,0,1-.63089,0l-2.479-1.90793a.29587.29587,0,0,1-.0027-.4893l2.48361-1.95625a.53239.53239,0,0,1,.626,0l2.48362,1.95625a.29562.29562,0,0,1-.0027.48944Z"/>
+  </g>
+  <g id="eye-icon">
+    <circle cx="11.87869" cy="11.1739" r="4.62281"/>
+    <path class="cls-5" d="M11.87869,5.1739c5.96465,0,10.8,6,10.8,6s-4.83531,6-10.8,6-10.8-6-10.8-6S5.914,5.1739,11.87869,5.1739Z"/>
+  </g>
+  <g id="pencil-icon" data-name="Layer 7">
+    <g>
+      <rect class="cls-6" x="6.03436" y="2.17355" width="6.84705" height="15.19864" transform="translate(-4.14031 9.55014) rotate(-45)"/>
+      <rect class="cls-6" x="1.58331" y="4.01723" width="6.84705" height="2.60916" transform="translate(-2.29662 5.09909) rotate(-45)"/>
+      <polygon class="cls-6" points="17.252 12.726 12.411 17.567 19.673 19.988 17.252 12.726"/>
+      <polygon points="18.463 16.357 16.042 18.778 19.673 19.988 18.463 16.357"/>
+    </g>
+  </g>
+</svg>
+
+<svg class="hide" xmlns="http://www.w3.org/2000/svg" width="14" height="13" viewBox="0 0 14 13">
+  <g id="tags-icon" data-name="Group 2" transform="translate(-483 -66)">
+    <g id="Ellipse_2" data-name="Ellipse 2" transform="translate(483 67)" fill="#e5e5e5" stroke="#000" stroke-width="1">
+      <circle cx="4" cy="4" r="4" stroke="none"/>
+      <circle cx="4" cy="4" r="3.5" fill="none"/>
+    </g>
+    <g id="Ellipse_3" data-name="Ellipse 3" transform="translate(489 66)" fill="#fff" stroke="#000" stroke-width="1">
+      <circle cx="4" cy="4" r="4" stroke="none"/>
+      <circle cx="4" cy="4" r="3.5" fill="none"/>
+    </g>
+    <g id="Ellipse_1" data-name="Ellipse 1" transform="translate(487 71)" fill="#e5e5e5" stroke="#000" stroke-width="1">
+      <circle cx="4" cy="4" r="4" stroke="none"/>
+      <circle cx="4" cy="4" r="3.5" fill="none"/>
+    </g>
+  </g>
+</svg>
+
+
+
+    <script src="../js/marked.min.js" defer></script>
+    <script src="../js/d3.min.js" defer></script>
+    <!-- <script src="js/lodash.js"></script> -->
+    <script src="../js/global.js" charset="utf-8" defer></script>
+    <script src="../js/edit.js" charset="utf-8" defer></script>
+  </body>
+</html>
