@@ -1,7 +1,7 @@
 let slugRegex=/\/(?:.(?!\/))+$/g;
 const redirect = window.location.hostname === "localhost"
-  ? "http://localhost:8000/"
-  : "https://goby.garden";
+  ? "http://localhost:8000/edit/"
+  : "https://goby.garden/edit/";
 
 const proxy = window.location.hostname === "localhost"
   ? "https://wnsr-cors.herokuapp.com/"
@@ -15,44 +15,9 @@ let userid;
 
 
 function authentication(){
-  return new Promise((resolve, reject) => {
-    let apple='b7e90305232837caf2fd24598c3de3970819b57e2639574a652dffd4329afd19';
-    let salsa='0f72500f45894e3e3b20dd035fa5fb942db18aa2bd2f0cca563193840a732aed';
-    if(localStorage.getItem('token')){
-      token=localStorage.getItem('token');
-      login().then(resolve);
-    }else{
-      var queryString=new URLSearchParams(window.location.search);
-      if(queryString.get('code')){
-        let code=queryString.get('code');
-        getAccessToken(code).then(resolve);
-      }
-    }
-
-  });
-
-
-
-
-
-
-
-  // change for netlify proxy
-  function getAccessToken(code){
-    return new Promise((resolve, reject) => {
-      getRequest([apple,salsa,code,redirect],'token').then(value=>{
-        token=value["access_token"];
-        localStorage.setItem('token',token);
-        login().then(resolve);
-      })
-    });
-  }
-
-  //check if there's a token in local storage
-  // Y? procede logged-in
-  // N ? check if there's a code in local storage or the url params
-  // Y? do request to get token, including slug and user id and procede logged-in
-  // N? procede without log-in
+  var queryString=new URLSearchParams(window.location.search);
+  let apple='b7e90305232837caf2fd24598c3de3970819b57e2639574a652dffd4329afd19';
+  let salsa='0f72500f45894e3e3b20dd035fa5fb942db18aa2bd2f0cca563193840a732aed';
   d3.select('#initiate-login').on('click',function(){
     console.log('clicked');
     let profileString=document.querySelector('#profile-url').value;
@@ -69,7 +34,40 @@ function authentication(){
     // redirect
     // "http://dev.are.na/oauth/authorize?client_id=a05374c81efe233cb167bf381902d931210d6c737ce8df19e443fffb860de6a3&redirect_uri=https://channel-duplicator.glitch.me/&response_type=code";
   })
+  return new Promise((resolve, reject) => {
+    if(localStorage.getItem('token')){
+      token=localStorage.getItem('token');
+      login().then(resolve);
+    }else if(queryString.get('code')){
+      let code=queryString.get('code');
+      getAccessToken(code).then(resolve);
+    }else{
+      resolve();
+    }
+  });
 
+  // change for netlify proxy
+  function getAccessToken(code){
+    return new Promise((resolve, reject) => {
+      var oReq = new XMLHttpRequest();
+         oReq.addEventListener("load", accessTokenCallback);
+         let fetchurl=`${proxy}https://dev.are.na/oauth/token?client_id=${apple}&client_secret=${salsa}&code=${code}&grant_type=authorization_code&redirect_uri=${redirect}`;
+         oReq.open("POST", fetchurl);
+         oReq.send();
+
+     function accessTokenCallback(){
+       token=JSON.parse(this.responseText)["access_token"];
+       localStorage.setItem('token',token);
+       login().then(resolve);
+     }
+    });
+  }
+
+  //check if there's a token in local storage
+  // Y? procede logged-in
+  // N ? check if there's a code in local storage or the url params
+  // Y? do request to get token, including slug and user id and procede logged-in
+  // N? procede without log-in
 
 }
 
@@ -134,7 +132,6 @@ function validURL(str) {
 
 
 function getRequest(specialData,mode){
-  console.log(specialData,mode);
   return new Promise((resolve, reject) => {
     function reqListener () {
       var jsonResponse=JSON.parse(this.responseText);
@@ -148,8 +145,6 @@ function getRequest(specialData,mode){
       fetchurl=`https://api.are.na/v2/channels/${specialData}?page=1&per=1`;
     }else if(mode=='block'){
       fetchurl=`https://api.are.na/v2/blocks/${specialData}`;
-    }else if(mode=='token'){
-      fetchurl=`${proxy}https://dev.are.na/oauth/token?client_id=${specialData[0]}&client_secret=${specialData[1]}&code=${specialData[2]}&grant_type=authorization_code&redirect_uri=${specialData[3]}`;
     }else if(mode=='user'){
       fetchurl=`https://api.are.na/v2/users/${specialData}`;
     }else{
