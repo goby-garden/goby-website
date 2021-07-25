@@ -1,37 +1,51 @@
+let slugRegex=/\/(?:.(?!\/))+$/g;
+const redirect = window.location.hostname === "localhost"
+  ? "http://localhost:8000/"
+  : "https://goby.garden";
+
+const proxy = window.location.hostname === "localhost"
+  ? "https://wnsr-cors.herokuapp.com/"
+  : "https://wnsr-cors.herokuapp.com/";
+
+
+
 //auth stuff
 let token;
+let userid;
 
 
 function authentication(){
-  let apple='b7e90305232837caf2fd24598c3de3970819b57e2639574a652dffd4329afd19';
-  let salsa='0f72500f45894e3e3b20dd035fa5fb942db18aa2bd2f0cca563193840a732aed';
-
-  if(localStorage.getItem('token')){
-    token=localStorage.getItem('token');
-    login();
-  }else{
-    var queryString=new URLSearchParams(window.location.search);
-    if(queryString.get('code')){
-      let code=queryString.get('code');
-      getAccessToken(code);
+  return new Promise((resolve, reject) => {
+    let apple='b7e90305232837caf2fd24598c3de3970819b57e2639574a652dffd4329afd19';
+    let salsa='0f72500f45894e3e3b20dd035fa5fb942db18aa2bd2f0cca563193840a732aed';
+    if(localStorage.getItem('token')){
+      token=localStorage.getItem('token');
+      login().then(resolve);
+    }else{
+      var queryString=new URLSearchParams(window.location.search);
+      if(queryString.get('code')){
+        let code=queryString.get('code');
+        getAccessToken(code).then(resolve);
+      }
     }
-  }
+
+  });
+
+
+
+
+
 
 
   // change for netlify proxy
   function getAccessToken(code){
-    var oReq = new XMLHttpRequest();
-        oReq.addEventListener("load", accessTokenCallback);
-        let fetchurl=`${proxy}https://dev.are.na/oauth/token?client_id=${apple}&client_secret=${salsa}&code=${code}&grant_type=authorization_code&redirect_uri=${redirect}`;
-        oReq.open("POST", fetchurl);
-        oReq.send();
-
-    function accessTokenCallback(){
-      console.log(this.responseText);
-      token=JSON.parse(this.responseText)["access_token"];
-      localStorage.setItem('token',token);
-      login();
-    }
+    return new Promise((resolve, reject) => {
+      getRequest([apple,salsa,code,redirect],'token').then(value=>{
+        token=value["access_token"];
+        localStorage.setItem('token',token);
+        login().then(resolve);
+      })
+    });
   }
 
   //check if there's a token in local storage
@@ -61,45 +75,49 @@ function authentication(){
 
 
 function login(){
+  return new Promise((resolve, reject) => {
+    console.log('successfully authenticated, get user data');
+    if(localStorage.getItem('userid')){
+      console.log('set dom user');
+      setDomUser()
+      resolve();
+    }else{
+      console.log('made request for user')
+      getRequest(localStorage.getItem('user'),'user').then(value=>{
+        console.log('user returned');
+        let jsonResponse=value;
+        localStorage.setItem('avatar',jsonResponse.avatar);
+        localStorage.setItem('initials',jsonResponse.initials);
+        localStorage.setItem('username',jsonResponse.username);
+        localStorage.setItem('userid',jsonResponse.id);
+        setDomUser();
+        resolve();
+      });
+    }
+  });
+
+
+
   //make this more complex later
-  console.log('successfully authenticated, get user data');
-  if(localStorage.getItem('userid')){
-    console.log('set dom user');
-    setDomUser()
-  }else{
-    console.log('made request for user')
-    var oReq = new XMLHttpRequest();
-        oReq.addEventListener("load", userDataCallback);
-        let fetchurl=`https://api.are.na/v2/users/${localStorage.getItem('user')}`;
-        oReq.open("GET", fetchurl);
-        oReq.send();
 
-    function userDataCallback(){
-      console.log('user returned')
-      let jsonResponse=JSON.parse(this.responseText);
-      localStorage.setItem('avatar',jsonResponse.avatar);
-      localStorage.setItem('initials',jsonResponse.initials);
-      localStorage.setItem('username',jsonResponse.username);
-      localStorage.setItem('userid',jsonResponse.id);
-      setDomUser();
-    }
-  }
 
-  function setDomUser(){
-    let avatar=localStorage.getItem('avatar');
-    let username=localStorage.getItem('username');
-    let initials=localStorage.getItem('initials');
-    userid=localStorage.getItem('userid');
-    d3.select('#account-stuff').classed('logged-in',true);
-    d3.select('#initials').text(initials);
-    d3.select('#account-stuff img').attr('src',avatar);
-    d3.select('#editor-username').text(username);
-    d3.select('#login-prompt').classed('show-on-click',true)
-    console.log(userid,ownerid);
-    if(ownerid!==undefined && parseInt(ownerid)==userid){
-      d3.select('body').classed('edit-mode',true);
-      d3.select('#avatar-wrapper').select('use').attr('href','#pencil-icon');
-    }
+}
+
+
+
+function setDomUser(){
+  let avatar=localStorage.getItem('avatar');
+  let username=localStorage.getItem('username');
+  let initials=localStorage.getItem('initials');
+  userid=localStorage.getItem('userid');
+  d3.select('#account-stuff').classed('logged-in',true);
+  d3.select('#initials').text(initials);
+  d3.select('#account-stuff img').attr('src',avatar);
+  d3.select('#editor-username').text(username);
+  d3.select('#login-prompt').classed('show-on-click',true);
+  if(ownerid!==undefined && parseInt(ownerid)==userid){
+    d3.select('body').classed('edit-mode',true);
+    d3.select('#avatar-wrapper').select('use').attr('href','#pencil-icon');
   }
 }
 
@@ -112,4 +130,37 @@ function validURL(str) {
     '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
     '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
   return !!pattern.test(str);
+}
+
+
+function getRequest(specialData,mode){
+  console.log(specialData,mode);
+  return new Promise((resolve, reject) => {
+    function reqListener () {
+      var jsonResponse=JSON.parse(this.responseText);
+      resolve(jsonResponse);
+    }
+    var oReq = new XMLHttpRequest();
+    oReq.addEventListener("load", reqListener);
+    let fetchurl;
+
+    if(mode=='meta'){
+      fetchurl=`https://api.are.na/v2/channels/${specialData}?page=1&per=1`;
+    }else if(mode=='block'){
+      fetchurl=`https://api.are.na/v2/blocks/${specialData}`;
+    }else if(mode=='token'){
+      fetchurl=`${proxy}https://dev.are.na/oauth/token?client_id=${specialData[0]}&client_secret=${specialData[1]}&code=${specialData[2]}&grant_type=authorization_code&redirect_uri=${specialData[3]}`;
+    }else if(mode=='user'){
+      fetchurl=`https://api.are.na/v2/users/${specialData}`;
+    }else{
+      // specialData=[slug,currentPage,per]
+      fetchurl=`https://api.are.na/v2/channels/${specialData[0]}/contents?sort=position&direction=desc&page=${specialData[1]}&per=${specialData[2]}`;
+      //replace this in callback:
+      // currentPage++;
+    }
+
+    oReq.open("GET", fetchurl);
+    oReq.send();
+
+  });
 }

@@ -14,18 +14,11 @@ let currentPage=1;
 let per=10;
 let chanLength;
 
-let userid;
 
 
 
-let slugRegex=/\/(?:.(?!\/))+$/g;
-const redirect = window.location.hostname === "localhost"
-  ? "http://localhost:8000/"
-  : "https://goby.garden";
 
-  const proxy = window.location.hostname === "localhost"
-    ? "https://wnsr-cors.herokuapp.com/"
-    : "https://wnsr-cors.herokuapp.com/";
+
 
 // this stores all the individual block data fetched from arena
 let blocks=[];
@@ -78,75 +71,47 @@ let newKeys=[];
 
 
 function startUp(){
-  authentication();
+  // authentication();
   checkSlug();
-  oldGetRequest(slug,'meta');
+  initRequests();
   setUpButtons();
   textAreaHeights(true);
 }
 
 // api requests--------------
 
-function oldGetRequest(slug,mode){
-  function reqListener () {
-    var jsonResponse=JSON.parse(this.responseText);
-    switch(mode){
-      case 'contents':
-      handleNewData(jsonResponse.contents);
-      break;
-      case 'meta':
-      fillMeta(jsonResponse);
-      break;
-      case 'update':
-      handleNewData(jsonResponse.contents);
-      // channelContents=channelContents.concat(jsonResponse.contents);
-      break;
-    }
 
+
+
+async function initRequests(){
+  // wait for authentication
+  await authentication();
+  // then wait for meta
+  let metadata=await getRequest(slug,'meta');
+  ownerid=metadata.owner.id;
+  // then make decisions about whether goby is initiated and whether to do edit mode
+  if(metadata.contents[0].content.title!=='goby.json'){
+    //send user to build page with channel as prompt
   }
+  if(ownerid==userid){
+    d3.select('body').classed('edit-mode',true);
+    d3.select('#avatar-wrapper').select('use').attr('href','#pencil-icon');
+  }
+  fillMeta(metadata);
+  goby=JSON.parse(metadata.contents[0].content);
+  gobyid=metadata.contents[0].id;
+  // then re-request goby.json because caching is sadness
 
-  var oReq = new XMLHttpRequest();
-  oReq.addEventListener("load", reqListener);
+  let gobyReq=getRequest(gobyid,'block');
+  let contentsReq=getRequest([slug,currentPage,per],'contents');
 
-  let fetchurl;
-
-  if(mode=='meta'){
-    fetchurl=`https://api.are.na/v2/channels/${slug}?page=1&per=1`;
-  }else{
-    fetchurl=`https://api.are.na/v2/channels/${slug}/contents?sort=position&direction=desc&page=${currentPage}&per=${per}`;
+  Promise.all([gobyReq,contentsReq]).then((values) => {
+    goby=JSON.parse(values[0].content);
+    handleNewData(values[1].contents);
     currentPage++;
-  }
-  oReq.open("GET", fetchurl);
-  oReq.send();
-}
+  });
 
 
-function getRequest(slug,mode){
-  function reqListener () {
-    var jsonResponse=JSON.parse(this.responseText);
-    return jsonResponse;
-  }
-
-  var oReq = new XMLHttpRequest();
-  oReq.addEventListener("load", reqListener);
-
-  let fetchurl;
-
-  if(mode=='meta'){
-    fetchurl=`https://api.are.na/v2/channels/${slug}?page=1&per=1`;
-  }else{
-    fetchurl=`https://api.are.na/v2/channels/${slug}/contents?sort=position&direction=desc&page=${currentPage}&per=${per}`;
-    currentPage++;
-  }
-  oReq.open("GET", fetchurl);
-  oReq.send();
-}
-
-
-function initRequests(){
-  //it gets the meta first and sets stuff up in fillMeta
-  //fillMeta then calls getContents, which processes the channel through goby
-  //handlenewdata is called when there's new data
 }
 
 
@@ -155,11 +120,6 @@ function initRequests(){
 
 //fills in channel info on page
 function fillMeta(data){
-  ownerid=data.owner.id;
-  if(ownerid==userid){
-    d3.select('body').classed('edit-mode',true);
-    d3.select('#avatar-wrapper').select('use').attr('href','#pencil-icon');
-  }
 
   //add channel name to header
   document.querySelector('#channel-name').insertAdjacentHTML('beforeend',data.title);
@@ -173,28 +133,24 @@ function fillMeta(data){
   chanLength=data.length;
 
   //note to self:put a check here for errors in the future
-  goby=JSON.parse(data.contents[0].content);
-  gobyid=data.contents[0].id;
-  getGobyAgain(gobyid)
-
-  //caching issues with the API require me to make a second call to get goby
-  function getGobyAgain(id){
-    var oReq = new XMLHttpRequest();
-        oReq.addEventListener("load", gobyGot);
-        let fetchurl=`https://api.are.na/v2/blocks/${id}`;
-        oReq.open("GET", fetchurl);
-        oReq.send();
-
-    function gobyGot(){
-      console.log(JSON.parse(this.responseText));
-      goby=JSON.parse(JSON.parse(this.responseText).content);
-    }
-  }
 
 
-  console.log('gobyid:',gobyid);
-  oldGetRequest(slug,'contents');
 }
+
+// function getGobyAgain(id){
+//   var oReq = new XMLHttpRequest();
+//       oReq.addEventListener("load", gobyGot);
+//       let fetchurl=`https://api.are.na/v2/blocks/${id}`;
+//       oReq.open("GET", fetchurl);
+//       oReq.send();
+//
+//   function gobyGot(){
+//     console.log(JSON.parse(this.responseText));
+//     goby=JSON.parse(JSON.parse(this.responseText).content);
+//   }
+// }
+
+
 
 // adds each newly received block to blocks and goby based on
 function handleNewData(contents){
@@ -353,12 +309,14 @@ function textAreaOnInput(node) {
 
 
 // this requests more blocks when someone scrolls down enough
-function loadMore(entries){
+async function loadMore(entries){
   if(entries[0].isIntersecting){
     observer.unobserve(entries[0].target);
-    //I might add an event listener for scroll here that fires the oldGetRequest
+    //I might add an event listener for scroll here that fires the getRequest
     // that way if the layout changes and the last block happens to come into view, the request won't fire until the scroll down for more stuff
-    oldGetRequest(slug,'update');
+    let newData=await getRequest([slug,currentPage,per],'contents');
+    handleNewData(newData.contents);
+    currentPage++;
   }
 }
 
