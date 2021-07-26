@@ -1,10 +1,41 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-    <meta charset="utf-8">
-    <title></title>
+    <meta http-equiv="Content-Type" content="text/html;" charset="utf-8" >
+    <meta name="viewport" charset="UTF-8" content="width=device-width, initial-scale=1">
+    <title>Goby</title>
+    <link rel="stylesheet" href="css/clearstyle.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/home.css">
   </head>
   <body>
-    <p>This page will be built out later on, but for now it'll just have an input that lets you see whether a channel has goby set up, and sends you to the appropriate page from there</p>
+    <!-- <p>This page will be built out later on, but for now it'll just have an input that lets you see whether a channel has goby set up, and sends you to the appropriate page from there</p> -->
+
+    <article class="prose centered">
+      <h1 >Are.na + Goby</h1>
+      <h2>Enter a channel URL to get started:</h2>
+      <div class="flex-row input-url" id="channel-search">
+        <input type="text" name="" value="" placeholder="https://are.na/<username-slug>/<channel-slug>">
+        <button type="button" name="button" id="initiate-search">Go</button>
+      </div>
+      <!-- <h2>About Goby</h2> -->
+      <p>Hi, thanks for stopping by!</p>
+      <p>Goby is a tool for enriching <a href="are.na" target="_blank">Are.na</a> channels with custom metadata.</p>
+      <p>It lets you add/organize new fields for your blocks with different types of information:</p>
+      <ul>
+        <li><svg class="inline form-edit" width="24" height="22"><use href="#string-icon"></svg> Short text strings</li>
+        <li><svg class="inline form-edit" width="24" height="22"><use href="#par-icon"></svg> Longform text w/ markdown</li>
+        <li><svg class="inline form-edit" width="24" height="22"><use href="#url-icon"></svg> URLs</li>
+        <li><svg class="inline form-edit" width="24" height="22"><use href="#array-icon"></svg> Tags</li>
+      </ul>
+      <p>I'll eventually explain in more detail here, but for now you can check out <a href="https://www.are.na/nico-chilla/approaching-goby-u9rrzm6iqee">this channel</a> to learn more about the project, and the <a href="https://github.com/nchilla/goby">github repo</a> is located here.</p>
+      <p>— Nico <a target="_blank" href="https://www.are.na/nico-chilla/"><svg class="inline form-edit" width="24" height="22"><use href="#arena-icon"></svg></a></p>
+    </article>
+    {% include 'login.html' %}
+    {% include 'icons.html' %}
+
+    <script src="../js/d3.min.js" defer></script>
+    <script src="js/global.js" charset="utf-8" defer></script>
+    <script src="js/home.js" charset="utf-8" defer></script>
   </body>
 </html>

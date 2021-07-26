@@ -12,28 +12,14 @@ const proxy = window.location.hostname === "localhost"
 //auth stuff
 let token;
 let userid;
-
+let ownerid;
 
 function authentication(){
   var queryString=new URLSearchParams(window.location.search);
   let apple='b7e90305232837caf2fd24598c3de3970819b57e2639574a652dffd4329afd19';
   let salsa='0f72500f45894e3e3b20dd035fa5fb942db18aa2bd2f0cca563193840a732aed';
-  d3.select('#initiate-login').on('click',function(){
-    console.log('clicked');
-    let profileString=document.querySelector('#profile-url').value;
+  setUpAuthButton(apple,redirect)
 
-    if(validURL(profileString)){
-      let userSlug=profileString.match(slugRegex)[0].replace('/','');
-      console.log(userSlug);
-      localStorage.setItem('user',userSlug);
-      window.location.href = `https://dev.are.na/oauth/authorize?client_id=${apple}&redirect_uri=${redirect}&response_type=code`;
-    }else{
-      console.log('failed');
-    }
-
-    // redirect
-    // "http://dev.are.na/oauth/authorize?client_id=a05374c81efe233cb167bf381902d931210d6c737ce8df19e443fffb860de6a3&redirect_uri=https://channel-duplicator.glitch.me/&response_type=code";
-  })
   return new Promise((resolve, reject) => {
     if(localStorage.getItem('token')){
       token=localStorage.getItem('token');
@@ -71,6 +57,31 @@ function authentication(){
 
 }
 
+
+function setUpAuthButton(apple,redirect){
+  d3.select('#initiate-login').on('click',function(){
+    console.log('clicked');
+    let profileString=document.querySelector('#profile-url').value;
+
+    if(validURL(profileString)){
+      let userSlug=profileString.match(slugRegex)[0].replace('/','');
+      console.log(userSlug);
+      localStorage.setItem('user',userSlug);
+      window.location.href = `https://dev.are.na/oauth/authorize?client_id=${apple}&redirect_uri=${redirect}&response_type=code`;
+    }else{
+      console.log('failed');
+    }
+
+  })
+
+  d3.select('#login-prompt').on('click',function(){
+    d3.select('#pop-up-overlay').style('display','flex');
+  })
+
+  d3.select('#cancel-popup').on('click',function(){
+    d3.select('#pop-up-overlay').style('display','none');
+  })
+}
 
 function login(){
   return new Promise((resolve, reject) => {

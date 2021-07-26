@@ -26,7 +26,6 @@ let blocks=[];
 // this stores the goby's special metadata for each block
 let goby;
 let gobyid;
-let ownerid;
 
 //this selects the channel that is fetched
 let slug;
@@ -71,7 +70,6 @@ let newKeys=[];
 
 
 function startUp(){
-  // authentication();
   checkSlug();
   initRequests();
   setUpButtons();
@@ -79,10 +77,6 @@ function startUp(){
 }
 
 // api requests--------------
-
-
-
-
 async function initRequests(){
   // wait for authentication
   await authentication();
@@ -90,7 +84,9 @@ async function initRequests(){
   let metadata=await getRequest(slug,'meta');
   ownerid=metadata.owner.id;
   // then make decisions about whether goby is initiated and whether to do edit mode
-  if(metadata.contents[0].content.title!=='goby.json'){
+  if(metadata.contents[0].title!=='goby.json'){
+    //change to base
+    window.location.href ="https://goby.garden";
     //send user to build page with channel as prompt
   }
   if(ownerid==userid){
@@ -132,27 +128,11 @@ function fillMeta(data){
   //record channel length in global var
   chanLength=data.length;
 
-  //note to self:put a check here for errors in the future
-
 
 }
 
-// function getGobyAgain(id){
-//   var oReq = new XMLHttpRequest();
-//       oReq.addEventListener("load", gobyGot);
-//       let fetchurl=`https://api.are.na/v2/blocks/${id}`;
-//       oReq.open("GET", fetchurl);
-//       oReq.send();
-//
-//   function gobyGot(){
-//     console.log(JSON.parse(this.responseText));
-//     goby=JSON.parse(JSON.parse(this.responseText).content);
-//   }
-// }
 
-
-
-// adds each newly received block to blocks and goby based on
+// adds each newly received block to blocks and goby
 function handleNewData(contents){
   let gobyChanged=false;
 
@@ -182,6 +162,7 @@ function newGobyBlock(id){
 }
 
 // updates blocks in channel according to data, using d3
+// will have to be adjusted when I start doing sorting
 function fillWithBlocks(blockList){
   feed.selectAll('.block')
     .data(blockList,d => d)
@@ -259,13 +240,7 @@ function setUpButtons(){
     exitForm();
   })
 
-  d3.select('#login-prompt').on('click',function(){
-    d3.select('#pop-up').style('display','flex');
-  })
 
-  d3.select('#cancel-popup').on('click',function(){
-    d3.select('#pop-up').style('display','none');
-  })
 
 
   addNewSetUp();
@@ -278,10 +253,6 @@ function exitForm(){
   d3.select('#add-new').classed('panel-2',false);
   newKeys=[];
 }
-
-
-
-
 
 
 // These two functions resize textarea inputs to fit the content inside them, which browsers don't do by default
@@ -342,15 +313,9 @@ function updateForm(blockData){
   d3.select('#arena-goby').selectAll('.form-section').remove();
   // this goes through each goby data field and makes a form section for it
   goby.manifest.forEach((sData,i)=>{
-
     generateSection(sData.type,sData.key,gobyBlock[sData.key],i,sData.values)
-
-
-
   })
 
-
-  // general----------------------
   d3.selectAll('form textarea').each((d,i,nodes)=>{
     textAreaOnInput(nodes[i]);
   })
@@ -359,6 +324,7 @@ function updateForm(blockData){
 }
 
 
+// this creates the dom elements for any new field during initial generation and when you add a new field
 function generateSection(type,key,value,index,existing){
   //add check for if index is defined and existing
   let newField=false;
@@ -443,7 +409,7 @@ function generateSection(type,key,value,index,existing){
     }
 }
 
-
+//this manages events related to creating a new field.
 function addNewSetUp(){
   d3.selectAll('button.choose-type').on('click',function(){
   d3.select('#add-new').attr('data-type',d3.event.currentTarget.dataset.type);
@@ -460,6 +426,10 @@ function addNewSetUp(){
   })
 }
 
+
+// This checks if the field name exists already
+//if not it sends it to the dom generation functions
+//nothing is changed in goby until you hit submit
 function addField(type,key){
   if(!goby.manifest.find(a=>a.key==key)&&!newKeys.find(b=>b==key)&&key!==''){
     d3.select('#add-new input').property('value','');
@@ -470,7 +440,8 @@ function addField(type,key){
   }
 }
 
-
+// This builds a tag in the dom.
+// It fires during initial generation and when you add a new one while editing.
 function generateTag(string,input){
   let currentGoby=goby.blocks.find(b=>b.id==formQs.dataset.editing);
   let existingTags=goby.manifest.find(a=>a.key==input.dataset.fieldname)?goby.manifest.find(a=>a.key==input.dataset.fieldname).values:[];
@@ -497,7 +468,8 @@ function generateTag(string,input){
   }
 }
 
-
+//abstracted put request for changing goby and native titles/descriptions
+//should be turned into a promise and made more efficient at some point
 function putRequest(id,data){
   var oReq = new XMLHttpRequest();
   oReq.addEventListener("load", updateBlockCallback);
@@ -518,16 +490,18 @@ function putRequest(id,data){
 }
 
 
+// After hitting submit, this:
+// 1. reviews all changes you've made in the DOM editor
+// 2. Updates the goby and blocks objects as needed
+// 3. If either or both have changed, it pushes those changes to arena with API calls (putRequest)
 
+// Going to have to make accomodations for bulk editing here eventually
+//I think enough can stay the same that it's worth trying to generalize it with some conditionals and functions
 function checkForm(){
   let arenaBlock=blocks.find(a=>a.id==parseInt(formQs.dataset.editing));
   let gobyBlock=goby.blocks.find(a=>a.id==parseInt(formQs.dataset.editing));
   let arenaChanged=false;
   let gobyChanged=false;
-
-
-  //going to have to make accomodations for bulk editing here eventually
-  //I think enough can stay the same that it's worth trying to generalize it with some conditionals and functions
 
 
   // checks goby for changes-------------
@@ -537,7 +511,6 @@ function checkForm(){
     let refBlock=nodes[i].dataset.domain=='native'?arenaBlock:gobyBlock;
     let isNewField=section.classed('new-field');
     let somethingChanged=false;
-//
 
     if(nodes[i].dataset.type=='array'){
       //first find the tags with checked checkboxes and create an array of string values
@@ -610,7 +583,6 @@ function checkForm(){
         description:arenaBlock.description
       })
     }
-    // putRequest(gobyid,{content:JSON.stringify(goby)})
   }
 }
 
@@ -660,6 +632,7 @@ function compareArrays(arrayA,arrayB){
 
   }
 
+// my key down event listener, will be expanded later for bulk editing
 window.addEventListener('keydown',function(){
   if(event.key=="Enter" &&document.activeElement){
     if(d3.select(document.activeElement).classed('new-tag-input')){
