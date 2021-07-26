@@ -86,7 +86,7 @@ async function initRequests(){
   // then make decisions about whether goby is initiated and whether to do edit mode
   if(metadata.contents[0].title!=='goby.json'){
     //change to base
-    window.location.href ="https://goby.garden";
+    window.location.href = baseurl;
     //send user to build page with channel as prompt
   }
   if(ownerid==userid){

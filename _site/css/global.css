@@ -256,7 +256,7 @@ button{
 
 #pop-up{
   border:1px solid var(--midtone);
-  width:400px;
+  max-width:600px;
   padding:30px 20px;
   background-color: rgba(255,255,255);
   /* display:flex;
@@ -265,11 +265,11 @@ button{
   justify-content: center; */
 }
 
-#pop-up>*{
+/* #pop-up>*{
   max-width:400px;
   margin-bottom:20px;
   width:400px;
-}
+} */
 
 #pop-up button,.input-url button{
   text-decoration-line:underline;

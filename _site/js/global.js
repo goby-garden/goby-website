@@ -1,7 +1,10 @@
 let slugRegex=/\/(?:.(?!\/))+$/g;
-const redirect = window.location.hostname === "localhost"
-  ? "http://localhost:8000/edit/"
-  : "https://goby.garden/edit/";
+const baseurl=window.location.hostname === "localhost"
+  ? "http://localhost:8000/"
+  : "https://goby.garden/";
+
+const redirect=baseurl+document.querySelector('body').dataset.page;
+console.log(redirect);
 
 const proxy = window.location.hostname === "localhost"
   ? "https://wnsr-cors.herokuapp.com/"
@@ -169,4 +172,16 @@ function getRequest(specialData,mode){
     oReq.send();
 
   });
+}
+
+async function checkChannel(slug){
+  let metadata=await getRequest(slug,'meta');
+
+  if(metadata.contents){
+    let destination=metadata.contents[0].title=='goby.json'?'edit':'build';
+    window.location.href =baseurl+destination+'/?channel='+slug;
+  }else{
+    console.log("this channel doesn't exist");
+  }
+  // let metadata=await getRequest(slug,'meta');
 }

@@ -12,7 +12,7 @@
     <!-- <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet"> -->
   </head>
-  <body class="">
+  <body class="" data-page="edit/">
       <!-- <a href="http://dev.are.na/oauth/authorize?client_id=b7e90305232837caf2fd24598c3de3970819b57e2639574a652dffd4329afd19&redirect_uri=https://goby.glitch.me/?slug=test&response_type=code">Give Goby permission to read and write to Are.na</a> -->
     <div class="grid">
       <div id="title-bar">
@@ -110,10 +110,10 @@
   <button id="login-prompt" type="button" name="button">log in to edit</button>
 </div>
 <div id="pop-up-overlay">
-  <div id="pop-up">
+  <div id="pop-up" class="prose">
     <p>To edit goby channels, you'll need to give  read/write access through Are.na.</p>
     <p>Enter your are.na profile URL and click 'log in' to be taken to an authentication page.</p>
-    <div class="flex-row">
+    <div class="flex-row input-url">
       <input id="profile-url" type="text" name="" value="" placeholder="https://are.na/<username slug>">
       <button type="button" name="button" id="initiate-login">log in</button>
     </div>
