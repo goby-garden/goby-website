@@ -10,6 +10,28 @@ const proxy = window.location.hostname === "localhost"
   ? "https://wnsr-cors.herokuapp.com/"
   : "https://wnsr-cors.herokuapp.com/";
 
+// channel data
+let slug;
+let chanLength;
+
+// pagination
+let currentPage=1;
+let per=10;
+
+function checkSlug(){
+  var params=new URLSearchParams(window.location.search);
+  let isSlug=params.get('channel')?true:false;
+  if(isSlug){
+    // slug=params.get('channel');
+    return params.get('channel');
+  }else{
+    // slug='gobies';
+    return undefined;
+  }
+  // console.log("slug:",slug);
+}
+
+
 
 
 //auth stuff
@@ -77,7 +99,7 @@ function setUpAuthButton(apple,redirect){
 
   })
 
-  d3.select('#login-prompt').on('click',function(){
+  d3.selectAll('.open-login').on('click',function(){
     d3.select('#pop-up-overlay').style('display','flex');
   })
 
@@ -91,7 +113,7 @@ function login(){
     console.log('successfully authenticated, get user data');
     if(localStorage.getItem('userid')){
       console.log('set dom user');
-      setDomUser()
+      setDomUser();
       resolve();
     }else{
       console.log('made request for user')
@@ -130,6 +152,8 @@ function setDomUser(){
   if(ownerid!==undefined && parseInt(ownerid)==userid){
     d3.select('body').classed('edit-mode',true);
     d3.select('#avatar-wrapper').select('use').attr('href','#pencil-icon');
+  }else{
+    d3.select('#avatar-wrapper').select('use').attr('href','#eye-icon');
   }
 }
 
@@ -149,21 +173,28 @@ function getRequest(specialData,mode){
   return new Promise((resolve, reject) => {
     function reqListener () {
       var jsonResponse=JSON.parse(this.responseText);
+      console.log(jsonResponse);
       resolve(jsonResponse);
     }
     var oReq = new XMLHttpRequest();
     oReq.addEventListener("load", reqListener);
     let fetchurl;
 
+    let tokenParam=`access_token=${token}`;
     if(mode=='meta'){
-      fetchurl=`https://api.are.na/v2/channels/${specialData}?page=1&per=1`;
+      fetchurl=`https://api.are.na/v2/channels/${specialData}?page=1&per=1&${tokenParam}`;
+
     }else if(mode=='block'){
-      fetchurl=`https://api.are.na/v2/blocks/${specialData}`;
+      fetchurl=`https://api.are.na/v2/blocks/${specialData}?${tokenParam}`;
     }else if(mode=='user'){
-      fetchurl=`https://api.are.na/v2/users/${specialData}`;
+      fetchurl=`https://api.are.na/v2/users/${specialData}?${tokenParam}`;
+    }else if(mode=='asc'){
+      fetchurl=`https://api.are.na/v2/channels/${specialData[0]}/contents?sort=position&direction=asc&page=${specialData[1]}&per=${specialData[2]}&${tokenParam}`;
     }else{
       // specialData=[slug,currentPage,per]
-      fetchurl=`https://api.are.na/v2/channels/${specialData[0]}/contents?sort=position&direction=desc&page=${specialData[1]}&per=${specialData[2]}`;
+
+      fetchurl=`https://api.are.na/v2/channels/${specialData[0]}/contents?sort=position&direction=desc&page=${specialData[1]}&per=${specialData[2]}&${tokenParam}`;
+      console.log(fetchurl);
       //replace this in callback:
       // currentPage++;
     }

@@ -10,9 +10,8 @@ let options = {threshold: 0.24}
 let observer = new IntersectionObserver(loadMore, options);
 
 //data variables----------------
-let currentPage=1;
-let per=10;
-let chanLength;
+
+
 
 
 
@@ -28,19 +27,19 @@ let goby;
 let gobyid;
 
 //this selects the channel that is fetched
-let slug;
-
-function checkSlug(){
-  var params=new URLSearchParams(window.location.search);
-  let isSlug=params.get('channel')?true:false;
-  if(isSlug){
-    slug=params.get('channel');
-
-  }else{
-    slug='gobies';
-  }
-  console.log("slug:",slug);
-}
+// let slug;
+//
+// function checkSlug(){
+//   var params=new URLSearchParams(window.location.search);
+//   let isSlug=params.get('channel')?true:false;
+//   if(isSlug){
+//     slug=params.get('channel');
+//
+//   }else{
+//     slug='gobies';
+//   }
+//   console.log("slug:",slug);
+// }
 
 
 //authentication wuz here
@@ -70,7 +69,9 @@ let newKeys=[];
 
 
 function startUp(){
-  checkSlug();
+  // checkSlug();
+  slug=checkSlug();
+  slug=(slug==undefined)?"gobies":slug;
   initRequests();
   setUpButtons();
   textAreaHeights(true);

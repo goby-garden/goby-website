@@ -1,10 +1,53 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-    <meta charset="utf-8">
-    <title></title>
+    <meta http-equiv="Content-Type" content="text/html;" charset="utf-8" >
+    <meta name="viewport" charset="UTF-8" content="width=device-width, initial-scale=1">
+    <title>Goby</title>
+    <link rel="stylesheet" href="../css/clearstyle.css">
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/build.css">
   </head>
-  <body data-page="build/">
-    <p>this is the page where you generate a new goby.json</p>
+  <body data-page="build">
+    <!-- <p>This page will be built out later on, but for now it'll just have an input that lets you see whether a channel has goby set up, and sends you to the appropriate page from there</p> -->
+    <div id="title-bar" class="prose">
+      <div class="channel-picked">
+        <p>Are.na / <span id="username"></span> / <span class="emphasis" id="channel-name"></span></p>
+        <button type="button" name="button" id="pick-different">Pick a different channel</button>
+
+      </div>
+      <div class="pick-channel flex-row input-url">
+        <input type="text" name="" value="" placeholder="https://are.na/<username-slug>/<channel-slug>">
+        <button type="button" name="button" id="initiate-search">find channel</button>
+      </div>
+
+    </div>
+    <div class="columns">
+        <form class="input prose">
+          <p>Goby works by storing and modifying a single text block at the bottom of a channel called <i>goby.json</i>. This block contains all your metadata in JSON format. Here's <a href="https://www.are.na/block/12011259" target="_blank">an example</a>.</p>
+          <p>This page generates a new <i>goby.json</i> for your channel, so that you can view it in the Goby editor.</p>
+          <p id="commentary">
+            <span class="a">Goby is not yet installed in this channel. Press the button below to start the building process.</span>
+            <span class="b">Goby is not yet installed in this channel. You can't install it because you're not the channel owner.</span>
+            <span class="c">Goby is not yet installed in this channel. You'll need to <button type="button" name="button" class="open-login">log in</button> before you can install it.</span>
+            <button type="button" name="button" id="install">Install goby in this channel</button>
+          </p>
+
+
+        </form>
+        <div class="output">
+          <div id="terminal" class="prose">
+
+          </div>
+          <label>Build log</label>
+        </div>
+    </div>
+    {% include 'login.html' %}
+    {% include 'icons.html' %}
+
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js" charset="utf-8"></script> -->
+    <script src="../js/d3.min.js" defer></script>
+    <script src="../js/global.js" charset="utf-8" defer></script>
+    <script src="../js/build.js" charset="utf-8" defer></script>
   </body>
 </html>

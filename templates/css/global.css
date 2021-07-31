@@ -3,7 +3,12 @@
   --header-height:100px;
   --lightest:#F2F2F2;
   --midtone:#E0E0E0;
-  --darkgrey:black;
+
+  --bkg:white;
+  --fore:black;
+  /* --darkgrey:#1E3CFF; */
+  --darkgrey:var(--fore);
+  /* --bkg:var(--lightest); */
 }
 
 /* typography------- */
@@ -15,6 +20,7 @@ body{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color:var(--darkgrey);
+  background-color: var(--bkg);
 }
 
 h2{
@@ -39,13 +45,13 @@ strong{
 }
 
 
-em{
+em,i{
   font-style: italic;
 }
 
 
 .emphasis{
-  color:black;
+  color:var(--fore);
 }
 .no-emph{
   color:var(--midtone);
@@ -74,7 +80,7 @@ em{
 
 
 .prose{
-  color:black;
+  color:var(--fore);
 
 }
 
@@ -135,7 +141,7 @@ em{
   position:absolute;
   top:-1px;
   right:0;
-  background-color:white;
+  background-color:var(--bkg);
   color:red;
 }
 
@@ -187,10 +193,20 @@ button{
 }
 
 
+#channel-name{
+  border-bottom:1px solid var(--fore);
+}
+
+#channel-name input[type="text"]{
+  display:none;
+}
+
+
+
 /* login */
 #login-prompt{
   text-decoration-line: underline;
-  color:black;
+  color:var(--fore);
   padding-top:10px;
 }
 
@@ -218,8 +234,12 @@ button{
   width:30px;
   height:22px;
   right:30px;
-  stroke:black;
-  fill: black;
+  stroke:var(--fore);
+  fill: var(--fore);
+}
+
+.open-login{
+  text-decoration-line: underline;
 }
 
 
@@ -248,7 +268,7 @@ button{
   z-index:10;
   background-color: rgba(255,255,255, 0.9);
   /* padding: 20px; */
-  color: black;
+  color: var(--fore);
   display:none;
   flex-flow:column nowrap;
   justify-content: center;

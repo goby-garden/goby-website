@@ -15,14 +15,7 @@
   <body class="" data-page="edit/">
       <!-- <a href="http://dev.are.na/oauth/authorize?client_id=b7e90305232837caf2fd24598c3de3970819b57e2639574a652dffd4329afd19&redirect_uri=https://goby.glitch.me/?slug=test&response_type=code">Give Goby permission to read and write to Are.na</a> -->
     <div class="grid">
-      <div id="title-bar">
-        <p>Are.na / <span id="username"></span> /</p>
-        <p class="emphasis">
-          <span id="channel-name" class="input-area">
-            <input type="text" name="channel-name" value="">
-          </span>
-        </p>
-      </div>
+      {% include 'title-bar.html' %}
 
       <div id="channel-meta">
         <div class="info">
