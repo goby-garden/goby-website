@@ -126,7 +126,8 @@ async function initiateBuild(){
   ids.unshift(newBlock.id)
 
   await moveToBottom(newBlock.id);
-  terminalLog(`Success! You will now be able to edit your channel <a href="${baseurl}/edit?channel=${slug}">here</a>`);
+  commentary.attr('class','');
+  terminalLog(`Success! You will now be able to edit your channel <a href="${baseurl}edit?channel=${slug}">here</a>`);
   terminalLog("Sometimes Are.na's cache takes time to update, so you may have to wait a few minutes before the editor works.");
   terminalLog(`To make sure the install worked, check the very bottom of <a href="${chanurl}">your channel</a> for goby.json`)
 
