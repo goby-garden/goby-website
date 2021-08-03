@@ -47,13 +47,15 @@ async function checkForChannel(newSlug){
 }
 
 
-function inspectChannel(newSlug,metadata){
+async function inspectChannel(newSlug,metadata){
   slug=newSlug;
   chanurl=`https://are.na/${metadata.owner.slug}/${slug}`;
   //check if goby is initiated already, and if so, send you to it
+
   if(metadata.contents[0].title=='goby.json'){
     window.location.href =baseurl+'edit/?channel='+slug;
   }
+
 
   d3.select('#title-bar').classed('chosen',true);
   //add channel name to header

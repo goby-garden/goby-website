@@ -475,15 +475,17 @@ function putRequest(id,data){
   var oReq = new XMLHttpRequest();
   oReq.addEventListener("load", updateBlockCallback);
   // build fetch:
-  let putTitle=data.title!==undefined?`title=${encodeURIComponent(data.title)}&`:'';
-  let putDescription=data.description!==undefined?`description=${encodeURIComponent(data.description)}&`:'';
-  let putContent=data.content!==undefined?`content=${encodeURIComponent(data.content)}&`:'';
-  let fetchurl=`${proxy}https://api.are.na/v2/blocks/${id}?${putTitle}${putDescription}${putContent}access_token=${token}`;
+  // let putTitle=data.title!==undefined?`title=${encodeURIComponent(data.title)}&`:'';
+  // let putDescription=data.description!==undefined?`description=${encodeURIComponent(data.description)}&`:'';
+  // let putContent=data.content!==undefined?`content=${encodeURIComponent(data.content)}&`:'';
+  // let fetchurl=`${proxy}https://api.are.na/v2/blocks/${id}?${putTitle}${putDescription}${putContent}access_token=${token}`;
+  let fetchurl=`${proxy}https://api.are.na/v2/blocks/${id}?access_token=${token}`;
   console.log(fetchurl);
 
   oReq.open("PUT", fetchurl);
+  oReq.setRequestHeader("Content-Type", "application/json");
   console.log('sending...')
-  oReq.send();
+  oReq.send(JSON.stringify(data));
 
   function updateBlockCallback(){
     console.log('did it work?',this.responseText);
