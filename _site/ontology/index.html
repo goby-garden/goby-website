@@ -10,83 +10,37 @@
     <script src="../js/ontology.js" defer charset="utf-8"></script>
 </head>
 <body>
-  <div id="property-kitchen" class='panel'>
+  <div id="property-kitchen" class='panel' data-state='init'>
     <div class="panel-header"><h3 class='ia-writer'>Property Kitchen</h3></div>
     <div class="property-sandbox">
-      <div class="margin-box define-property">
-        <div class="inline declaration ia-writer">
-          <span class="string-module">
-            <input type="text" class='plex' value="new property">
-          </span> for
-          <span class='dropdown-module' data-dropped="false">
-            <ul class='dropdown-items plex'>
-              <li class='choice'>
-                <span class='list-style-wrap'><svg class="inline" width="20" height="20"><use href="#solid-circle-icon"></svg> Author</span>
-              </li>
-              <li>
-                <span class='list-style-wrap'><svg class="inline" width="20" height="20"><use href="#solid-circle-icon"></svg> Text</span>
-              </li>
-              <li>
-                <span class='list-style-wrap'><svg class="inline" width="20" height="20"><use href="#solid-circle-icon"></svg> Publisher</span>
-              </li>
-              <li class='create-new'>
-                <span class='list-style-wrap'><svg class="inline" width="20" height="20"><use href="#solid-circle-icon"></svg>
-                <input type="text" class='plex compact' value="new role">
-                </span>
-              </li>
-            </ul>
-            <button class='dropdown-arrow'><svg class="inline" width="20" height="20"><use href="#arrow-icon"></svg></button>
-            <button class='target'><svg class="inline" width="20" height="20"><use href="#target-icon"></svg></button>
-          </span>
-        </div>
-        <div class="recipe-section ia-writer"></div>
+      <div class="margin-box start-message">
+        <h4 class='ia-writer'>This panel is for making and adding new properties.</h4>
+        <h4 class='ia-writer'>Pick a role in the table panel, or <button class='begin-property' type="button" name="button">click here</button> to begin.</h4>
       </div>
       <div class="margin-box create-property" data-ready="false">
         <div class="vertical-line"></div>
         <button class='ia-writer check-ready' type="button" name="button">Create</button>
       </div>
     </div>
-    <div class="recipe-panel-wrapper" data-open="true">
+    <div class="recipe-panel-wrapper" data-open="false">
       <div class="recipe-panel">
         <h4 class='ia-writer' id='recipe-header'>Recipes</h4>
         <div class="recipe" data-ready="false">
           <button type="button" name="button" class='add-button ia-writer check-ready'>+</button>
           <div class="template-selector ia-writer" data-ready="false">
             Define...
-            <ul class='template-selector plex'>
-              <li class="noselect">Category</li>
-              <li class='noselect'>Tag</li>
-              <li class='noselect'>Hierarchy</li>
-              <li class='noselect'>String</li>
+            <ul class='item-selector-module plex' data-type="template">
+              <li class='noselect' data-id='0'>String</li>
+              <li class="noselect" data-id='1'>Category</li>
+              <li class='noselect' data-id='2'>Tag</li>
+              <li class='noselect' data-id='3'>Hierarchy</li>
             </ul>
 
-            <div class="special-parameters">
-              <label>Using</label> <span class='dropdown-module' data-dropped="false">
-                <ul class='dropdown-items plex'>
-                  <li class='choice'>
-                    <span class='list-style-wrap'><svg class="inline" width="20" height="20"><use href="#solid-circle-icon"></svg> Author</span>
-                  </li>
-                  <li>
-                    <span class='list-style-wrap'><svg class="inline" width="20" height="20"><use href="#solid-circle-icon"></svg> Text</span>
-                  </li>
-                  <li>
-                    <span class='list-style-wrap'><svg class="inline" width="20" height="20"><use href="#solid-circle-icon"></svg> Publisher</span>
-                  </li>
-                  <li class='create-new'>
-                    <span class='list-style-wrap'><svg class="inline" width="20" height="20"><use href="#solid-circle-icon"></svg>
-                    <input type="text" class='plex compact' value="new role">
-                    </span>
-                  </li>
-                </ul>
-                <button class='dropdown-arrow'><svg class="inline" width="20" height="20"><use href="#arrow-icon"></svg></button>
-                <button class='target'><svg class="inline" width="20" height="20"><use href="#target-icon"></svg></button>
-              </span>
-            </div>
-
+            <div class="special-parameters"></div>
           </div>
         </div>
         <h4 class='centered ia-writer'>Or</h4>
-        <div class="recipe ia-writer" data-ready="true">
+        <div class="recipe ia-writer scratch" data-ready="true">
           <button type="button" name="button" class='add-button ia-writer check-ready'>+</button>
           Create from scratch
         </div>
@@ -108,10 +62,57 @@
   <g id="solid-circle-icon">
     <circle class="cls-2" cx="10" cy="10" r="5.63604"/>
   </g>
-  <g id="asym-icon">
-    <circle class="cls-3" cx="10.90649" cy="11.41372" r="5.63604"/>
-    <path id="Path_151" data-name="Path 151" class="cls-1" d="M2.42507,2.11117h0L11.9,12.35318"/>
-    <path id="Path_152" data-name="Path 152" class="cls-1" d="M7.9645,11.8707,11.9,12.49139V8.39513"/>
+</svg>
+<svg class="hide" xmlns="http://www.w3.org/2000/svg" width="34" height="35" viewBox="0 0 34 35">
+  <defs>
+    <style>
+      .c-1, .c-1 {
+        fill: none;
+      }
+
+      .c-1, .c-1, .c-1 {
+        stroke: #000;
+      }
+
+      .c-1 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="asym">
+    <circle class="c-1" cx="17.929" cy="18.288" r="11.212"/>
+    <path id="Path_7" data-name="Path 7" class="c-1" d="M4.008,3.865h0l15.63,16.9"/>
+    <path id="Path_8" data-name="Path 8" class="c-1" d="M12.437,19.625l7.2,1.136v-7.5"/>
+  </g>
+  <g id="sym">
+    <circle class="c-1" cx="10.5" cy="10" r="5.269"/>
+    <circle class="c-1" cx="23.5" cy="25" r="5.269"/>
+    <path id="Path_57" data-name="Path 57" class="c-1" d="M13.775,14.015h0l6.45,6.972"/>
+  </g>
+  <g id="linked">
+    <path id="Path_98" data-name="Path 98" class="c-1" d="M9.13349,24.479V9.746h14.733"/>
+    <path id="Path_99" data-name="Path 99" class="c-1" d="M14.5565,25.077h10.453V10.344"/>
+    <path id="Path_108" data-name="Path 108" class="c-1" d="M5.62307,15.18319,9.0892,19.30792l3.63392-4.18034"/>
+    <path id="Path_109" data-name="Path 109" class="c-1" d="M28.47193,19.8178,25.0058,15.69307,21.37188,19.8734"/>
+    <circle class="c-1" cx="24.8665" cy="9.923" r="5.269"/>
+    <circle class="c-1" cx="9.1335" cy="25.077" r="5.269"/>
+  </g>
+  <g id="unordered">
+    <path id="Path_132" data-name="Path 132" class="c-1" d="M9,9.416V27.584"/>
+    <path id="Path_144" data-name="Path 144" class="c-1" d="M17,8.416V26.584"/>
+    <path id="Path_142" data-name="Path 142" class="c-1" d="M13,6.416V24.584"/>
+    <path id="Path_143" data-name="Path 143" class="c-1" d="M21,10.416V28.584"/>
+    <path id="Path_145" data-name="Path 145" class="c-1" d="M25,6.416V24.584"/>
+  </g>
+  <g id="ordered">
+    <path id="Path_147" data-name="Path 147" class="c-1" d="M17,8.416V26.584"/>
+    <path id="Path_148" data-name="Path 148" class="c-1" d="M13,6.416V24.584"/>
+    <path id="Path_149" data-name="Path 149" class="c-1" d="M9,4.416V22.584"/>
+    <path id="Path_146" data-name="Path 146" class="c-1" d="M21,10.416V28.584"/>
+    <path id="Path_150" data-name="Path 150" class="c-1" d="M25,12.416V30.584"/>
+  </g>
+  <g id="single">
+    <path id="Path_141" data-name="Path 141" class="c-1" d="M17,8.416V26.584"/>
   </g>
 </svg>
 

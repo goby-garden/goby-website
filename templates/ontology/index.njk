@@ -10,83 +10,37 @@
     <script src="../js/ontology.js" defer charset="utf-8"></script>
 </head>
 <body>
-  <div id="property-kitchen" class='panel'>
+  <div id="property-kitchen" class='panel' data-state='init'>
     <div class="panel-header"><h3 class='ia-writer'>Property Kitchen</h3></div>
     <div class="property-sandbox">
-      <div class="margin-box define-property">
-        <div class="inline declaration ia-writer">
-          <span class="string-module">
-            <input type="text" class='plex' value="new property">
-          </span> for
-          <span class='dropdown-module' data-dropped="false">
-            <ul class='dropdown-items plex'>
-              <li class='choice'>
-                <span class='list-style-wrap'><svg class="inline" width="20" height="20"><use href="#solid-circle-icon"></svg> Author</span>
-              </li>
-              <li>
-                <span class='list-style-wrap'><svg class="inline" width="20" height="20"><use href="#solid-circle-icon"></svg> Text</span>
-              </li>
-              <li>
-                <span class='list-style-wrap'><svg class="inline" width="20" height="20"><use href="#solid-circle-icon"></svg> Publisher</span>
-              </li>
-              <li class='create-new'>
-                <span class='list-style-wrap'><svg class="inline" width="20" height="20"><use href="#solid-circle-icon"></svg>
-                <input type="text" class='plex compact' value="new role">
-                </span>
-              </li>
-            </ul>
-            <button class='dropdown-arrow'><svg class="inline" width="20" height="20"><use href="#arrow-icon"></svg></button>
-            <button class='target'><svg class="inline" width="20" height="20"><use href="#target-icon"></svg></button>
-          </span>
-        </div>
-        <div class="recipe-section ia-writer"></div>
+      <div class="margin-box start-message">
+        <h4 class='ia-writer'>This panel is for making and adding new properties.</h4>
+        <h4 class='ia-writer'>Pick a role in the table panel, or <button class='begin-property' type="button" name="button">click here</button> to begin.</h4>
       </div>
       <div class="margin-box create-property" data-ready="false">
         <div class="vertical-line"></div>
         <button class='ia-writer check-ready' type="button" name="button">Create</button>
       </div>
     </div>
-    <div class="recipe-panel-wrapper" data-open="true">
+    <div class="recipe-panel-wrapper" data-open="false">
       <div class="recipe-panel">
         <h4 class='ia-writer' id='recipe-header'>Recipes</h4>
         <div class="recipe" data-ready="false">
           <button type="button" name="button" class='add-button ia-writer check-ready'>+</button>
           <div class="template-selector ia-writer" data-ready="false">
             Define...
-            <ul class='template-selector plex'>
-              <li class="noselect">Category</li>
-              <li class='noselect'>Tag</li>
-              <li class='noselect'>Hierarchy</li>
-              <li class='noselect'>String</li>
+            <ul class='item-selector-module plex' data-type="template">
+              <li class='noselect' data-id='0'>String</li>
+              <li class="noselect" data-id='1'>Category</li>
+              <li class='noselect' data-id='2'>Tag</li>
+              <li class='noselect' data-id='3'>Hierarchy</li>
             </ul>
 
-            <div class="special-parameters">
-              <label>Using</label> <span class='dropdown-module' data-dropped="false">
-                <ul class='dropdown-items plex'>
-                  <li class='choice'>
-                    <span class='list-style-wrap'><svg class="inline" width="20" height="20"><use href="#solid-circle-icon"></svg> Author</span>
-                  </li>
-                  <li>
-                    <span class='list-style-wrap'><svg class="inline" width="20" height="20"><use href="#solid-circle-icon"></svg> Text</span>
-                  </li>
-                  <li>
-                    <span class='list-style-wrap'><svg class="inline" width="20" height="20"><use href="#solid-circle-icon"></svg> Publisher</span>
-                  </li>
-                  <li class='create-new'>
-                    <span class='list-style-wrap'><svg class="inline" width="20" height="20"><use href="#solid-circle-icon"></svg>
-                    <input type="text" class='plex compact' value="new role">
-                    </span>
-                  </li>
-                </ul>
-                <button class='dropdown-arrow'><svg class="inline" width="20" height="20"><use href="#arrow-icon"></svg></button>
-                <button class='target'><svg class="inline" width="20" height="20"><use href="#target-icon"></svg></button>
-              </span>
-            </div>
-
+            <div class="special-parameters"></div>
           </div>
         </div>
         <h4 class='centered ia-writer'>Or</h4>
-        <div class="recipe ia-writer" data-ready="true">
+        <div class="recipe ia-writer scratch" data-ready="true">
           <button type="button" name="button" class='add-button ia-writer check-ready'>+</button>
           Create from scratch
         </div>

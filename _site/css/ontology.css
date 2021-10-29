@@ -62,6 +62,14 @@ input[type='text'], input[type='url'],input[type='text']:focus,input[type='url']
   width:400px;
 }
 
+#property-kitchen[data-state='placing']{
+  cursor:move;
+}
+
+#property-kitchen[data-state='placing'] .create-property{
+  z-index:1;
+}
+
 
 
 .ia-writer{
@@ -105,6 +113,21 @@ h4{
   width:50%;
   border-right:1px solid var(--fg);
   height:20px;
+}
+
+
+.start-message{
+  display:none;
+  position:relative;
+  z-index:200;
+}
+
+#property-kitchen[data-state="init"] .start-message{
+  display:block;
+}
+
+#property-kitchen[data-state="init"] .create-property{
+  display:none;
 }
 
 .create-property {
@@ -182,13 +205,24 @@ div[data-ready="true"] button.check-ready{
   width:100%;
   padding:var(--box-margin);
   /* height:55px; */
-  margin-top:calc(100vh - 55px);
+  /* margin-top:calc(100vh - 48px); */
+  transform:translateY(calc(100vh - 48px));
+  transition:transform 0.3s;
   pointer-events:all;
   min-height:calc(40vh + 55px);
+  position: relative;
+  z-index: 200;
 }
 
 .recipe-panel-wrapper[data-open="true"] .recipe-panel{
-  margin-top:calc(60vh - 55px);
+  transform:translateY(calc(60vh - 55px));
+}
+
+.recipe-panel-wrapper .recipe-panel .recipe{
+  display:none;
+}
+.recipe-panel-wrapper[data-open="true"] .recipe-panel .recipe{
+  display:inherit;
 }
 
 
@@ -213,14 +247,36 @@ div[data-ready="true"] button.check-ready{
 }
 
 
+#property-kitchen[data-state='placing'] .recipe-section:hover{
+  background-color: var(--bg3);
+}
+
+#property-kitchen[data-state='placing'] .recipe-panel-wrapper{
+  pointer-events: none;
+}
+
 .recipe{
+  --x-offset:0;
+  --y-offset:0;
   background-color: var(--bg1);
   border-radius:5px;
   border:1px solid var(--fg);
   padding:var(--i-box-margin);
+
   margin-bottom:10px;
   position:relative;
 }
+
+.recipe.apply{
+  pointer-events: none;
+  cursor:move;
+  z-index:200;
+  transform:translateX(calc(var(--x-offset)*1px)) translateY(calc(var(--y-offset)*1px));
+}
+.recipe.apply[data-ready="true"] button.check-ready{
+  cursor:move;
+}
+
 
 .recipe:first-of-type{
   z-index:200;
@@ -239,13 +295,13 @@ div[data-ready="true"] button.check-ready{
 
 
 
-.template-selector{
+.item-selector-module{
   display:flex;
   flex-flow:row wrap;
   margin:5px 0px;
 }
 
-.template-selector>li{
+.item-selector-module>li{
   width:fit-content;
   border:1px solid var(--de-emphasis);
   border-right-width:0px;
@@ -257,22 +313,22 @@ div[data-ready="true"] button.check-ready{
 
 
 
-.template-selector>li.select{
+.item-selector-module>li.select{
   background-color: var(--select);
   border:1px solid var(--fg);
 }
 
-.template-selector>li.select+ li{
+.item-selector-module>li.select+ li{
   border-left:0px;
 }
 
-.template-selector>li:last-of-type{
+.item-selector-module>li:last-of-type{
   border-right-width:1px;
 }
 
 
 .special-parameters{
-  border-top:1px solid var(--fg);
+  /* border-top:1px solid var(--fg); */
   width:100%;
   margin-top:10px;
 }
@@ -336,6 +392,21 @@ input[type='text'].compact, input[type='text'].compact:focus{
   margin: 5px 0px;
 }
 
+.border-wrapper{
+  background-color: var(--bg1);
+  border-radius:3px;
+  border:1px solid var(--fg);
+  display:inline-flex;
+  flex-flow:row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  --button:var(--bg3);
+}
+
+.border-wrapper>*{
+  margin:0px 2px;
+}
+
 
 .dropdown-module[data-dropped="true"]{
   z-index:400;
@@ -345,9 +416,7 @@ input[type='text'].compact, input[type='text'].compact:focus{
   transform:rotate(180deg);
 }
 
-.dropdown-module>*{
-  margin:0px 2px;
-}
+
 
 
 
@@ -368,6 +437,12 @@ input[type='text'].compact, input[type='text'].compact:focus{
   order:1;
   width:fit-content;
   cursor:default;
+  margin-top:1px;
+  margin-bottom:5px;
+}
+.dropdown-items li.choice .list-style-wrap{
+  border:none;
+  padding-right:2px;
 }
 
 .dropdown-items li:not(.choice) input{
@@ -382,10 +457,16 @@ input[type='text'].compact, input[type='text'].compact:focus{
   display:none;
   width:10px;
   --display: inline-block;
-  margin-bottom:3px;
+  margin-top:3px;
   order:2;
   cursor:pointer;
+  --button:var(--bg1);
+  transform:translateX(-2px);
 }
+
+/* .dropdown-items li{
+  margin-top:6px;
+} */
 
 
 .list-style-wrap{
