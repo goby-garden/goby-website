@@ -180,7 +180,9 @@ div[data-ready="true"] button.check-ready{
   display:block;
 }
 
-
+.recipe-section{
+  z-index:199;
+}
 
 
 .property-sandbox{
@@ -278,6 +280,90 @@ div[data-ready="true"] button.check-ready{
 }
 
 
+
+.recipe section{
+  padding:15px 0px 10px;
+  border-bottom:1px solid var(--fg);
+  display:none;
+  /* padding-bottom: 10px; */
+}
+
+section.accordion{
+  --button:var(--bg1);
+  cursor:pointer;
+}
+
+.expand{
+  float:right;
+}
+
+section.accordion:hover{
+  background-color: var(--bg3);
+  --button:var(--bg3);
+}
+
+.recipe[data-property="sym"] .t-sym{
+  display:block;
+}
+
+.recipe[data-property="asym"] .t-asym{
+  display:block;
+}
+.recipe[data-property="linked"] .t-linked{
+  display:block;
+}
+.recipe[data-property="data"] .t-data{
+  display:block;
+}
+
+
+
+.recipe section:last-of-type{
+  border-width:0px;
+}
+
+section.primitives{
+  display:flex;
+  flex-flow:row nowrap;
+  justify-content: space-between;
+  align-items: center;
+  padding-top:0px;
+}
+
+section label{
+  margin-bottom:10px;
+  display: inline-block;
+}
+
+.get-info{
+  padding:8px;
+}
+
+.multiselect{
+  display:flex;
+  flex-flow:row wrap;
+  --button:var(--bg1);
+}
+
+
+
+.multiselect li{
+  margin-right:3px;
+  margin-bottom:3px;
+  cursor:pointer;
+  padding:4px;
+  border-radius:3px;
+}
+
+.multiselect li.choice{
+  background-color: var(--select);
+}
+.multiselect li.choice .list-style-wrap{
+  background-color: var(--select);
+  --button:var(--select);
+}
+
+
 .recipe:first-of-type{
   z-index:200;
 }
@@ -301,6 +387,8 @@ div[data-ready="true"] button.check-ready{
   margin:5px 0px;
 }
 
+
+
 .item-selector-module>li{
   width:fit-content;
   border:1px solid var(--de-emphasis);
@@ -308,6 +396,10 @@ div[data-ready="true"] button.check-ready{
   padding:5px 7px;
   box-sizing: border-box;
   cursor:pointer;
+}
+
+.item-selector-module.icon-select>li{
+  padding:0px;
 }
 
 
@@ -485,7 +577,7 @@ input[type='text'].compact, input[type='text'].compact:focus{
   stroke: #000;
 }
 
-.dropdown-items li.create-new svg{
+.dropdown-items li.create-new svg,.multiselect li.create-new svg{
   fill:var(--create-sat);
   stroke:var(--create-sat);
 }
@@ -512,12 +604,157 @@ button{
   display:inline-block;
 }
 
+article{
+  width:calc(100% - 400px);
+  background-color:#E6E6FF;
+  min-height:100vh;
+  padding:40px 60px;
+  box-sizing: border-box;
+  font-size:1.2rem;
+  line-height: 1.7rem;
+}
 
+
+article h1{
+  font-size:2em;
+  line-height: 1.4em;
+  border-bottom:3px solid var(--fg);
+  margin-bottom:30px;
+  display:inline-block;
+
+}
+
+article h2{
+  font-size:1.2em;
+  line-height: 1.3em;
+  margin-bottom:20px;
+  font-weight: 600;
+}
+
+article h4{
+  margin:20px 0px 10px
+}
+
+article p{
+  font-family: 'plex-serif';
+  /* font-size:1.2rem;
+  line-height: 1.7rem; */
+  margin-bottom:10px;
+  max-width:640px;
+}
+
+article .comparison-table{
+  display:flex;
+  flex-flow:row wrap;
+  font-size:0.8em;
+  line-height: 1.4em;
+}
+
+.comparison-table>*{
+  padding:10px;
+  border:1px solid var(--fg);
+  box-sizing: border-box;
+  padding-bottom:20px;
+}
+
+.comparison-table .small{
+  width:33%;
+  border-right:0px;
+}
+
+.comparison-table .small.notion{
+  border-right:1px solid var(--fg);
+}
+
+
+.comparison-table .large{
+  width:99%;
+  border-top:0px;
+  /* background-size: contain;
+  background-position: right;
+  background-repeat: no-repeat;
+  padding-bottom:100px; */
+  /* display:flex;
+  flex-flow:row nowrap; */
+
+}
+
+.large img{
+  width:100%;
+  max-width:600px;
+  margin:10px;
+}
+
+.large>*{
+  vertical-align: top;
+}
+
+.large span{
+  min-width:300px;
+}
+
+article .item2 img{
+  max-width:250px;
+}
+article .item3 img{
+  max-width:430px;
+}
+
+article .item5 img{
+  max-width:100%;
+}
+
+article .hr{
+  height:50px;
+  margin-bottom:50px;
+  border-bottom:1px solid var(--fg);
+
+}
+
+.comparison-table span{
+  max-width:300px;
+  display:inline-block;
+}
+
+em{
+  font-weight: 600;
+  display:block;
+  margin-bottom:5px;
+}
+
+.nobreak{
+  white-space: nowrap;
+}
+
+
+@media(max-width:1100px){
+  article{
+    padding:40px 40px;
+    font-size:1.1rem;
+    line-height: 1.5rem;
+  }
+}
 
 
 @font-face {
   font-family: 'plex';
   src: url('../assets/ibm-plex-sans-regular.ttf');
+}
+
+@font-face {
+  font-family: 'plex';
+  font-weight:600;
+  src: url('../assets/ibm-plex-sans-bold.ttf');
+}
+
+@font-face {
+  font-family: 'plex-serif';
+  src: url('../assets/ibm-plex-serif-regular.ttf');
+}
+@font-face {
+  font-family: 'plex-serif';
+  font-style: italic;
+  src: url('../assets/ibm-plex-serif-regular-italic.ttf');
 }
 
 @font-face{

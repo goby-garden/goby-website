@@ -1,3 +1,60 @@
+---json
+{
+  "table":[
+    {
+      "q":"How are discrete “objects” represented?",
+      "a":"Blocks and channels",
+      "o":"Documents in a folder or nodes in a network.",
+      "n":"Rows in a data table",
+      "g":"The same object, and all its relationships, can be represented as a table row or a node in a network graph.",
+      "bg":"../assets/ontology-demo/panel1.png"
+    },
+    {
+      "q":"Where do tags and categories fit into the data structure?",
+      "a":"There is no categorization, only tagging (a channel is, in effect, a tag). Both objects and tags can be tagged.",
+      "o":"Objects can be tagged using Obsidian and categorized using file folders. Tags can be categorized (nested), but not tagged.",
+      "n":"Objects can be tagged (multiple select field) and categorized (single select field). Tags cannot be categorized or tagged.",
+      "g":"Tags, categories, and any other data structure can be represented using objects conforming to rules defined by the user. Example- nested categories: each object has a collection of children, where the children can only have one parent, and they cannot have an ancestor of their parent as a child.",
+      "bg":"../assets/ontology-demo/panel2.png"
+    },
+    {
+      "q":"How can you aggregately view and modify data?",
+      "a":"A feed of blocks in a channel.",
+      "o":"Interlocking panels for file folders, document editors, and network graph.",
+      "n":"A data table.",
+      "g":"Both a table view and network graph view, in separate interlocking panels. The table view is better at representing data properties, but the network view is better at showing relationships. Both would be filterable. In addition a “rules” panel that lets you define properties for particular classes of objects.",
+      "bg":"../assets/ontology-demo/panel3.png"
+    },
+    {
+      "q":"What properties can you add to objects?",
+      "a": "No metadata.",
+      "o":"Basic metadata.",
+      "n":"Comprehensive metadata.",
+      "g":"Comprehensive metadata, comparable to Notion but with a different structure (to be detailed on next page of document).",
+      "bg":""
+    },
+    {
+      "q":"How much access/control do you have over media and datasets?",
+      "a":"Limited control (storage is embedded in the software)",
+      "o":"All media/data locally accessible (storage is separated from software)",
+      "n":"Limited control (storage is embedded in the software)",
+      "g":"Storage is separated from software, and can come from any source or a combination of sources (local files, are.na blocks, etc).The goby data itself is saved in a local file with an accessible file format like JSON.",
+      "bg":"../assets/ontology-demo/panel5-1.png"
+    },
+    {
+      "q":"What kinds of media can it be used to organize?",
+      "a":"Multiple media types",
+      "o":"Only text (markdown and pdfs)",
+      "n":"Multiple media types",
+      "g":"An object can point to any type of resource, and clicking on it will open the file/link in the software of a user’s choosing. One stretch goal is a way to display image thumbnails natively in Goby, without having to click to view files.",
+      "bg":""
+    }
+  ]
+}
+---
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +67,34 @@
     <script src="../js/ontology.js" defer charset="utf-8"></script>
 </head>
 <body>
+  <article>
+    <h1 class='ia-writer'>Goby 2.0</h1>
+    <h2 class="plex">Principles & Objectives</h2>
+    <p>Goby 2.0 is an interface for organizing stored files and abstract information. Goby was <a href='https://goby.garden/edit/?channel=cinema-baby' target='_blank'>originally</a> a web app that enriched Are.na blocks with metadata. But it’s now expanding to a project about structuring data stored anywhere you want according to logical patterns.</p>
+    <p>Conceptually, it is inspired by <a target="_blank" href='https://en.wikipedia.org/wiki/Ontology_engineering'>ontology design</a> and <a href='https://en.wikipedia.org/wiki/Object_storage' target="_blank">object storage</a> in information science, and it aspires to make this level of abstraction possible for individual users organizing their files or other data. Functionally, it is inspired by Are.na, Notion, and Obsidian, combining different traits from each and adding some functionality beyond all of them.</p>
+
+
+    {% for item in table %}
+    <h4 class='ia-writer'>{{ item.q }}</h4>
+    <div class="comparison-table plex item{{ loop.index }}">
+      <div class="small arena"><span><em>Are.na</em> {{ item.a }}</span></div>
+      <div class="small obsidian"><span><em>Obsidian</em> {{ item.o }}</span></div>
+      <div class="small notion"><span><em>Notion</em> {{ item.n }}</span></div>
+      <div class="large goby"><span><em>Goby</em> {{ item.g }}</span>
+        <img src="{{ item.bg }}" alt="">
+
+      </div>
+    </div>
+    {% endfor %}
+
+    <div class="hr">
+
+    </div>
+
+    <h2 class="plex">The panel to the right is my “experiment”.</h2>
+    <p>I anticipate this being a longer-term project that I will likely continue into my second experiment. As such, I decided to focus on a very specific part of Goby’s new interface and use it as a test-ground for the UI elements I’ll need throughout the whole build.</p>
+
+  </article>
   <div id="property-kitchen" class='panel' data-state='init'>
     <div class="panel-header"><h3 class='ia-writer'>Property Kitchen</h3></div>
     <div class="property-sandbox">
@@ -25,7 +110,7 @@
     <div class="recipe-panel-wrapper" data-open="false">
       <div class="recipe-panel">
         <h4 class='ia-writer' id='recipe-header'>Recipes</h4>
-        <div class="recipe" data-ready="false">
+        <div class="recipe template-recipes" data-ready="false" data-type='template'>
           <button type="button" name="button" class='add-button ia-writer check-ready'>+</button>
           <div class="template-selector ia-writer" data-ready="false">
             Define...

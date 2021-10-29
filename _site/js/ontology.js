@@ -7,6 +7,39 @@ var  svgns = "http://www.w3.org/2000/svg";
 var  xlinkns = "http://www.w3.org/1999/xlink";
 
 
+let baseTypes=[
+  {
+    name:'data',
+    abb:'data'
+  },
+  {
+    name:'asymmetrical',
+    abb:'asym'
+  },
+  {
+    name:'symmetrical',
+    abb:'sym'
+  },
+  {
+    name:'linked',
+    abb:'linked'
+  }
+]
+let baseSets=[
+  {
+    name:'single selection',
+    abb:'single'
+  },
+  {
+    name:'unordered group',
+    abb:'unordered'
+  },
+  {
+    name:'ordered group',
+    abb:'ordered'
+  },
+]
+
 let templates=[
   {
     name:'String',
@@ -130,6 +163,22 @@ function newDropDownModule(type,selected){
   return dropdown;
 }
 
+function newMultiModule(type,selected){
+  let ul=document.createElement('ul');
+  ul.className="multiselect plex"
+  switch(type){
+    case 'role':
+    ontology.roles.forEach((item, i) => {
+      let chosen=(selected&&selected.includes(item.id))?'choice':'';
+      ul.appendChild(newRoleItem(item.name,item.id,chosen))
+    });
+    ul.appendChild(newRoleItem('create-new','create-new','create-new'));
+
+    break
+  }
+  return ul;
+}
+
 function newRoleItem(name,id,domClass){
   let li=document.createElement('li');
   li.className=domClass;
@@ -154,15 +203,15 @@ function newRoleItem(name,id,domClass){
 function newIconButton(id,domClass){
   let button=document.createElement('button');
   button.className=domClass;
-  button.appendChild(newIcon(id,20));
+  button.appendChild(id!=='?'?newIcon(id,20):document.createTextNode("?"));
   return button;
 }
 
-function newIcon(id,size){
+function newIcon(id,w,h){
   let newSvg=document.createElementNS("http://www.w3.org/2000/svg", "svg");
   newSvg.setAttribute('class', 'inline');
-  newSvg.setAttribute('width', size);
-  newSvg.setAttribute('height', size);
+  newSvg.setAttribute('width', w);
+  newSvg.setAttribute('height', h?h:w);
   newSvg.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
   // newSvg.innerHTML=`<use href="#${id}">`;
   let newUse = document.createElementNS(svgns, "use");
@@ -189,6 +238,9 @@ function newRecipeModule(type,id,param){
   let recipeModule=document.createElement('div');
   recipeModule.className='recipe';
   // recipeModule.dataset.ready='true';
+  recipeModule.dataset.type=type;
+  recipeModule.dataset.property='';
+  recipeModule.dataset.set='';
   switch(type){
     case 'template':
     let templateSelector=document.createElement('div');
@@ -200,11 +252,48 @@ function newRecipeModule(type,id,param){
     recipeModule.appendChild(templateSelector);
     specialParamInput(recipeModule,id,param)
     break;
+    case 'custom':
+    let rows=[];
+
+    rows.push(document.createElement('section'));
+    rows[0].className='primitives';
+    rows[0].appendChild(newSelectorModule('property-type'));
+    rows[0].appendChild(newSelectorModule('set-type'));
+    rows[0].appendChild(newIconButton('?','get-info ia-writer'));
+    rows.push(newSectionModule('Targets','relation-targets t-sym t-asym t-linked',true));
+    rows[1].appendChild(newMultiModule('role',[]));
+    rows.push(newSectionModule('Filters','relation-filters t-sym t-asym t-linked',false));
+    rows.push(newSectionModule('Default','relation-default t-sym t-asym t-linked',false));
+    rows.push(newSectionModule('Data type','data-type t-data',true));
+    rows.push(newSectionModule('Default','data-default t-data',false));
+
+
+    rows.forEach((item, i) => {
+      recipeModule.appendChild(item);
+    });
+
+    break;
   }
   domSetUp(recipeModule);
-  recipeCheck(recipeModule)
+  recipeCheck(recipeModule);
+
   return recipeModule;
 }
+
+
+function newSectionModule(labelText,domClass,accordion){
+  let row=document.createElement('section');
+  row.className=domClass+(accordion?'':' accordion');
+  let label=document.createElement('label');
+  label.innerText=accordion?labelText:`[${labelText}]`;
+  row.appendChild(label);
+  if(!accordion){
+    row.appendChild(newIconButton('arrow-icon','expand'));
+  }
+  return row;
+}
+
+
 
 function newSelectorModule(type,selected){
   let ul=document.createElement('ul');
@@ -220,6 +309,26 @@ function newSelectorModule(type,selected){
       ul.appendChild(li);
     });
     break;
+    case 'property-type':
+    ul.classList.add('icon-select');
+    baseTypes.forEach((item, i) => {
+      let li=document.createElement('li');
+      li.className=`noselect ${item.abb==selected?'select':''}`;
+      li.dataset.id=item.abb;
+      li.appendChild(newIcon(item.abb,34,35));
+      ul.appendChild(li);
+    });
+    break;
+    case 'set-type':
+    ul.classList.add('icon-select');
+    baseSets.forEach((item, i) => {
+      let li=document.createElement('li');
+      li.className=`noselect ${item.abb==selected?'select':''}`;
+      li.dataset.id=item.abb;
+      li.appendChild(newIcon(item.abb,34,35));
+      ul.appendChild(li);
+    });
+    break;
   }
   return ul;
 }
@@ -229,14 +338,47 @@ function newSelectorModule(type,selected){
 // dom data checks------------------------------
 function recipeCheck(recipe){
   let ready="false";
-  let recipeSelected=recipe.querySelector('.item-selector-module .select');
-  if(recipeSelected){
-    ready="true";
-    //add checks for role in the future
+  if(recipe.dataset.type=='template'){
+    let recipeSelected=recipe.querySelector('.item-selector-module .select');
+    if(recipeSelected){
+      ready="true";
+      //add checks for role in the future
+    }
+  }else{
+    if(recipe.dataset.property.length>0&&recipe.dataset.set.length>0){
+      if(recipe.dataset.property!=='data'){
+        console.log(recipe.querySelector('.relation-targets .choice'));
+        if(recipe.querySelector('.relation-targets .choice')){
+          ready="true";
+        }
+      }else{
+        ready='true';
+      }
+    }
+
+
   }
+
   recipe.dataset.ready=ready;
+   overallReadyState();
 }
 
+
+function overallReadyState(){
+  let recipes=Array.from(document.querySelectorAll('.property-sandbox .recipe'));
+  let ready=recipes.length>0?'true':'false';
+
+  recipes.forEach((item, i) => {
+      ready=item.dataset.ready=='false'?'false':ready;
+
+  });
+  console.log(ready);
+  document.querySelector('.create-property').dataset.ready=ready;
+
+}
+
+
+//add sum check
 
 
 
@@ -257,6 +399,10 @@ function domSetUp(root){
   root.querySelectorAll('.dropdown-items li').forEach((item, i) => {
     item.addEventListener('click',dropdownSelect);
   });
+
+  root.querySelectorAll('.multiselect li').forEach((item, i) => {
+    item.addEventListener('click',multiselectToggle);
+  });
   root.querySelectorAll('.item-selector-module>li').forEach((item, i) => {
     item.addEventListener('click',itemSelect);
   });
@@ -265,6 +411,12 @@ function domSetUp(root){
     item.addEventListener('click',applyRecipe);
   });
 
+}
+
+
+function multiselectToggle(){
+  this.classList.toggle('choice');
+  recipeCheck(this.parentNode.parentNode.parentNode);
 }
 
 function itemSelect(){
@@ -284,6 +436,16 @@ function itemSelect(){
     case 'template':
     specialParamInput(itemSelector.parentNode,toggleOff?'':this.dataset.id);
     recipeCheck(itemSelector.parentNode.parentNode);
+    break;
+    case 'property-type':
+    itemSelector.parentNode.parentNode.dataset.property=toggleOff?'':this.dataset.id;
+    recipeCheck(itemSelector.parentNode.parentNode);
+    //add custom recipe check
+    break;
+    case 'set-type':
+    itemSelector.parentNode.parentNode.dataset.set=toggleOff?'':this.dataset.id;
+    recipeCheck(itemSelector.parentNode.parentNode);
+    //add custom recipe check
     break;
   }
 }
@@ -307,11 +469,15 @@ function applyRecipe(){
       if(clickedOnce==true){
         endMove();
         if(event.target.classList.contains('recipe-section')){
-          console.log('apply');
           let recipeContainer=event.target;
-          let chosenTemplate=recipe.querySelector('.item-selector-module .select').dataset.id;
-          let chosenRole=chosenTemplate==0?undefined:recipe.querySelector('.choice').dataset.id;
-          let newRecipe=newRecipeModule('template',chosenTemplate,chosenRole);
+          let newRecipe;
+          if(recipe.classList.contains('template-recipes')){
+            chosenTemplate=recipe.querySelector('.item-selector-module .select').dataset.id;
+            chosenRole=chosenTemplate==0?undefined:recipe.querySelector('.choice').dataset.id;
+            newRecipe=newRecipeModule('template',chosenTemplate,chosenRole);
+          }else{
+            newRecipe=newRecipeModule('custom');
+          }
           recipeContainer.appendChild(newRecipe);
           recipePanel.dataset.open="false";
         }
@@ -340,7 +506,6 @@ function applyRecipe(){
       origin.width=bRect.width;
     }
     function endMove(){
-      console.log('end');
       window.removeEventListener('resize',resetOrigin);
       window.removeEventListener('click',click);
       window.removeEventListener('mousemove',mousemove);
@@ -381,6 +546,9 @@ function dropdownToggle(){
 
 }
 
+
+
+
 function dropdownSelect(){
   let listContainer=this.parentNode.parentNode;
   listContainer.querySelectorAll('li').forEach((item, i) => {
@@ -389,3 +557,11 @@ function dropdownSelect(){
   this.classList.add('choice');
   listContainer.parentNode.dataset.dropped="false";
 }
+
+
+// let tables=[
+//   {
+//     q:'',
+//     a:[]
+//   },
+// ]

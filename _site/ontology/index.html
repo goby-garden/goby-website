@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +13,89 @@
     <script src="../js/ontology.js" defer charset="utf-8"></script>
 </head>
 <body>
+  <article>
+    <h1 class='ia-writer'>Goby 2.0</h1>
+    <h2 class="plex">Principles & Objectives</h2>
+    <p>Goby 2.0 is an interface for organizing stored files and abstract information. Goby was <a href='https://goby.garden/edit/?channel=cinema-baby' target='_blank'>originally</a> a web app that enriched Are.na blocks with metadata. But it’s now expanding to a project about structuring data stored anywhere you want according to logical patterns.</p>
+    <p>Conceptually, it is inspired by <a target="_blank" href='https://en.wikipedia.org/wiki/Ontology_engineering'>ontology design</a> and <a href='https://en.wikipedia.org/wiki/Object_storage' target="_blank">object storage</a> in information science, and it aspires to make this level of abstraction possible for individual users organizing their files or other data. Functionally, it is inspired by Are.na, Notion, and Obsidian, combining different traits from each and adding some functionality beyond all of them.</p>
+
+
+    
+    <h4 class='ia-writer'>How are discrete “objects” represented?</h4>
+    <div class="comparison-table plex item1">
+      <div class="small arena"><span><em>Are.na</em> Blocks and channels</span></div>
+      <div class="small obsidian"><span><em>Obsidian</em> Documents in a folder or nodes in a network.</span></div>
+      <div class="small notion"><span><em>Notion</em> Rows in a data table</span></div>
+      <div class="large goby"><span><em>Goby</em> The same object, and all its relationships, can be represented as a table row or a node in a network graph.</span>
+        <img src="../assets/ontology-demo/panel1.png" alt="">
+
+      </div>
+    </div>
+    
+    <h4 class='ia-writer'>Where do tags and categories fit into the data structure?</h4>
+    <div class="comparison-table plex item2">
+      <div class="small arena"><span><em>Are.na</em> There is no categorization, only tagging (a channel is, in effect, a tag). Both objects and tags can be tagged.</span></div>
+      <div class="small obsidian"><span><em>Obsidian</em> Objects can be tagged using Obsidian and categorized using file folders. Tags can be categorized (nested), but not tagged.</span></div>
+      <div class="small notion"><span><em>Notion</em> Objects can be tagged (multiple select field) and categorized (single select field). Tags cannot be categorized or tagged.</span></div>
+      <div class="large goby"><span><em>Goby</em> Tags, categories, and any other data structure can be represented using objects conforming to rules defined by the user. Example- nested categories: each object has a collection of children, where the children can only have one parent, and they cannot have an ancestor of their parent as a child.</span>
+        <img src="../assets/ontology-demo/panel2.png" alt="">
+
+      </div>
+    </div>
+    
+    <h4 class='ia-writer'>How can you aggregately view and modify data?</h4>
+    <div class="comparison-table plex item3">
+      <div class="small arena"><span><em>Are.na</em> A feed of blocks in a channel.</span></div>
+      <div class="small obsidian"><span><em>Obsidian</em> Interlocking panels for file folders, document editors, and network graph.</span></div>
+      <div class="small notion"><span><em>Notion</em> A data table.</span></div>
+      <div class="large goby"><span><em>Goby</em> Both a table view and network graph view, in separate interlocking panels. The table view is better at representing data properties, but the network view is better at showing relationships. Both would be filterable. In addition a “rules” panel that lets you define properties for particular classes of objects.</span>
+        <img src="../assets/ontology-demo/panel3.png" alt="">
+
+      </div>
+    </div>
+    
+    <h4 class='ia-writer'>What properties can you add to objects?</h4>
+    <div class="comparison-table plex item4">
+      <div class="small arena"><span><em>Are.na</em> No metadata.</span></div>
+      <div class="small obsidian"><span><em>Obsidian</em> Basic metadata.</span></div>
+      <div class="small notion"><span><em>Notion</em> Comprehensive metadata.</span></div>
+      <div class="large goby"><span><em>Goby</em> Comprehensive metadata, comparable to Notion but with a different structure (to be detailed on next page of document).</span>
+        <img src="" alt="">
+
+      </div>
+    </div>
+    
+    <h4 class='ia-writer'>How much access/control do you have over media and datasets?</h4>
+    <div class="comparison-table plex item5">
+      <div class="small arena"><span><em>Are.na</em> Limited control (storage is embedded in the software)</span></div>
+      <div class="small obsidian"><span><em>Obsidian</em> All media/data locally accessible (storage is separated from software)</span></div>
+      <div class="small notion"><span><em>Notion</em> Limited control (storage is embedded in the software)</span></div>
+      <div class="large goby"><span><em>Goby</em> Storage is separated from software, and can come from any source or a combination of sources (local files, are.na blocks, etc).The goby data itself is saved in a local file with an accessible file format like JSON.</span>
+        <img src="../assets/ontology-demo/panel5-1.png" alt="">
+
+      </div>
+    </div>
+    
+    <h4 class='ia-writer'>What kinds of media can it be used to organize?</h4>
+    <div class="comparison-table plex item6">
+      <div class="small arena"><span><em>Are.na</em> Multiple media types</span></div>
+      <div class="small obsidian"><span><em>Obsidian</em> Only text (markdown and pdfs)</span></div>
+      <div class="small notion"><span><em>Notion</em> Multiple media types</span></div>
+      <div class="large goby"><span><em>Goby</em> An object can point to any type of resource, and clicking on it will open the file/link in the software of a user’s choosing. One stretch goal is a way to display image thumbnails natively in Goby, without having to click to view files.</span>
+        <img src="" alt="">
+
+      </div>
+    </div>
+    
+
+    <div class="hr">
+
+    </div>
+
+    <h2 class="plex">The panel to the right is my “experiment”.</h2>
+    <p>I anticipate this being a longer-term project that I will likely continue into my second experiment. As such, I decided to focus on a very specific part of Goby’s new interface and use it as a test-ground for the UI elements I’ll need throughout the whole build.</p>
+
+  </article>
   <div id="property-kitchen" class='panel' data-state='init'>
     <div class="panel-header"><h3 class='ia-writer'>Property Kitchen</h3></div>
     <div class="property-sandbox">
@@ -25,7 +111,7 @@
     <div class="recipe-panel-wrapper" data-open="false">
       <div class="recipe-panel">
         <h4 class='ia-writer' id='recipe-header'>Recipes</h4>
-        <div class="recipe" data-ready="false">
+        <div class="recipe template-recipes" data-ready="false" data-type='template'>
           <button type="button" name="button" class='add-button ia-writer check-ready'>+</button>
           <div class="template-selector ia-writer" data-ready="false">
             Define...
@@ -66,53 +152,58 @@
 <svg class="hide" xmlns="http://www.w3.org/2000/svg" width="34" height="35" viewBox="0 0 34 35">
   <defs>
     <style>
-      .c-1, .c-1 {
-        fill: none;
+      .c-1 {
+        fill: #fff;
       }
 
-      .c-1, .c-1, .c-1 {
+      .c-1, .c-2, .c-3 {
         stroke: #000;
       }
 
-      .c-1 {
-        fill: #fff;
+      .c-2, .c-3 {
+        fill: none;
       }
     </style>
   </defs>
   <g id="asym">
     <circle class="c-1" cx="17.929" cy="18.288" r="11.212"/>
-    <path id="Path_7" data-name="Path 7" class="c-1" d="M4.008,3.865h0l15.63,16.9"/>
-    <path id="Path_8" data-name="Path 8" class="c-1" d="M12.437,19.625l7.2,1.136v-7.5"/>
+    <path id="Path_7" data-name="Path 7" class="c-2" d="M4.008,3.865h0l15.63,16.9"/>
+    <path id="Path_8" data-name="Path 8" class="c-2" d="M12.437,19.625l7.2,1.136v-7.5"/>
   </g>
   <g id="sym">
     <circle class="c-1" cx="10.5" cy="10" r="5.269"/>
     <circle class="c-1" cx="23.5" cy="25" r="5.269"/>
-    <path id="Path_57" data-name="Path 57" class="c-1" d="M13.775,14.015h0l6.45,6.972"/>
+    <path id="Path_57" data-name="Path 57" class="c-2" d="M13.775,14.015h0l6.45,6.972"/>
   </g>
   <g id="linked">
-    <path id="Path_98" data-name="Path 98" class="c-1" d="M9.13349,24.479V9.746h14.733"/>
-    <path id="Path_99" data-name="Path 99" class="c-1" d="M14.5565,25.077h10.453V10.344"/>
-    <path id="Path_108" data-name="Path 108" class="c-1" d="M5.62307,15.18319,9.0892,19.30792l3.63392-4.18034"/>
-    <path id="Path_109" data-name="Path 109" class="c-1" d="M28.47193,19.8178,25.0058,15.69307,21.37188,19.8734"/>
+    <path id="Path_98" data-name="Path 98" class="c-2" d="M9.13349,24.479V9.746h14.733"/>
+    <path id="Path_99" data-name="Path 99" class="c-2" d="M14.5565,25.077h10.453V10.344"/>
+    <path id="Path_108" data-name="Path 108" class="c-3" d="M5.62307,15.18319,9.0892,19.30792l3.63392-4.18034"/>
+    <path id="Path_109" data-name="Path 109" class="c-3" d="M28.47193,19.8178,25.0058,15.69307,21.37188,19.8734"/>
     <circle class="c-1" cx="24.8665" cy="9.923" r="5.269"/>
     <circle class="c-1" cx="9.1335" cy="25.077" r="5.269"/>
   </g>
   <g id="unordered">
-    <path id="Path_132" data-name="Path 132" class="c-1" d="M9,9.416V27.584"/>
-    <path id="Path_144" data-name="Path 144" class="c-1" d="M17,8.416V26.584"/>
-    <path id="Path_142" data-name="Path 142" class="c-1" d="M13,6.416V24.584"/>
-    <path id="Path_143" data-name="Path 143" class="c-1" d="M21,10.416V28.584"/>
-    <path id="Path_145" data-name="Path 145" class="c-1" d="M25,6.416V24.584"/>
+    <path id="Path_132" data-name="Path 132" class="c-2" d="M9,9.416V27.584"/>
+    <path id="Path_144" data-name="Path 144" class="c-2" d="M17,8.416V26.584"/>
+    <path id="Path_142" data-name="Path 142" class="c-2" d="M13,6.416V24.584"/>
+    <path id="Path_143" data-name="Path 143" class="c-2" d="M21,10.416V28.584"/>
+    <path id="Path_145" data-name="Path 145" class="c-2" d="M25,6.416V24.584"/>
   </g>
   <g id="ordered">
-    <path id="Path_147" data-name="Path 147" class="c-1" d="M17,8.416V26.584"/>
-    <path id="Path_148" data-name="Path 148" class="c-1" d="M13,6.416V24.584"/>
-    <path id="Path_149" data-name="Path 149" class="c-1" d="M9,4.416V22.584"/>
-    <path id="Path_146" data-name="Path 146" class="c-1" d="M21,10.416V28.584"/>
-    <path id="Path_150" data-name="Path 150" class="c-1" d="M25,12.416V30.584"/>
+    <path id="Path_147" data-name="Path 147" class="c-2" d="M17,8.416V26.584"/>
+    <path id="Path_148" data-name="Path 148" class="c-2" d="M13,6.416V24.584"/>
+    <path id="Path_149" data-name="Path 149" class="c-2" d="M9,4.416V22.584"/>
+    <path id="Path_146" data-name="Path 146" class="c-2" d="M21,10.416V28.584"/>
+    <path id="Path_150" data-name="Path 150" class="c-2" d="M25,12.416V30.584"/>
   </g>
   <g id="single">
-    <path id="Path_141" data-name="Path 141" class="c-1" d="M17,8.416V26.584"/>
+    <path id="Path_141" data-name="Path 141" class="c-2" d="M17,8.416V26.584"/>
+  </g>
+  <g id="data">
+    <rect id="Rectangle_119" data-name="Rectangle 119" class="c-1" x="6" y="8.5" width="22" height="6"/>
+    <rect id="Rectangle_120" data-name="Rectangle 120" class="c-1" x="6" y="14.5" width="22" height="6"/>
+    <rect id="Rectangle_121" data-name="Rectangle 121" class="c-1" x="6" y="20.5" width="22" height="6"/>
   </g>
 </svg>
 
