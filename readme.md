@@ -1,9 +1,3 @@
-# Goby is a tool for enriching [Are.na](are.na) channels with custom metadata.
+Goby will be an interface for organizing stored files and abstract information. Goby was originally [a web app](https://goby.garden) that enriched Are.na blocks with metadata. But it’s now expanding to a project about structuring data stored anywhere you want according to logical patterns.
 
-It lets you add/organize new fields for your blocks with different types of information:
-* Short text strings
-* Longform text with markdown
-* URLs
-* Tags 
-
-You can see the work in progress at [goby.garden](https://goby.garden), and learn more about the project in [my Are.na channel](https://www.are.na/nico-chilla/approaching-goby-u9rrzm6iqee). I will eventually add a formal explanation of it here as well.
+Conceptually, it is inspired by [ontology engineering](https://en.wikipedia.org/wiki/Ontology_engineering) and [object storage](https://en.wikipedia.org/wiki/Object_storage) in information science, and it aspires to make this level of abstraction possible for individual users organizing their files or other data. Functionally, it is inspired by Are.na, Notion, and Obsidian, combining different traits from each and adding some functionality beyond all of them.

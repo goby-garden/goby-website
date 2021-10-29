@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goby ontology-builder preview</title>
+    <link rel="stylesheet" href="../css/clearstyle.css">
+    <link rel="stylesheet" href="../css/ontology.css">
+    <script src="../js/ontology.js" defer charset="utf-8"></script>
+</head>
+<body>
+  <div id="property-kitchen" class='panel'>
+    <div class="panel-header"><h3 class='ia-writer'>Property Kitchen</h3></div>
+    <div class="property-sandbox">
+      <div class="margin-box define-property">
+        <div class="inline declaration ia-writer">
+          <span class="string-module">
+            <input type="text" class='plex' value="new property">
+          </span> for
+          <span class='dropdown-module' data-dropped="false">
+            <ul class='dropdown-items plex'>
+              <li class='choice'>
+                <span class='list-style-wrap'><svg class="inline" width="20" height="20"><use href="#solid-circle-icon"></svg> Author</span>
+              </li>
+              <li>
+                <span class='list-style-wrap'><svg class="inline" width="20" height="20"><use href="#solid-circle-icon"></svg> Text</span>
+              </li>
+              <li>
+                <span class='list-style-wrap'><svg class="inline" width="20" height="20"><use href="#solid-circle-icon"></svg> Publisher</span>
+              </li>
+              <li class='create-new'>
+                <span class='list-style-wrap'><svg class="inline" width="20" height="20"><use href="#solid-circle-icon"></svg>
+                <input type="text" class='plex compact' value="new role">
+                </span>
+              </li>
+            </ul>
+            <button class='dropdown-arrow'><svg class="inline" width="20" height="20"><use href="#arrow-icon"></svg></button>
+            <button class='target'><svg class="inline" width="20" height="20"><use href="#target-icon"></svg></button>
+          </span>
+        </div>
+        <div class="recipe-section ia-writer"></div>
+      </div>
+      <div class="margin-box create-property" data-ready="false">
+        <div class="vertical-line"></div>
+        <button class='ia-writer check-ready' type="button" name="button">Create</button>
+      </div>
+    </div>
+    <div class="recipe-panel-wrapper" data-open="true">
+      <div class="recipe-panel">
+        <h4 class='ia-writer' id='recipe-header'>Recipes</h4>
+        <div class="recipe" data-ready="false">
+          <button type="button" name="button" class='add-button ia-writer check-ready'>+</button>
+          <div class="template-selector ia-writer" data-ready="false">
+            Define...
+            <ul class='template-selector plex'>
+              <li class="noselect">Category</li>
+              <li class='noselect'>Tag</li>
+              <li class='noselect'>Hierarchy</li>
+              <li class='noselect'>String</li>
+            </ul>
+
+            <div class="special-parameters">
+              <label>Using</label> <span class='dropdown-module' data-dropped="false">
+                <ul class='dropdown-items plex'>
+                  <li class='choice'>
+                    <span class='list-style-wrap'><svg class="inline" width="20" height="20"><use href="#solid-circle-icon"></svg> Author</span>
+                  </li>
+                  <li>
+                    <span class='list-style-wrap'><svg class="inline" width="20" height="20"><use href="#solid-circle-icon"></svg> Text</span>
+                  </li>
+                  <li>
+                    <span class='list-style-wrap'><svg class="inline" width="20" height="20"><use href="#solid-circle-icon"></svg> Publisher</span>
+                  </li>
+                  <li class='create-new'>
+                    <span class='list-style-wrap'><svg class="inline" width="20" height="20"><use href="#solid-circle-icon"></svg>
+                    <input type="text" class='plex compact' value="new role">
+                    </span>
+                  </li>
+                </ul>
+                <button class='dropdown-arrow'><svg class="inline" width="20" height="20"><use href="#arrow-icon"></svg></button>
+                <button class='target'><svg class="inline" width="20" height="20"><use href="#target-icon"></svg></button>
+              </span>
+            </div>
+
+          </div>
+        </div>
+        <h4 class='centered ia-writer'>Or</h4>
+        <div class="recipe ia-writer" data-ready="true">
+          <button type="button" name="button" class='add-button ia-writer check-ready'>+</button>
+          Create from scratch
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <svg class="hide" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+  </defs>
+  <g id="target-icon">
+    <path data-name="Path 24" class="cls-1" d="M10,.4875v19.025"/>
+    <path data-name="Path 23" class="cls-1" d="M19.5125,10H.4875"/>
+    <circle class="cls-1" cx="10" cy="10" r="6.771"/>
+  </g>
+  <g id="arrow-icon">
+    <polyline class="cls-1" points="16.814 5.623 10 14.377 3.186 5.623"/>
+  </g>
+  <g id="solid-circle-icon">
+    <circle class="cls-2" cx="10" cy="10" r="5.63604"/>
+  </g>
+  <g id="asym-icon">
+    <circle class="cls-3" cx="10.90649" cy="11.41372" r="5.63604"/>
+    <path id="Path_151" data-name="Path 151" class="cls-1" d="M2.42507,2.11117h0L11.9,12.35318"/>
+    <path id="Path_152" data-name="Path 152" class="cls-1" d="M7.9645,11.8707,11.9,12.49139V8.39513"/>
+  </g>
+</svg>
+
+</body>
+</html>
