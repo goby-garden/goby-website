@@ -2,6 +2,7 @@ const observers = [];
 const presentSteps = [];
 let topDist = window.scrollY;
 let readMode='theory';
+let passedIntro=false;
 
 const essayBox=document.querySelector('#essays');
 
@@ -13,6 +14,28 @@ window.addEventListener('load',function(){
     callback: intersectionControl,
     step: '.step',
   });
+
+
+  document.querySelectorAll('.nav').forEach((item, i) => {
+
+    item.addEventListener('mouseenter',function(){
+      console.log(item);
+      essayBox.dataset.selected=item.dataset.which;
+    })
+    item.addEventListener('mouseleave',function(){
+      essayBox.dataset.selected=readMode;
+    })
+    item.addEventListener('click',function(){
+      // essayBox.dataset.selected=item.dataset.which;
+      readMode=item.dataset.which;
+      scaleArticles(passedIntro?readMode:'center');
+    })
+  });
+
+
+
+
+
 })
 
 
@@ -32,6 +55,7 @@ function intersectionControl(entries){
       step.dataset.pos='out';
       changed=true;
       boxIn=false;
+
       console.log('out');
     }
 
@@ -39,6 +63,7 @@ function intersectionControl(entries){
     if(changed){
       switch(step.dataset.trigger){
         case 'scale':
+        passedIntro=boxIn;
         scaleArticles(boxIn?readMode:'center');
         break;
       }

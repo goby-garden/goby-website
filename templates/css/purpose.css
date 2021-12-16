@@ -3,7 +3,7 @@ body{
 }
 
 header{
-  height:calc(100vh - 100px);
+  height:calc(100vh - 80px);
   max-height:80vw;
   display:flex;
   flex-flow:column  nowrap;
@@ -22,45 +22,69 @@ header{
 }
 
 #essays:not(.center) article.active{
-  width:calc(100% - 100px);
+  --w:calc(100vw - 100px);
 }
 
 
 #essays:not(.center) article:not(.active){
-  width:100px;
+  --w:100px;
+  position:sticky;
+  top:0;
 }
 
+
+
+.theory .yes-and{
+  width:calc(var(--w) - 60px);
+}
+
+.practice .yes-and{
+  max-width:calc(100vh - 60px);
+}
 
 /* #essays[data-active='theory'] #practice,#essays[data-active='practive'] #theory{
   max-width:100px;
 } */
 
 article{
-  width:50%;
-  overflow:hidden;
+  --w:50vw;
+  position:relative;
+  width:var(--w);
   box-sizing: border-box;
   transition:width 0.6s;
+  height:100%;
   /* transition:flex-grow 0.3s,width 0.3s; */
 }
-
+/*
 #practice{
-  position:absolute;
   top:0;
   right:0;
+} */
+.article-wrapper{
+  position:relative;
   height:100%;
 }
 
+.article-wrapper:nth-child(2){
+  position:absolute;
+  right:0;
+  top:0;
+}
 
 
 
 .content{
-  border-top:1px solid black;
+  /* border-top:1px solid black; */
   width:100%;
+  overflow:hidden;
   min-height:100vh;
-  padding:20px;
-  padding-top:50px;
+  height:100%;
+  padding:20px 30px;
+  /* padding-top:50px; */
   box-sizing: border-box;
-
+  position:relative;
+  transition:opacity 0.3s;
+  padding-top:30px;
 
 }
 
@@ -77,72 +101,152 @@ article{
   line-height: 26px;
 }
 
-
+/* .content>h2{
+  margin:0;
+  margin-bottom:50px;
+  width:100%;
+  position:sticky;
+  top:0;
+} */
 
 .content>*{
   max-width:590px;
   margin:auto;
-  /* margin-left:min(90px,calc(50% - 295px)); */
+  /* margin-left:min(300px,calc(50% - 295px)); */
   margin-bottom:20px;
 }
 
+/* .special-meaning{
+  font-family:'Courier Fraktur';
+} */
 
 
 
-#theory .content{
+#essays[data-selected='theory'] #theory .col-heading::after,#essays[data-selected='practice'] #practice .col-heading::after{
+  content:'←';
+  margin-left:10px;
+  /* animation: blink 1s linear infinite; */
+}
+
+#essays[data-selected='center'] .yes-and::before{
+  content:'→';
+  margin-right:10px;
+  /* animation: blink 2s linear infinite; */
+}
+
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+
+#theory{
   border-right:1px solid black;
 }
 
 
 
-h1,h2{
-  font-family: 'pitch-sans',monospace;
-  font-size: 50px;
-  line-height: 60px;
-  text-align: center;
-}
+
 
 
 div[data-trigger="scale"]{
   position:absolute;
-  top:60%;
+  top:70%;
   /* border-top:1px solid black; */
   height:2px;
   width:100%;
 }
 
 
-/* h1,h2{
-  text-align: center;
+h1,h2{
+  font-family:'Courier New';
+  /* font-family: 'pitch-sans',monospace; */
+}
+
+.nav{
+  cursor:pointer;
 }
 
 h1{
-  font-family: 'pitch',monospace;
-  font-size: 70px;
-  line-height: 70px;
+  text-align: center;
+  /* font-family: 'pitch',monospace; */
+  font-size: 10vw;
+  line-height: 10vw;
+  padding:0px 30px;
+  /* margin-left:30px; */
 }
 
 h2{
-  font-family: 'pitch-sans',monospace;
-  font-size: 40px;
-  line-height: 40px;
+  /* font-family: 'pitch-sans',monospace; */
+  height:60px;
+  font-size: 50px;
+  line-height: 60px;
+  z-index: 20;
+  position:relative;
+  transition: transform 0.6s;
+  margin-left:30px;
+  transform-origin: 0 50%;
+}
+h2{
+
+}
+
+
+
+
+#practice h2{
+  transform-origin: 0 50%;
+}
+
+#essays:not(.center) article:not(.active) h2{
+  transform:translateY(-30%) rotate(90deg);
+  /* position:sticky;
+  top:15px; */
+  top:15px;
+}
+
+/* #essays:not(.center) article.active h2{
+
 } */
 
-
-h2{
-  height:70px;
-  position:relative;
+#essays h2{
+  position:sticky;
+  top:20px;
 }
+
+#essays:not(.center) article:not(.active) .content{
+  opacity:0;
+}
+
+
+
+
+
+
+
 
 h2>*{
   position:absolute;
   bottom:10px;
-  width:100%;
+
   white-space: nowrap;
   left:0;
+  transition:width 0.6s;
 }
 
 
+.yes-and{
+  width:calc(50vw - 60px);
+  right:0;
+  text-align: right;
+  z-index:4;
+}
+
+.nav:not(.yes-and){
+  z-index:10;
+}
 
 em{
   font-style: italic;
@@ -209,11 +313,25 @@ h3{
 }
 
 
+
+@media(max-width:900px){
+  h2{
+    height:40px;
+    /* font-family: 'pitch-sans',monospace; */
+    font-size: 30px;
+    line-height: 60px;
+  }
+
+  h2>*{
+    bottom:-10px;
+  }
+}
+
 @media(hover:hover){
-  #essays:not(.center) article:not(.active):hover{
+  /* #essays:not(.center) article:not(.active):hover{
     cursor:pointer;
     background-color: Aliceblue;
-  }
+  } */
 }
 
 
