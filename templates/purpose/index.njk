@@ -1,0 +1,54 @@
+
+{% import 'purpose-macros.njk' as macros %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;" charset="utf-8" >
+    <meta name="viewport" charset="UTF-8" content="width=device-width, initial-scale=1">
+    <title>Two essays</title>
+    <link rel="stylesheet" href="../css/clearstyle.css">
+    <link rel="stylesheet" href="../css/purpose.css">
+  </head>
+  <body>
+    <header>
+      <h1>Meaning without<br>meaning</h1>
+      {# <h1>How to mean<br>without meaning</h1> #}
+      <div data-trigger='scale' class='step'>
+
+      </div>
+    </header>
+    <div id="essays" class='center'>
+      <article id='theory' class="active">
+        <h2><span>A theory</span></h2>
+        <div class="content charter">
+          {% for par in essay1.text %}
+            {% if par.value[0] == '%' %}
+              {% set graphic = par.value | replace("%", "") | replace("%", "") %}
+              <div class="placeholder-graphic">
+
+              </div>
+            {% else %}
+              {{ par.value | footnotes | md | safe }}
+
+
+            {% endif %}
+
+
+          {% endfor %}
+        </div>
+      </article>
+      <article id='practice' class="">
+        <h2><span>and practice</span></h2>
+        <div class="content charter">
+
+        </div>
+      </article>
+    </div>
+
+
+
+
+    <script src="../js/purpose.js" charset="utf-8" defer></script>
+  </body>
+</html>

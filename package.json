@@ -19,5 +19,9 @@
   "devDependencies": {
     "@11ty/eleventy": "^0.12.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "archieml": "^0.5.0",
+    "js-yaml": "^4.1.0",
+    "marked": "^4.0.7"
+  }
 }
