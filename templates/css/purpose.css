@@ -239,19 +239,24 @@ h1,h2{
 }
 
 h1{
-  text-align: center;
+  /* text-align: center; */
   /* font-family: 'pitch',monospace; */
-  font-size: 10vw;
+  /* font-size: 10vw;
   line-height: 10vw;
-  padding:0px 30px;
+  padding:0px 30px; */
   /* margin-left:30px; */
+  padding:0px 30px;
+}
+
+h1,h2{
+  height:60px;
+  font-size: 50px;
+  line-height: 60px;
 }
 
 h2{
   /* font-family: 'pitch-sans',monospace; */
-  height:60px;
-  font-size: 50px;
-  line-height: 60px;
+
   z-index: 20;
   position:relative;
   transition: transform 0.6s;
@@ -659,6 +664,8 @@ strong{
   font-weight:600;
   font-style: italic;
 }
+
+
 
 
 /* @font-face {
