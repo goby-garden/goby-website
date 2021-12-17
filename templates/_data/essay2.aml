@@ -1,0 +1,138 @@
+
+[+text]
+I’ve been working on a piece of software called **Goby** that has turned out to be very difficult to get anyone to understand. I think this is because 1. It’s based on a collection of existing software and philosophy/programming concepts that are foreign to most people, and 2. My interest in the project has {nothing to do}(a-crossover) with it being {useful to anyone}(1-comment).
+
+I’m going to give the pitch another shot here, starting with the parts of this project that give it the *potential* to be of interest to some kind of audience, however small.
+
+### A long elevator ride
+
+%graphic-elevator%
+
+> Goby is a tool for *systematically organizing* <br>files and ideas of all kinds.
+
+It will belong to a class of software {popularly termed}(2-comment) “thinking tools” or “knowledge-building tools”, which offer users a variety of methods to organize and represent data. Without actually having Goby finished to show you, the things it will do are easiest to explain by comparison to what already exists in this category:
+
+%batch-software%
+
+The key thing to notice about all these tools is that underneath all the skeuomorphism, the data they store is very similar. **There’s no reason why, in theory, you couldn’t display your Notion table as a network graph, or your Obsidian notes as a table**. Now this is potentially interesting because {some kinds of information}(3-comment) are easier to read in a table, whereas {others}(4-comment) are better suited for a visual graph. Following from this:
+
+* **Value proposition #1:** Goby will have both a table and a network view, such that you can enter data in one, and automatically link it to another.
+
+%graphic-overview%
+
+Another thing that can be tricky when working in a project with these “thinking tools” is that they all have their own ways of handling files and data within a **closed system**, so you end up dealing with redundancy and having difficulty making different tools work together. So:
+
+* **Value proposition #2:** You can use Goby to organize any kind of locally stored files, and continue editing them separately using your own preferred tools. Plus, all Goby data stays local.
+
+%graphic-remote%
+
+In theory, the audience for Goby is people who already know and love the existing tools I mentioned. This sort of user is interested in having *as much flexibility as possible, even at the cost of convenience*. So:
+
+* **Value proposition #3:** Goby will allow more flexible data structure customization than any thinking tool that currently exists.
+
+%diptych-cooker%
+
+
+### Hypothetical use cases:
+
+* Archiving items in a database or collection where items have metadata and relational properties.
+* World-building/construction lore for a fantasy or sci-fi book, and making connections between characters, locations, plot-points, and so on.
+* Sorting a personal collection of epubs and pdfs according to a multilayered system of tags and properties.
+
+
+### {Purposiveness without purpose}(b-crossover)
+
+
+One of the reasons for juxtaposing this essay with the adjacent one is that I want to make my priorities with Goby clear. When I’m working on Goby’s interfaces, I think constantly about how people will experience using the tool:
+
+* Are the visual {choices}(c-crossover) I’m making consistent in meaning?
+* Is the ramp of complexity too steep?
+* Is there a physical analog I can use to make the function of a toolbar clear?
+* Where can I offer shortcuts to make operations simpler?
+
+Testing it on myself only gets me so far — I do think it’s useful to have people try it out, and talk with them about what’s confusing or difficult. So I am making Goby with *usefulness* in mind at least at this superficial level. I want the tool to be *accessible*.
+
+However, there are two things I have no interest in:
+1.  Simplifying or changing the core idea so it makes more sense to other people, to make it reducible to an {elevator pitch}(5-comment).
+2.  Making design decisions by running tests and taking votes.
+
+And my justifications are:
+1.  At the level of the core idea, I’m making this to satisfy my own theoretical fascinations, and whether its useful to others is only {incidentally important}(d-crossover).
+2.  I understand that I in my sole human judgement am not going to make the best universal decisions. But if I were to make my method {evidence-based}(e-crossover), I would be {relinquishing my decision-power altogether}(6-comment), and **that is the very thing that makes design interesting**.
+
+### Why I find Goby interesting to build:
+
+1. The value propositions I mentioned above come from actual issues I’ve had with existing tools and the wish for something more flexible.
+2. There’s something really interesting about representing the same information in different forms, and seeing how at the programmatic level, many different types of data are actually stored the same.
+3. Abstract logical relationships and structures (ontologies) are a through-line of my interests in {programming}(7-comment), {design}(8-comment), and {philosophy}(9-comment).
+
+To expand on this last point:
+* As a programmer it presents the challenge of creating a robust enough system to handle an almost infinite depth of customization.
+* As a designer it presents the challenge of making all this customization feel accessible, non-intimidating, and intuitively easy to grasp.
+* As a philosophy student, it presents the challenge of figuring out for myself how it all “{hangs together}(10-comment)”: how do these logical structures relate to the world? How do they relate to *the way we understand* the world?
+
+### Some documentation from throughout the semester:
+
+A [specification document](https://www.dropbox.com/s/w4rszpgyz03db49/goby-principles-and-objectives.pdf?dl=0) I produced with my broad goals for Goby’s features and underlying architecture:
+
+%batch-principles%
+
+I tried (and mostly failed) to explain Goby to some fellow student designers with [this presentation](https://www.dropbox.com/s/0ozdiuhydyk5uje/goby-explanation.pdf?dl=0) that illustrated its features using the example of a sci-fi author creating lore for a novel:
+
+%batch-presentation%
+[]
+
+[.footnotes]
+id:1
+text:The jury’s still out on whether it will be.
+
+id:2
+text: I find these evocative terms a little questionable. How do we verify that a tool resembles or changes the way you “think”? And what “knowledge” gets built with these tools, which often have little infrastructure around verifying and properly classifying information?
+
+id:3
+text: Names, dates, and other strings of text or numbers.
+
+id:4
+text: The *relationships* between the different ideas you’re organizing.
+
+
+id: 5
+text: Indeed I did give one, but did you understand it at all until I took you through the features? Do you understand it now?
+
+
+id: 6
+text:Not to mention I don’t have the resources to do it seriously.
+
+id: 7
+text: Goby is based on [ontology design](https://en.wikipedia.org/wiki/Ontology_engineering) and [object storage](https://en.wikipedia.org/wiki/Object_storage).
+
+id:8
+text:I clearly don’t like design definitions, but as far as they go, Papanek’s definition on the first page of *What is Design?* speaks to my favorite aspect of the discipline: “The planning and patterning of any act towards a desired, foreseeable end constitutes the design process…Design is the conscious effort to impose meaningful order.”
+
+id:9
+text:I see doing ‘metaphysics’ as something like ontology-building: making a structure of ideas in elaborate logical groupings and relationships — and in my observation people like to think about the world in this way. But the illicit leap in metaphysics is thinking your theory actually corresponds to the world (that’s part of the point of the neighboring essay).
+
+id:10
+text:“The aim of philosophy, abstractly formulated, is to understand how things in the broadest possible sense of the term hang together in the broadest possible sense of the term” — Wilfrid Sellars in *Philosophy and the Scientific Image of Man*.
+[]
+
+{.batches}
+[.software]
+  image1:obsidian.gif
+  text1:[Obsidian](https://obsidian.md/) lets you organize notes written in [Markdown](https://en.wikipedia.org/wiki/Markdown) with tags and references to other notes, and visualize your system in a network graph.
+  image2:notion.gif
+  text2:[Notion](https://notion.so/) databases offer an interface to create tables with a wide array of property types and utilities, including formulas and relations to other tables.
+
+  image1:arena.gif
+  text1:[Are.na](https://www.are.na/) is a communal platform for collecting images, links, and other media on the web, and organizing it in “channels”. It’s one of those programs that’s difficult to do justice to in an elevator pitch.
+  image2:kinopio.gif
+  text2:[Kinopio](https://kinopio.club/) lets you drag around and connect “cards” with images and text in an open sandbox, with the aim of allowing “spatial thinking”.
+[]
+
+[.principles]
+[]
+
+[.presentation]
+[]
+
+{}

@@ -23,21 +23,42 @@
         <article id='theory' class="active">
           <h2><span class='col-heading nav' data-which='theory'>a theory</span> <span data-which='center' class='nav yes-and'>and</span></h2>
           <div class="content charter">
-
             {% for par in essay1.text %}
               {% if par.value[0] == '%' %}
                 {% set graphic = par.value | replace("%", "") | replace("%", "") %}
-                <div class="placeholder-graphic">
+                {% set gdata = graphic.split('-') %}
+                {% if gdata[0] == 'diptych' %}
+                  {% set dIndex=gdata[1] | int %}
+                  {% set diptych = essay1.diptychs[dIndex] %}
+                  {{ macros.diptych(diptych) }}
+
+                {% elseif gdata[0] == 'expand' %}
+                {% set expand = gdata[1] | findwhere(essay1.expand,'id') %}
+                <div class="real-blockquote" data-id='{{ expand.linkid }}'>
+                  <div class="inner">
+                    {{ expand.text | md | safe }}
+                  </div>
 
                 </div>
+
+                {% endif %}
               {% else %}
                 {{ par.value | footnotes | md | safe }}
 
-
               {% endif %}
 
+            {% endfor %}
+
+            <h3>Notes and references</h3>
+            <ol class="references">
+            {% for footnote in essay1.footnotes %}
+              <li class="footnote" data-id="{{ footnote.id }}" >
+                {{ footnote.text | md | safe }}
+                <span class='return-top' href="">↵</span>
+              </li>
 
             {% endfor %}
+            </ol>
           </div>
         </article>
       </div>
@@ -45,6 +66,54 @@
         <article id='practice' class="">
           <h2><span data-which='practice' class='col-heading nav'>practice</span></h2>
           <div class="content charter">
+            {% for par in essay2.text %}
+              {% if par.value[0] == '%' %}
+
+                {% set graphic = par.value | replace("%", "") | replace("%", "") %}
+                {% set gdata = graphic.split('-') %}
+                {% if gdata[0] == 'batch' %}
+                  {% set batch = essay2.batches[gdata[1]] %}
+                  {% for diptych in batch %}
+                    {{ macros.diptych(diptych) }}
+                  {% endfor %}
+                  {# {% if gdata[1] == 'software'%}
+
+                  {% endif %} #}
+                {% endif %}
+
+                {# {% if gdata[0] == 'diptych' %}
+                  {% set dIndex=gdata[1] | int %}
+                  {% set diptych = essay1.diptychs[dIndex] %}
+                  {{ macros.diptych(diptych) }}
+
+                {% elseif gdata[0] == 'expand' %}
+                {% set expand = gdata[1] | findwhere(essay1.expand,'id') %}
+                <div class="real-blockquote" data-id='{{ expand.linkid }}'>
+                  <div class="inner">
+                    {{ expand.text | md | safe }}
+                  </div>
+
+                </div>
+                {% endif %} #}
+
+              {% else %}
+                {{ par.value | footnotes | md | safe }}
+
+              {% endif %}
+
+            {% endfor %}
+
+
+            <h3>Notes and references</h3>
+            <ol class="references">
+            {% for footnote in essay2.footnotes %}
+              <li class="footnote" data-id="{{ footnote.id }}" >
+                {{ footnote.text | md | safe }}
+                <span class='return-top' href="">↵</span>
+              </li>
+
+            {% endfor %}
+            </ol>
 
           </div>
         </article>
@@ -53,9 +122,38 @@
 
     </div>
 
+    <aside id="footnote-panel">
+      <div class="f-content">
 
+      </div>
+    </aside>
 
+    <script type="text/javascript">
+      let footnotes={
+        theory:[
+          {% for footnote in essay1.footnotes %}
+          {% set text= footnote.text | md  %}
+          {% set text = text.replace('\n','') | safe %}
+          {
+            id:"{{ footnote.id }}",
+            html:`{{ text }}`
+          },
+          {% endfor %}
+        ],
+        practice:[
+          {% for footnote in essay2.footnotes %}
+          {% set text= footnote.text | md  %}
+          {% set text = text.replace('\n','') | safe %}
+          {
+            id:"{{ footnote.id }}",
+            html:`{{ text }}`
+          },
+          {% endfor %}
+        ]
+      };
+      console.log(footnotes);
 
+    </script>
     <script src="../js/purpose.js" charset="utf-8" defer></script>
   </body>
 </html>

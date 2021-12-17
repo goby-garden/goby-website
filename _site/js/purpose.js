@@ -1,8 +1,13 @@
 const observers = [];
 const presentSteps = [];
 let topDist = window.scrollY;
-let readMode='theory';
+let readMode='practice';
 let passedIntro=false;
+
+const aside={
+  id:undefined,
+  on:false
+};
 
 const essayBox=document.querySelector('#essays');
 
@@ -16,6 +21,16 @@ window.addEventListener('load',function(){
   });
 
 
+  navSetUp();
+
+
+  footNotesSetUp('theory');
+  footNotesSetUp('practice');
+
+
+})
+
+function navSetUp(){
   document.querySelectorAll('.nav').forEach((item, i) => {
 
     item.addEventListener('mouseenter',function(){
@@ -28,17 +43,19 @@ window.addEventListener('load',function(){
     item.addEventListener('click',function(){
       // essayBox.dataset.selected=item.dataset.which;
       readMode=item.dataset.which;
-      scaleArticles(passedIntro?readMode:'center');
+
+      if(passedIntro){
+        scaleArticles(readMode);
+
+      }else{
+       document.querySelector('div[data-trigger="scale"]').scrollIntoView({behavior: "smooth"});
+      }
+
+
+      // scaleArticles(passedIntro?readMode:'center');
     })
   });
-
-
-
-
-
-})
-
-
+}
 
 
 function intersectionControl(entries){
@@ -73,6 +90,105 @@ function intersectionControl(entries){
   });
 
 }
+
+
+function footNotesSetUp(essay){
+
+  let links=document.querySelectorAll('#'+essay+' .footnote-link');
+  // let domNotes=document.querySelectorAll('#'+essay+' .footnote');
+  let fdata=footnotes[essay];
+  let panel=document.querySelector('#footnote-panel')
+
+  links.forEach((item, i) => {
+
+
+    if(item.dataset.type!=='crossover'){
+      item.id=essay+'link'+item.dataset.id;
+      let corresponding=document.querySelector(`#${essay}  .footnote[data-id="${item.dataset.id}"]`);
+      corresponding.id=essay+'note'+item.dataset.id;
+      corresponding.style.order=i;
+      item.addEventListener('click',function(){
+        corresponding.scrollIntoView();
+        corresponding.classList.add('glow');
+        setTimeout(function () {
+          corresponding.classList.remove('glow');
+        }, 300);
+      })
+      corresponding.querySelector('.return-top').addEventListener('click',function(){
+        item.scrollIntoView();
+        item.classList.add('glow');
+        setTimeout(function () {
+          item.classList.remove('glow');
+        }, 500);
+      })
+    }
+
+
+
+    item.addEventListener('mouseover',function(){
+      console.log(item);
+      switch(item.dataset.type){
+        case 'comment':
+        aside.on=true;
+        panel.classList.add('on');
+        panel.style.left=checkPos(event.clientX,'x')+'px';
+        panel.style.top=checkPos(event.clientY,'y')+'px';
+        if(aside.id!==item.dataset.id){
+          panel.querySelector('.f-content').innerHTML=fdata.find(a=>a.id==item.dataset.id).html;
+        }
+        panel.style.border=`1px solid ${essay=='theory'?'darkviolet':'green'}`;
+        break;
+        case 'expand':
+        document.querySelector(`.real-blockquote[data-id="${item.dataset.id}"]`).classList.add('possible');
+        break;
+      }
+
+    })
+
+    item.addEventListener('mouseleave',function(){
+      aside.on=false;
+      panel.classList.remove('on');
+
+      if(item.dataset.type=='expand'){
+        document.querySelector(`.real-blockquote[data-id="${item.dataset.id}"]`).classList.remove('possible');
+      }
+    })
+
+    item.addEventListener('mousemove',function(){
+      panel.style.left=checkPos(event.clientX,'x')+'px';
+      panel.style.top=checkPos(event.clientY,'y')+'px';
+    })
+
+    function checkPos(offset,dimension){
+      let backset=dimension=='x'?panel.offsetWidth/2:-15;
+      let dist=offset+(dimension=='x'?panel.offsetWidth:panel.offsetHeight) + 20 - backset;
+      let span=dimension=='x'?window.innerWidth:window.innerHeight;
+      let returnVal=offset - backset;
+
+      if(dist>span){
+        returnVal=offset - (dist-span);
+      }
+
+      if(returnVal<0){
+        returnVal=0;
+      }
+
+      return returnVal;
+
+      // if(dist>span){
+      //   return offset - (dist-span);
+      // }else if(dimension=='x' && ){
+      //
+      // }else{
+      //   return offset - backset;
+      // }
+    }
+
+
+  });
+
+}
+
 
 function scaleArticles(mode){
   console.log(essayBox);

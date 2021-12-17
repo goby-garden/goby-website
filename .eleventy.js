@@ -14,9 +14,14 @@ module.exports = function(eleventyConfig) {
 
   eleventyConfig.addPassthroughCopy("templates/js");
   eleventyConfig.addPassthroughCopy("templates/assets/fonts");
+  eleventyConfig.addPassthroughCopy("templates/assets/purpose");
 
   eleventyConfig.addFilter( "myFilter", function() {});
   eleventyConfig.setTemplateFormats("html,css,njk,ttf");
+
+  eleventyConfig.addNunjucksFilter( "findwhere", function(value,data,key) {
+    return data.find(a=>a[key]==value);
+  });
 
 
 
@@ -27,7 +32,10 @@ module.exports = function(eleventyConfig) {
     return value.replace(/\{(.*?)\}\((.*?)\)/g,function(str){
       const reg=/\{(.*?)\}\((.*?)\)/;
       const matches=reg.exec(str);
-      return `<span class='footnote-link' data-id="${matches[2]}">${matches[1]}</span>`;
+      const id=matches[2].split('-');
+
+
+      return `<span class='footnote-link' data-id="${id[0]}" data-type="${id[1]}">${matches[1]}</span>`;
     })
 
   });

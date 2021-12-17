@@ -1,0 +1,17 @@
+{% macro figure(src,text) %}
+  <figure>
+    <img src="../assets/purpose/{{ src }}" alt="">
+    <figcaption>
+      {{ text | md | safe }}
+    </figcaption>
+  </figure>
+{% endmacro %}
+
+
+
+{% macro diptych(data) %}
+  <div class="diptych">
+    {{ figure(data.image1,data.text1) }}
+    {{ figure(data.image2,data.text2) }}
+  </div>
+{% endmacro %}
