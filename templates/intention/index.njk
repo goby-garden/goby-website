@@ -30,7 +30,7 @@
                 {% if gdata[0] == 'diptych' %}
                   {% set dIndex=gdata[1] | int %}
                   {% set diptych = essay1.diptychs[dIndex] %}
-                  {{ macros.diptych(diptych) }}
+                  {{ macros.diptych(diptych,gdata[2]) }}
 
                 {% elseif gdata[0] == 'expand' %}
                 {% set expand = gdata[1] | findwhere(essay1.expand,'id') %}
@@ -40,7 +40,31 @@
                   </div>
 
                 </div>
-
+                {% elseif gdata[1] == 'languagegames' %}
+                  <div class='language-games step' data-trigger='language-games'>
+                    <p>
+                      <span>“Giving orders, and acting on them— </span>
+                      <span>Describing an object by its appearance or by its measurements,— </span>
+                      <span>Constructing an object from a description (a drawing)— </span>
+                      <span>Reporting an event— </span>
+                      <span>Speculating about the event— </span>
+                      <span>Forming and testing a hypothesis— </span>
+                      <span>Presenting the results of an experiment in tables and diagrams— </span>
+                      <span>Making up a story; and reading one— </span>
+                      <span>Acting in a play— </span>
+                      <span>Singing rounds— </span>
+                      <span>Guessing riddles— </span>
+                      <span>Cracking a joke; telling one— </span>
+                      <span>Solving a problem in applied arithmetic— </span>
+                      <span>Translating from one language into another— </span>
+                      <span>Requesting, </span>
+                      <span>thanking, </span>
+                      <span>cursing, </span>
+                      <span>greeting, </span>
+                      <span>praying.” </span>
+                    </p>
+                    <p>— Adapted from §23 in the <em>Philosophical Investigations</em></p>
+                    </div>
                 {% endif %}
               {% else %}
                 {{ par.value | footnotes | md | safe }}
@@ -74,11 +98,18 @@
                 {% if gdata[0] == 'batch' %}
                   {% set batch = essay2.batches[gdata[1]] %}
                   {% for diptych in batch %}
-                    {{ macros.diptych(diptych) }}
+                    {{ macros.diptych(diptych,gdata[1]) }}
                   {% endfor %}
                   {# {% if gdata[1] == 'software'%}
 
                   {% endif %} #}
+
+                {% elseif gdata[0] == 'diptych' %}
+                  {% set dIndex=gdata[1] | int %}
+                  {% set diptych = essay2.diptychs[dIndex] %}
+                  {# {{diptych.text1}} #}
+                  {{ macros.diptych(diptych,gdata[2]) }}
+
                 {% endif %}
 
                 {# {% if gdata[0] == 'diptych' %}
@@ -127,6 +158,8 @@
 
       </div>
     </aside>
+
+    {# <div class="step" data-trigger="end" data-parent='practice'></div> #}
 
     <script type="text/javascript">
       let footnotes={

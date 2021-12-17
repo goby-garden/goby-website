@@ -9,8 +9,8 @@
 
 
 
-{% macro diptych(data) %}
-  <div class="diptych">
+{% macro diptych(data,name) %}
+  <div class="diptych" data-name="{{ name }}">
     {{ figure(data.image1,data.text1) }}
     {{ figure(data.image2,data.text2) }}
   </div>

@@ -1,6 +1,10 @@
 
 [+text]
-I’ve been working on a piece of software called **Goby** that has turned out to be very difficult to get anyone to understand. I think this is because 1. It’s based on a collection of existing software and philosophy/programming concepts that are foreign to most people, and 2. My interest in the project has {nothing to do}(a-crossover) with it being {useful to anyone}(1-comment).
+I’ve been working on a piece of software called **Goby** that has turned out to be very difficult to get anyone to understand. I think this is because:
+
+1. It’s based on a collection of existing software and philosophy/programming concepts that are foreign to most people, and
+
+2. My interest in the project has {nothing to do}(a-crossover) with it being {useful to anyone}(1-comment).
 
 I’m going to give the pitch another shot here, starting with the parts of this project that give it the *potential* to be of interest to some kind of audience, however small.
 
@@ -30,10 +34,18 @@ In theory, the audience for Goby is people who already know and love the existin
 
 * **Value proposition #3:** Goby will allow more flexible data structure customization than any thinking tool that currently exists.
 
-%diptych-cooker%
+My first experiment was [a demo](https://goby.garden/ontology/) for this property panel, which (without getting too deep in the details) would let you define properties of items according to an array of options.
+
+<!-- %diptych-0-cooker% -->
+
+![](../assets/purpose/exp1-1.gif)
+
+After seeing people struggle to understand the buttons and features in this demo, I’ve been working on making the controls more intuitive and adding tooltips. As much I rag on UX, I'm sure there's much I can learn from that corner of the graphic design world about how to reduce visual and memorization burdens.
+
+%diptych-0-cooker%
 
 
-### Hypothetical use cases:
+### Hypothetical use cases for Goby:
 
 * Archiving items in a database or collection where items have metadata and relational properties.
 * World-building/construction lore for a fantasy or sci-fi book, and making connections between characters, locations, plot-points, and so on.
@@ -45,7 +57,7 @@ In theory, the audience for Goby is people who already know and love the existin
 
 One of the reasons for juxtaposing this essay with the adjacent one is that I want to make my priorities with Goby clear. When I’m working on Goby’s interfaces, I think constantly about how people will experience using the tool:
 
-* Are the visual {choices}(c-crossover) I’m making consistent in meaning?
+* Are the visual choices I’m making consistent in meaning?
 * Is the ramp of complexity too steep?
 * Is there a physical analog I can use to make the function of a toolbar clear?
 * Where can I offer shortcuts to make operations simpler?
@@ -130,9 +142,34 @@ text:“The aim of philosophy, abstractly formulated, is to understand how thing
 []
 
 [.principles]
+image1:principles-1.png
+text1:
+image2:principles-2.png
+text2:
+
+image1:principles-3.png
+text1:
+image2:principles-4.png
+text2:
 []
 
 [.presentation]
+image1:explanation-1.png
+text1:
+image2:explanation-2.png
+text2:
+
+image1:explanation-3.png
+text1:
+image2:explanation-4.png
+text2:
 []
 
 {}
+
+[.diptychs]
+image1:tooltip.png
+text1:
+image2:intro-screen.png
+text2:
+[]

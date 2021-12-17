@@ -1,13 +1,18 @@
 const observers = [];
 const presentSteps = [];
 let topDist = window.scrollY;
-let readMode='practice';
+let readMode='theory';
 let passedIntro=false;
 
 const aside={
   id:undefined,
   on:false
 };
+
+const passedEnd={
+  theory:false,
+  practice:false,
+}
 
 const essayBox=document.querySelector('#essays');
 
@@ -26,6 +31,12 @@ window.addEventListener('load',function(){
 
   footNotesSetUp('theory');
   footNotesSetUp('practice');
+
+  document.querySelectorAll('.language-games span').forEach((item, i) => {
+    item.style.setProperty('--count', i);
+  });
+
+
 
 
 })
@@ -83,6 +94,13 @@ function intersectionControl(entries){
         passedIntro=boxIn;
         scaleArticles(boxIn?readMode:'center');
         break;
+        case 'language-games':
+        if(boxIn){
+          step.classList.add('view');
+        }else{
+          step.classList.remove('view');
+        }
+        break;
       }
     }
 
@@ -121,9 +139,39 @@ function footNotesSetUp(essay){
           item.classList.remove('glow');
         }, 500);
       })
+    }else{
+      item.addEventListener('click',function(){
+        const otherEssay=essay=='theory'?'practice':'theory';
+        const counterPart=document.querySelector(`#${otherEssay} span[data-type="crossover"][data-id="${item.dataset.id}"]`);
+
+        if(readMode!=='center'){
+          console.log(readMode)
+          readMode='center';
+          scaleArticles('center');
+          setTimeout(function () {
+            let yPos=window.scrollY + counterPart.getBoundingClientRect().top - window.innerHeight/2;
+            window.scrollTo({left:0,top:yPos,behavior:'smooth'});
+            glowInOut(counterPart);
+            // counterPart.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+          }, 1000);
+        }else{
+          let yPos=window.scrollY + counterPart.getBoundingClientRect().top - window.innerHeight/2;
+          window.scrollTo({left:0,top:yPos,behavior:'smooth'});
+          glowInOut(counterPart);
+        }
+        // console.log(counterPart);
+      })
     }
 
+    function glowInOut(el){
+      setTimeout(function () {
+        el.classList.add('glow');
+        setTimeout(function () {
+          el.classList.remove('glow');
+        }, 1000);
+      }, 500);
 
+    }
 
     item.addEventListener('mouseover',function(){
       console.log(item);
@@ -198,7 +246,15 @@ function scaleArticles(mode){
   }
   if(mode!=='center'){
     document.querySelector('#'+mode).classList.add('active');
+
+    // setTimeout(function () {
+    //   console.log(passedEnd[mode])
+    //   if(passedEnd[mode]){
+    //     document.querySelector('div[data-trigger="scale"]').scrollIntoView({behavior: "smooth"});
+    //   }
+    // }, 300);
   }
+
 
 }
 
