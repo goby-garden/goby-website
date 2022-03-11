@@ -21,7 +21,9 @@
   },
   "dependencies": {
     "archieml": "^0.5.0",
+    "better-sqlite3": "^7.5.0",
     "js-yaml": "^4.1.0",
     "marked": "^4.0.7"
-  }
+  },
+  "type": "module"
 }
