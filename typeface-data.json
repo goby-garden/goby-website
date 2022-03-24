@@ -1,0 +1,116 @@
+{
+  "values":[
+  {
+    "Name": "Signifier",
+    "Foundry": "Klim",
+    "Classification": "Serif",
+    "Style": "Brutalist",
+    "Website": "https://klim.co.nz/retail-fonts/signifier/"
+  },
+  {
+    "Name": "IBM Plex Sans",
+    "Foundry": "Bold Monday",
+    "Classification": "Sans-serif",
+    "Style": "Grotesque, Gothic",
+    "Website": "https://www.ibm.com/plex/"
+  },
+  {
+    "Name": "Courier New",
+    "Foundry": "",
+    "Classification": "Monospace, serif",
+    "Style": "Slab",
+    "Website": ""
+  },
+  {
+    "Name": "GT Alpina",
+    "Foundry": "Grilli ",
+    "Classification": "Serif",
+    "Style": "Crunchy",
+    "Website": "https://www.grillitype.com/typeface/gt-alpina"
+  },
+  {
+    "Name": "Times New Roman",
+    "Foundry": "Monotype",
+    "Classification": "Serif",
+    "Style": "Transitional",
+    "Website": ""
+  },
+  {
+    "Name": "Triptych",
+    "Foundry": "Pyte Foundry",
+    "Classification": "Serif",
+    "Style": "Crunchy",
+    "Website": "https://thepytefoundry.net/typefaces/triptych/"
+  },
+  {
+    "Name": "Space Grotesk",
+    "Foundry": "Florian Karsten",
+    "Classification": "Sans-serif",
+    "Style": "Grotesque",
+    "Website": "https://fonts.floriankarsten.com/space-grotesk"
+  },
+  {
+    "Name": "Gerstner-Programm",
+    "Foundry": "Forgotten Shapes",
+    "Classification": "Sans-serif",
+    "Style": "Grotesque",
+    "Website": "https://forgotten-shapes.com/gerstner-programm"
+  },
+  {
+    "Name": "Pitch",
+    "Foundry": "Klim",
+    "Classification": "Monospace, serif",
+    "Style": "Typewriter",
+    "Website": "https://klim.co.nz/retail-fonts/pitch/"
+  },
+  {
+    "Name": "Filosofia",
+    "Foundry": "Emigre",
+    "Classification": "Serif",
+    "Style": "Didone",
+    "Website": "https://www.emigre.com/Fonts/Filosofia"
+  },
+  {
+    "Name": "Bradford Mono",
+    "Foundry": "Lineto",
+    "Classification": "Monospace, serif",
+    "Style": "Transitional, crunchy",
+    "Website": "https://lineto.com/typefaces/bradford-mono"
+  },
+  {
+    "Name": "Academica",
+    "Foundry": "Storm Type",
+    "Classification": "Serif",
+    "Style": "Crunchy",
+    "Website": "https://www.stormtype.com/families/academica"
+  },
+  {
+    "Name": "Immortel",
+    "Foundry": "205TF",
+    "Classification": "Serif",
+    "Style": "Crunchy",
+    "Website": "https://www.205.tf/immortel"
+  },
+  {
+    "Name": "Panama",
+    "Foundry": "The Temporary State",
+    "Classification": "Serif",
+    "Style": "Crunchy",
+    "Website": "https://typefaces.temporarystate.net/preview/Panama"
+  },
+  {
+    "Name": "Public Sans",
+    "Foundry": "U.S. Web Design System (USWDS)",
+    "Classification": "Sans-serif",
+    "Style": "Gothic",
+    "Website": "https://public-sans.digital.gov/"
+  },
+  {
+    "Name": "Neue Haas Unica",
+    "Foundry": "Monotype",
+    "Classification": "Sans-serif",
+    "Style": "Grotesque",
+    "Website": "https://fonts.adobe.com/fonts/neue-haas-unica"
+  }
+]
+}
