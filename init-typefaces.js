@@ -1,21 +1,9 @@
 import Database from 'better-sqlite3';
-// var Project = require('./sqlite');
 import Project from './sqlite.js';
-
-
-// const fs = require('fs');
 import * as fs from 'fs';
 import * as util from 'util';
-// const util = require('util');
 
-
-
-
-
-
-
-const project=new Project('typefaces.db');
-
+const project=new Project('typefaces-updated.db');
 
 project.createTable('class','Typefaces');
 
@@ -37,7 +25,10 @@ project.addProperty(
     default:null
   },
   'single',
-  false
+  {
+    display:true,
+    colwidth:4
+  }
 );
 
 project.addProperty(
@@ -56,7 +47,10 @@ project.addProperty(
     default:null
   },
   'multiple',
-  false
+  {
+    display:true,
+    colwidth:4
+  }
 );
 
 project.addProperty(
@@ -75,7 +69,10 @@ project.addProperty(
     default:null
   },
   'multiple',
-  false
+  {
+    display:true,
+    colwidth:4
+  }
 );
 
 project.addProperty(
@@ -86,8 +83,7 @@ project.addProperty(
   {
     type:'resource'
   },
-  'single',
-  false
+  'single'
 )
 
 async function getTypefaces(){
@@ -97,7 +93,6 @@ async function getTypefaces(){
 
   return parsed.values;
 }
-
 
 
 async function importTypefaces(){
@@ -110,7 +105,7 @@ async function importTypefaces(){
     project.db.prepare('SELECT * FROM [class_Typefaces]').all(),
     project.db.prepare('SELECT * FROM junction_1').all()
   ]
-  console.log(print_tests);
+  // console.log(print_tests);
 
   project.db.close();
 }

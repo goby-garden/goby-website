@@ -11,13 +11,13 @@
     "Name": "IBM Plex Sans",
     "Foundry": "Bold Monday",
     "Classification": "Sans-serif",
-    "Style": "Grotesque, Gothic",
+    "Style": "Grotesque,Gothic",
     "Website": "https://www.ibm.com/plex/"
   },
   {
     "Name": "Courier New",
     "Foundry": "",
-    "Classification": "Monospace, serif",
+    "Classification": "Monospace,Serif",
     "Style": "Slab",
     "Website": ""
   },
@@ -59,7 +59,7 @@
   {
     "Name": "Pitch",
     "Foundry": "Klim",
-    "Classification": "Monospace, serif",
+    "Classification": "Monospace,Serif",
     "Style": "Typewriter",
     "Website": "https://klim.co.nz/retail-fonts/pitch/"
   },
@@ -73,8 +73,8 @@
   {
     "Name": "Bradford Mono",
     "Foundry": "Lineto",
-    "Classification": "Monospace, serif",
-    "Style": "Transitional, crunchy",
+    "Classification": "Monospace,Serif",
+    "Style": "Transitional,crunchy",
     "Website": "https://lineto.com/typefaces/bradford-mono"
   },
   {
