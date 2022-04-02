@@ -86,6 +86,8 @@ project.addProperty(
   'single'
 )
 
+// project.createTable('class','Projects');
+
 async function getTypefaces(){
   let rawdata = await fs.readFileSync('typeface-data.json');
   let parsed = JSON.parse(rawdata);

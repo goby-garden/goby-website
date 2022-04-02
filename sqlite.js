@@ -96,8 +96,8 @@ class Project{
     if(type=='class'){
 
       // let latest=this.db.prepare('SELECT id FROM system_classlist ORDER BY id DESC').get();
-      let latest=this.db.prepare('SELECT COUNT(*) AS length FROM system_classlist').get()
-      latest=latest?latest.length:0;
+      let latest=this.db.prepare('SELECT id FROM system_classlist ORDER BY id DESC').get()
+      latest=latest?latest.id:1;
       console.log(latest);
       //this will be constructed using addProperty
       const table_meta={
@@ -271,8 +271,7 @@ class Project{
                 ],
                 default:null
               },
-              target.count,
-              false
+              target.count
             )
           }
         }
@@ -336,19 +335,14 @@ class Project{
     }
 
     let command_string=`SELECT [class_${class_name}].* ${relation_selects.length>0?', '+relation_selects.join(', '):''} FROM [class_${class_name}] ${joins.join(' ')} ${groupby}`;
-
     let class_data=this.db.prepare(command_string).all();
-    if(class_id==2){
-      console.log(command_string,class_data[0].user_test);
-    }
 
     let stringified_properties=class_meta.properties.filter(a=>a.type=='relation'||a.count=='multiple');
     class_data.map(row=>{
       for (let prop of stringified_properties){
-        // row['user_'+prop.name]=JSON.parse(row['user_'+prop.name]);
+        row['user_'+prop.name]=JSON.parse(row['user_'+prop.name]);
       }
     })
-
     return class_data;
 
     // return this.db.prepare(command_string).all();
@@ -376,12 +370,19 @@ class Project{
     return this.db.prepare(`SELECT user_${prop_name} FROM [class_${class_name}] WHERE system_id = ${object_id}`).get();
   }
 
-  updateRelation(action,class1_id,object1_id,class2_id,object2_id,junction_id){
+  updateClassMeta(class_id,content){
+    this.db.prepare(`UPDATE system_classlist set metadata = '${content}' WHERE id = ${class_id}`).run();
+  }
+
+  async updateRelation(action,class1_id,object1_id,class2_id,object2_id,junction_id){
     if(action=='add'){
-      this.db.prepare(`INSERT INTO junction_${junction_id} (class_${class1_id}, class_${class2_id}) VALUES (${object1_id},${object2_id})`).run();
+      let result=await this.db.prepare(`INSERT INTO junction_${junction_id} (class_${class1_id}, class_${class2_id}) VALUES (${object1_id},${object2_id})`).run();
+      console.log(result);
     }else{
-      this.db.prepare(`DELETE FROM junction_${junction_id} WHERE class_${class1_id}=${object1_id} AND class_${class2_id}=${object2_id}`).run();
+      let result=await this.db.prepare(`DELETE FROM junction_${junction_id} WHERE class_${class1_id}=${object1_id} AND class_${class2_id}=${object2_id}`).run();
+      console.log(result);
     }
+    console.log('done updating');
     // this.db.prepare(`UPDATE [junction_${junction_id}] set user_${prop_name} = '${value}' WHERE system_id = ${object_id}`).run();
   }
 
