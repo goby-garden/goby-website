@@ -26,5 +26,4 @@
     "js-yaml": "^4.1.0",
     "marked": "^4.0.7"
   },
-  "type": "module"
 }
