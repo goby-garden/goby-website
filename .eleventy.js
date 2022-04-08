@@ -15,6 +15,8 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("templates/js");
   eleventyConfig.addPassthroughCopy("templates/assets/fonts");
   eleventyConfig.addPassthroughCopy("templates/assets/purpose");
+  eleventyConfig.addPassthroughCopy("templates/assets/journey");
+  eleventyConfig.addPassthroughCopy("templates/assets/video");
 
   eleventyConfig.addFilter( "myFilter", function() {});
   eleventyConfig.setTemplateFormats("html,css,njk,ttf");

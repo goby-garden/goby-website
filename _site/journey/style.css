@@ -1,0 +1,21 @@
+html{
+  scroll-snap-type: y mandatory;
+}
+
+.slide{
+  width:100vw;
+  height:100vh;
+  scroll-snap-align: center;
+  border-bottom:1px solid black;
+  box-sizing: border-box;
+
+  display: grid;
+  grid-template-columns: 40px repeat(6, 1fr) 40px;
+  grid-template-rows: 60px repeat(5, 1fr) 40px;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
+.top-text{
+  grid-column:1/6;
+}
