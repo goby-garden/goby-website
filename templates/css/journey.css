@@ -1,12 +1,17 @@
 html{
-  scroll-snap-type: y mandatory;
+  /* scroll-snap-type: y mandatory; */
+  /* scroll-behavior:smooth; */
   background-color: white;
+}
+
+body{
+  /* scroll-behavior: smooth;  */
 }
 
 .slide{
   width:100vw;
   height:100vh;
-  scroll-snap-align: center;
+  /* scroll-snap-align: center; */
   /* border-bottom:1px solid black; */
   display:flex;
   flex-flow: column nowrap;
@@ -18,6 +23,11 @@ html{
   /* grid-column-gap: 0px;
   grid-row-gap: 0px; */
 }
+
+
+/* .slide[data-s="1"]{
+  margin-top:10px;
+} */
 
 .grid{
   display: grid;
