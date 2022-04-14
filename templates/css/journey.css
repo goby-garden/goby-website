@@ -115,6 +115,7 @@ svg{
 }
 
 .vid .wrap{
+  transition:opacity 0.3s;
   position:absolute;
   top:0;
   left:0;

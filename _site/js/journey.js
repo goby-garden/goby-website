@@ -3,38 +3,43 @@ let observers=[];
 const presentSteps = [];
 let topDist = window.scrollY;
 
-let ind=1;
+let ind=0;
 
 window.addEventListener('keydown',function(){
-  if(event.keyCode=='39'){
-    console.log('ind:',ind);
-    let next=document.querySelector(`.slide[data-s="${ind == 8? 1 : ind + 1 }"]`);
+
+
+  if(event.key=='ArrowRight'){
+    event.preventDefault();
+    // console.log('ind:',ind);
+    let next=document.querySelector(`.slide[data-step="${ind == 7? 0 : ind + 1 }"]`);
     let scrolltop=next.offsetTop;
     window.scroll({
       top:scrolltop,
-      left:0
+      left:0,
+      behavior:'smooth'
     })
-    console.log(next,scrolltop);
+
+    console.log('go to:',ind == 7? 0 : ind + 1 );
+    // console.log(next,scrolltop);
     // next.scrollIntoView();
-  }else if(event.keyCode=='37'){
-    let back=document.querySelector(`.slide[data-s="${ind == 1? 8 : ind - 1 }"]`);
+  }else if(event.key=='ArrowLeft'){
+    event.preventDefault();
+    let back=document.querySelector(`.slide[data-step="${ind == 0? 7 : ind - 1 }"]`);
     // back.scrollIntoView();
     let scrolltop=back.offsetTop;
-    console.log(scrolltop)
+    if(ind-1 == 2) scrolltop=scrolltop - window.innerHeight;
+    // console.log(scrolltop)
     window.scroll({
       top:scrolltop,
-      left:0
+      left:0,
+      behavior:'smooth'
     })
-    console.log(back)
+    console.log('go to:',ind == 0? 7 : ind - 1)
   }
 })
 
 
 window.addEventListener('load',function(){
-
-
-
-
   createObserver({
     root: null,
     rootMargin: `${document.body.clientHeight}px 0px -50% 0px`,
@@ -42,30 +47,17 @@ window.addEventListener('load',function(){
     callback: intersectionControl,
     step: '.slide',
   });
-
 })
 
 function intersectionControl(entries){
   entries.forEach((item, i) => {
-    // let changed=false;
-    // let step=item.target;
-    // let boxIn=true;
-    // if (item.isIntersecting&&step.dataset.pos!=='in') {
-    //   step.dataset.pos='in';
-    //   changed=true;
-    //   boxIn=true;
-    // } else if(!item.isIntersecting&&step.dataset.pos!=='out') {
-    //   step.dataset.pos='out';
-    //   changed=true;
-    //   boxIn=false;
-    // }
 
     let allIn = item.intersectionRatio >= 0.99;
     let allOut = item.intersectionRatio <= 0.01;
     let step=item.target;
 
     if(!allIn&&!allOut){
-      ind=parseInt(step.dataset.s);
+      ind=parseInt(step.dataset.step);
       console.log(ind);
     }
 
@@ -78,15 +70,6 @@ function intersectionControl(entries){
       }
     }
 
-    // if(changed){
-    //   console.log('!')
-    //   let vid=document.querySelector(`.wrap[data-viditem="${step.dataset.vidtrigger}"]`);
-    //   if(boxIn){
-    //     vid.classList.remove('hide');
-    //   }else if(step.dataset.vidtrigger!=='1'){
-    //     vid.classList.add('hide');
-    //   }
-    // }
   });
 
 }
