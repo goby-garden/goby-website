@@ -11,6 +11,7 @@ body{
 .slide{
   width:100vw;
   height:100vh;
+  /* min-height:30vw; */
   /* scroll-snap-align: center; */
   /* border-bottom:1px solid black; */
   display:flex;
@@ -18,12 +19,40 @@ body{
   align-items: center;
   justify-content: center;
   padding:60px;
+  position:relative;
   /* padding-top:80px; */
   box-sizing: border-box;
   /* grid-column-gap: 0px;
   grid-row-gap: 0px; */
 }
 
+.slide.bg{
+  background-color: rgba(255,255,255,0.7);
+}
+
+.right-broad{
+  grid-column:3/7;
+  grid-row:2/8;
+  background-color: white;
+  overflow:hidden;
+}
+
+.right-broad img{
+  width:100%;
+}
+
+.right-broad :where(p,li){
+  font-family:'Times New Roman', serif;
+  margin-bottom:20px;
+  font-size:30px;
+  line-height: 35px;
+}
+
+
+.right-align{
+  position:absolute;
+  right:0;
+}
 
 /* .slide[data-s="1"]{
   margin-top:10px;
@@ -40,6 +69,7 @@ body{
   height:max(100vw,calc(100vw - 120px)); */
 
   width:100%;
+  min-width:800px;
   height:100%;
   max-width:150vh;
 
@@ -66,6 +96,7 @@ body{
 
 .img{
   position:relative;
+  background-color: white;
 }
 
 /* .vid{
@@ -114,6 +145,24 @@ svg{
   opacity:0;
 }
 
+.border{
+  border:1px solid gainsboro;
+  box-sizing: border-box;
+}
+
+.vid .light-wrap{
+  width:100%;
+  max-height:100%;
+  position:relative;
+  border:1px solid gainsboro;
+  box-sizing: border-box;
+  overflow:hidden;
+}
+
+.vid .light-wrap video{
+  position:relative;
+}
+
 .vid .wrap{
   transition:opacity 0.3s;
   position:absolute;
@@ -154,11 +203,30 @@ h2{
   -moz-osx-font-smoothing: grayscale;
 }
 
-p{
+@media(max-width:1000px),(max-height:700px){
+  h2{
+    font-size:35px;
+    line-height:40px;
+  }
+}
+
+/* @media(max-height:600px){
+  h2{
+    font-size:35px;
+    line-height:40px;
+  }
+} */
+
+p,li{
   font-size:20px;
   font-family:'ia-writer';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+li{
+  list-style: disc;
+  margin-left: 20px;
 }
 
 h2.optical-align{
@@ -174,9 +242,10 @@ h2.optical-align{
 .bottom-cap p{
   position:absolute;
   bottom:0;
+  width:100%;
 }
 
-.video-placeholder{
+.placeholder{
   background-color: Gainsboro;
 }
 

@@ -4,14 +4,14 @@ const presentSteps = [];
 let topDist = window.scrollY;
 
 let ind=0;
+let steps=0;
 
 window.addEventListener('keydown',function(){
 
 
   if(event.key=='ArrowRight'){
     event.preventDefault();
-    // console.log('ind:',ind);
-    let next=document.querySelector(`.slide[data-step="${ind == 7? 0 : ind + 1 }"]`);
+    let next=document.querySelector(`.slide[data-step="${ind == steps? 0 : ind + 1 }"]`);
     let scrolltop=next.offsetTop;
     window.scroll({
       top:scrolltop,
@@ -19,22 +19,27 @@ window.addEventListener('keydown',function(){
       behavior:'smooth'
     })
 
-    console.log('go to:',ind == 7? 0 : ind + 1 );
     // console.log(next,scrolltop);
     // next.scrollIntoView();
   }else if(event.key=='ArrowLeft'){
     event.preventDefault();
-    let back=document.querySelector(`.slide[data-step="${ind == 0? 7 : ind - 1 }"]`);
+    let i=ind == 0? steps : ind - 1;
+    // if(i==2) i =1;
+    let back=document.querySelector(`.slide[data-step="${i}"]`);
+    let current=document.querySelector(`.slide[data-step="${ind}"]`)
     // back.scrollIntoView();
     let scrolltop=back.offsetTop;
-    if(ind-1 == 2) scrolltop=scrolltop - window.innerHeight;
+    if(back.classList.contains('stick')&&current.parentNode==back.parentNode){
+      scrolltop=scrolltop - window.innerHeight;
+      ind=parseInt(back.dataset.step);
+    }
     // console.log(scrolltop)
     window.scroll({
       top:scrolltop,
       left:0,
       behavior:'smooth'
     })
-    console.log('go to:',ind == 0? 7 : ind - 1)
+
   }
 })
 
@@ -58,13 +63,13 @@ function intersectionControl(entries){
 
     if(!allIn&&!allOut){
       ind=parseInt(step.dataset.step);
-      console.log(ind);
     }
 
     if(step.dataset.vidtrigger){
       let vid=document.querySelector(`.wrap[data-viditem="${step.dataset.vidtrigger}"]`);
       if(!allIn&&!allOut){
         vid.classList.remove('hide');
+        vid.querySelector('video').currentTime=0;
       }else{
         vid.classList.add('hide');
       }
@@ -96,11 +101,15 @@ function createObserver(d) {
   let currentObserver = observers[ind];
   let presentStep = presentSteps[ind];
   let currentInd = observers.length - 1;
+
+  // steps=d.step.length+1;
+
   document.querySelectorAll(d.step).forEach((item, i) => {
     storedVals.push({ ind: i, y: Infinity, r: 0, entered: false });
     item.dataset.step = i;
     item.dataset.global = ind;
     item.dataset.pos='out';
     currentObserver.observe(item);
+    steps=i;
   });
 }
