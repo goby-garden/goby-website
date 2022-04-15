@@ -28,13 +28,18 @@ body{
 
 .slide.bg{
   background-color: rgba(255,255,255,0.7);
+  /* background-color: rgba(255,255,255,1); */
 }
 
 .right-broad{
   grid-column:3/7;
-  grid-row:2/8;
+  grid-row:1/8;
   background-color: white;
   overflow:hidden;
+}
+
+.translate{
+  transform:translateY(-100vh);
 }
 
 .right-broad img{
@@ -145,7 +150,12 @@ svg{
   opacity:0;
 }
 
-.border{
+/* .border{
+  border:1px solid gainsboro;
+  box-sizing: border-box;
+} */
+
+.border img{
   border:1px solid gainsboro;
   box-sizing: border-box;
 }
@@ -236,11 +246,11 @@ h2.optical-align{
 
 
 .bottom-cap{
-  background-color: white;
   position:relative;
 }
 
 .bottom-cap p{
+  /* background-color: white; */
   position:absolute;
   bottom:0;
   width:100%;

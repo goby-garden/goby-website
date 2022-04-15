@@ -63,6 +63,7 @@ function intersectionControl(entries){
 
     if(!allIn&&!allOut){
       ind=parseInt(step.dataset.step);
+      console.log(ind);
     }
 
     if(step.dataset.vidtrigger){
@@ -74,6 +75,22 @@ function intersectionControl(entries){
         vid.classList.add('hide');
       }
     }
+
+    // if(step.dataset.pauseme){
+    //
+    //   // let vid=step.querySelector("video");
+    //   if(!allIn&&!allOut){
+    //     document.querySelectorAll('.slide[dataset-pauseme="true"]').forEach((item, i) => {
+    //       let vid=item.querySelector("video");
+    //       console.log(vid);
+    //       if(item.dataset.step==step.dataset.step){
+    //         vid.pause();
+    //       }else{
+    //         vid.play();
+    //       }
+    //     });
+    //   }
+    // }
 
   });
 
