@@ -66,6 +66,19 @@ function intersectionControl(entries){
       console.log(ind);
     }
 
+    if(step.dataset.col){
+      if(!allIn&&!allOut){
+        step.parentNode.dataset.col=step.dataset.col;
+      }else{
+        let prev=step.previousElementSibling;
+        console.log(prev);
+        let last=prev?prev.dataset.col:1;
+        step.parentNode.dataset.col=last;
+      }
+    }
+
+
+
     if(step.dataset.vidtrigger){
       let vid=document.querySelector(`.wrap[data-viditem="${step.dataset.vidtrigger}"]`);
       if(!allIn&&!allOut){
