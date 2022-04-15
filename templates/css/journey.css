@@ -24,6 +24,10 @@ body{
 .cols[data-col="1"] :where(.col[data-col="1"],.col[data-col="2"]){
   opacity:1;
 }
+/* 
+.cols[data-col="6"] .col[data-col="1"]{
+  opacity:1;
+} */
 
 .cols[data-col="2"] :where(.col[data-col="2"],.col[data-col="4"]){
   opacity:1;
@@ -281,6 +285,29 @@ h2{
   h2{
     font-size:35px;
     line-height:40px;
+  }
+}
+
+
+.too-small-detector{
+  display:none;
+  width:100vw;
+  height:100vh;
+  position:fixed;
+  top:0;
+  left:0;
+  background-color: white;
+  flex-flow:column nowrap;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding:40px;
+  box-sizing:border-box;
+}
+
+@media(max-aspect-ratio:6/5){
+  .too-small-detector{
+    display:flex;
   }
 }
 
