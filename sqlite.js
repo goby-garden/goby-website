@@ -11,16 +11,27 @@ class Project{
 
     this.colors=[
       { regular: '#c579c8', light: '#daacda' },
-      { regular: '#ff8d7e', light: '#ffc4b7' },
-      { regular: '#ff7ffc', light: '#ffb9ff' },
-      { regular: '#ffb14e', light: '#ffdf9a' },
-      { regular: '#beb8eb', light: '#e6e4f1' },
-      { regular: '#67b4e3', light: '#bad6eb' },
-      { regular: '#6fd8c8', light: '#cef7ef' },
-      { regular: '#ace054', light: '#e2ffa3' },
-      { regular: '#ffc6ea', light: '#fffdff' },
-      { regular: '#7ab17f', light: '#bbd1bc' }
+      { regular: '#000000', light: '#e6e6e6' },
+      { regular: '#f05161', light: '#f9dee0' },
+      { regular: '#66b245', light: '#e4efdd' },
+      { regular: '#65a7db', light: '#e3edf7' },
+      { regular: '#fde700', light: '#fdfadc' },
+      { regular: '#63326E', light: '#D1ABD9' }
     ];
+
+
+    // this.colors=[
+    //   { regular: '#c579c8', light: '#daacda' },
+    //   { regular: '#ff8d7e', light: '#ffc4b7' },
+    //   { regular: '#ff7ffc', light: '#ffb9ff' },
+    //   { regular: '#ffb14e', light: '#ffdf9a' },
+    //   { regular: '#beb8eb', light: '#e6e4f1' },
+    //   { regular: '#67b4e3', light: '#bad6eb' },
+    //   { regular: '#6fd8c8', light: '#cef7ef' },
+    //   { regular: '#ace054', light: '#e2ffa3' },
+    //   { regular: '#ffc6ea', light: '#fffdff' },
+    //   { regular: '#7ab17f', light: '#bbd1bc' }
+    // ];
 
     //check if root exists (if goby is initiated in file):
     const gobyInit=this.db.prepare(`SELECT name FROM sqlite_master WHERE type='table' AND name='system_root'`).get();
@@ -49,6 +60,7 @@ class Project{
     //delete from classlist
     this.db.prepare(`DELETE FROM system_classlist WHERE id=${class_id}`).run();
 
+
     //for future: deal with relation dependencies
   }
 
@@ -61,7 +73,11 @@ class Project{
     this.createTable('system','classlist',['id INTEGER NOT NULL PRIMARY KEY','name TEXT','metadata TEXT']);
     //System table to contain all the junction tables and aggregate info about relations
     this.createTable('system','junctionlist',['id INTEGER NOT NULL PRIMARY KEY','metadata TEXT']);
+    //System table to contain generated image data
+    this.createTable('system','images',['file_path TEXT','img_type TEXT','img BLOB']);
+
     //A starting class with a name field
+
     this.createTable('class','base');
   }
 
@@ -164,9 +180,20 @@ class Project{
       objects=objects.concat(cls_objects)
       colors[cls.id]=cls.metadata.style.color
     }
+    objects=objects.filter(a=>a.label.length>0);
 
     return {objects,relations,colors};
     // return classes;
+  }
+
+
+  async saveImage(path,type,buffer){
+    // console.log(buffer);
+    let processedBuffer=await new Uint8Array(buffer);
+    // console.log(processedBuffer);
+    await this.db.prepare(`INSERT INTO system_images (file_path,img_type,img) VALUES ('${path}','${type}',?)`).run(processedBuffer);
+    const images=await this.retrieveImages();
+    return images;
   }
 
   //return 1. a SQL string and 2. a JSON with property data
@@ -311,6 +338,11 @@ class Project{
     this.db.prepare(`INSERT INTO junction_${junction_id} (${class_ids.join(',')}) VALUES (${row_ids.join(',')})`).run();
   }
 
+  retrieveImages(){
+    const images=this.db.prepare(`SELECT * FROM system_images`).all();
+    return images;
+  }
+
 
   retrieveClass(class_name,class_id,class_meta){
     class_meta=class_meta?class_meta:JSON.parse(this.run.class_meta.get(class_id).metadata);
@@ -384,6 +416,28 @@ class Project{
     }
     console.log('done updating');
     // this.db.prepare(`UPDATE [junction_${junction_id}] set user_${prop_name} = '${value}' WHERE system_id = ${object_id}`).run();
+  }
+
+  async customRemoveRelation(){
+    let classes=this.db.prepare(`SELECT name, id, metadata FROM system_classlist`).all();
+
+    for(let cls of classes){
+      cls.metadata=JSON.parse(cls.metadata);
+      let jIndex=cls.metadata.properties.findIndex(a=>a.type=='relation'&&a.junction_id==2);
+      if(jIndex>=0){
+        cls.metadata.properties.splice(jIndex,1);
+      }
+      // console.log(cls.metadata.properties);
+      await this.db.prepare(`UPDATE system_classlist set metadata = '${JSON.stringify(cls.metadata)}' WHERE id = ${cls.id}`).run();
+      // cls.objects=this.retrieveClass(cls.name,cls.id,cls.metadata);
+    }
+
+    // let class_meta=JSON.parse(this.db.prepare(`SELECT metadata FROM system_classlist WHERE id = ${class_id}`).get().metadata);
+
+
+
+    // this.db.prepare(`DROP TABLE IF EXISTS junction_2`).run();
+    // this.db.prepare(`DELETE FROM system_junctionlist WHERE id=2`).run();
   }
 
   customImport(items,class_id,class_name){

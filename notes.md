@@ -5,6 +5,10 @@ start live server:
 npx @11ty/eleventy --serve
 
 
+,
+"type": "module"
+
+
 #### FFMPEG golden 1-step command for mov->scaled mp4 saved in video folder:
 `for i in *.mov; do ffmpeg -i "$i" -vf "scale=1800:-1" "../processed/${i%.*}.mp4"; done`
 
