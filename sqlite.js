@@ -11,27 +11,27 @@ class Project{
 
     this.colors=[
       { regular: '#c579c8', light: '#daacda' },
-      { regular: '#000000', light: '#e6e6e6' },
-      { regular: '#f05161', light: '#f9dee0' },
-      { regular: '#66b245', light: '#e4efdd' },
-      { regular: '#65a7db', light: '#e3edf7' },
-      { regular: '#fde700', light: '#fdfadc' },
-      { regular: '#63326E', light: '#D1ABD9' }
+      { regular: '#ff8d7e', light: '#ffc4b7' },
+      { regular: '#ff7ffc', light: '#ffb9ff' },
+      { regular: '#ffb14e', light: '#ffdf9a' },
+      { regular: '#beb8eb', light: '#e6e4f1' },
+      { regular: '#67b4e3', light: '#bad6eb' },
+      { regular: '#6fd8c8', light: '#cef7ef' },
+      { regular: '#ace054', light: '#e2ffa3' },
+      { regular: '#ffc6ea', light: '#fffdff' },
+      { regular: '#7ab17f', light: '#bbd1bc' }
     ];
-
 
     // this.colors=[
     //   { regular: '#c579c8', light: '#daacda' },
-    //   { regular: '#ff8d7e', light: '#ffc4b7' },
-    //   { regular: '#ff7ffc', light: '#ffb9ff' },
-    //   { regular: '#ffb14e', light: '#ffdf9a' },
-    //   { regular: '#beb8eb', light: '#e6e4f1' },
-    //   { regular: '#67b4e3', light: '#bad6eb' },
-    //   { regular: '#6fd8c8', light: '#cef7ef' },
-    //   { regular: '#ace054', light: '#e2ffa3' },
-    //   { regular: '#ffc6ea', light: '#fffdff' },
-    //   { regular: '#7ab17f', light: '#bbd1bc' }
+    //   { regular: '#000000', light: '#e6e6e6' },
+    //   { regular: '#f05161', light: '#f9dee0' },
+    //   { regular: '#66b245', light: '#e4efdd' },
+    //   { regular: '#65a7db', light: '#e3edf7' },
+    //   { regular: '#fde700', light: '#fdfadc' },
+    //   { regular: '#63326E', light: '#D1ABD9' }
     // ];
+
 
     //check if root exists (if goby is initiated in file):
     const gobyInit=this.db.prepare(`SELECT name FROM sqlite_master WHERE type='table' AND name='system_root'`).get();
@@ -77,7 +77,6 @@ class Project{
     this.createTable('system','images',['file_path TEXT','img_type TEXT','img BLOB']);
 
     //A starting class with a name field
-
     this.createTable('class','base');
   }
 
@@ -97,8 +96,6 @@ class Project{
   createTable(type,name,columns){
     //type will pass in 'class' or 'system' to use as a name prefix
     //columns will for now pass in an array of raw SQL column strings
-
-    // columns=columns?columns:[`FOREIGN KEY(system_id) REFERENCES system_root(id)`,'system_id INTEGER UNIQUE','user_name TEXT'];
     columns=columns?columns:['system_id INTEGER UNIQUE','system_order INTEGER','user_Name TEXT',`FOREIGN KEY(system_id) REFERENCES system_root(id)`];
 
     let column_string=columns.join(',');
@@ -110,11 +107,9 @@ class Project{
     const info=stmt.run();
 
     if(type=='class'){
-
-      // let latest=this.db.prepare('SELECT id FROM system_classlist ORDER BY id DESC').get();
       let latest=this.db.prepare('SELECT id FROM system_classlist ORDER BY id DESC').get()
       latest=latest?latest.id:1;
-      console.log(latest);
+
       //this will be constructed using addProperty
       const table_meta={
         properties:[
@@ -128,10 +123,10 @@ class Project{
           }
         ],
         style:{
-          color:this.colors[latest]
+          color:this.colors[latest],
         }
       };
-      // console.log(this.colors[latest + 1]);
+
       this.db.prepare(`INSERT INTO system_classlist (name, metadata) VALUES ('${name}','${JSON.stringify(table_meta)}')`).run();
       //get the id of newest value from system_classlist and return
       const class_id=this.db.prepare('SELECT id FROM system_classlist ORDER BY id DESC').get().id;
