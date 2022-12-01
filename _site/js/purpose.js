@@ -9,17 +9,12 @@ const aside={
   on:false
 };
 
-const passedEnd={
-  theory:false,
-  practice:false,
-}
-
 const essayBox=document.querySelector('#essays');
 
 window.addEventListener('load',function(){
   createObserver({
     root: null,
-    rootMargin: `${document.body.clientHeight}px 0px -50% 0px`,
+    rootMargin: `${document.body.clientHeight*2}px 0px -50% 0px`,
     threshold: [0.01, 0.99],
     callback: intersectionControl,
     step: '.step',
@@ -45,7 +40,6 @@ function navSetUp(){
   document.querySelectorAll('.nav').forEach((item, i) => {
 
     item.addEventListener('mouseenter',function(){
-      console.log(item);
       essayBox.dataset.selected=item.dataset.which;
     })
     item.addEventListener('mouseleave',function(){
@@ -70,6 +64,7 @@ function navSetUp(){
 
 
 function intersectionControl(entries){
+  console.log(entries);
   entries.forEach((item, i) => {
     let changed=false;
     let step=item.target;
@@ -145,7 +140,6 @@ function footNotesSetUp(essay){
         const counterPart=document.querySelector(`#${otherEssay} span[data-type="crossover"][data-id="${item.dataset.id}"]`);
 
         if(readMode!=='center'){
-          console.log(readMode)
           readMode='center';
           scaleArticles('center');
           setTimeout(function () {
@@ -174,7 +168,6 @@ function footNotesSetUp(essay){
     }
 
     item.addEventListener('mouseover',function(){
-      console.log(item);
       switch(item.dataset.type){
         case 'comment':
         aside.on=true;
@@ -237,28 +230,36 @@ function footNotesSetUp(essay){
 
 }
 
+//
+function setArticleHeight(){
+  let h=0;
+  if(readMode=='center'){
+    document.documentElement.style.setProperty('--centerheight', 0);
+    document.querySelectorAll('article').forEach((article, a) => {
+      if(article.offsetHeight>h) h=article.offsetHeight;
+    });
+  }
+
+  document.documentElement.style.setProperty('--centerheight', h+'px');
+}
 
 function scaleArticles(mode){
-  console.log(essayBox);
   essayBox.className=mode;
+
   if(document.querySelector('.active')){
     document.querySelector('.active').classList.remove('active');
   }
   if(mode!=='center'){
     document.querySelector('#'+mode).classList.add('active');
 
-    // setTimeout(function () {
-    //   console.log(passedEnd[mode])
-    //   if(passedEnd[mode]){
-    //     document.querySelector('div[data-trigger="scale"]').scrollIntoView({behavior: "smooth"});
-    //   }
-    // }, 300);
   }
 
-
+  setArticleHeight();
 }
 
 
+
+window.addEventListener('resize',setArticleHeight)
 
 function createObserver(d) {
   let callback = d.callback;

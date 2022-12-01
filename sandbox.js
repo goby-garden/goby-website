@@ -5,6 +5,20 @@ import Database from 'better-sqlite3';
 import Project from './sqlite.js';
 
 
+
+
+const project=new Project('tags-talking.db');
+
+
+testStuff();
+
+async function testStuff(){
+  // let data=await project.retrieveAllClasses();
+  project.deleteProperty('Images',2,'Test');
+  // console.log(data[1].objects[0]);
+}
+
+
 //options examples---------------------
 const data_options_example={
   type:'string',
@@ -24,22 +38,3 @@ const relation_options_example={
   default:null
 }
 //---------------------
-
-
-
-
-
-const project=new Project('typefaces-updated.db');
-// let spaceData=await project.retrieveSpaceData();
-// console.log(project.db.prepare('SELECT COUNT(*) AS length FROM system_classlist').get());
-
-
-
-retrieveClassData();
-//
-async function retrieveClassData(){
-  // let data=await project.retrieveClass('Typefaces','2');
-  let data=await project.retrieveAllClasses();
-  console.log(data[1].objects[0]);
-  // console.log(project.updateDataProp(1,'Typefaces','Name','Signifier',false));
-}

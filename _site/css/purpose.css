@@ -1,3 +1,7 @@
+:root{
+  --centerheight:100%;
+}
+
 body{
   /* background-color: aliceblue; */
 }
@@ -21,7 +25,11 @@ header{
   flex-flow:row nowrap; */
 }
 
-#essays:not(.center) article.active{
+#essays:not(.center) #theory.active{
+  --w:calc(100vw - 99px);
+}
+
+#essays:not(.center) #practice.active{
   --w:calc(100vw - 100px);
 }
 
@@ -52,7 +60,10 @@ article{
   width:var(--w);
   box-sizing: border-box;
   transition:width 0.6s;
-  height:100%;
+  /* min-height:100%; */
+  min-height:var(--centerheight);
+  /* height:var(--centerheight); */
+  /* height:100%; */
   /* transition:flex-grow 0.3s,width 0.3s; */
 }
 /*
@@ -180,6 +191,10 @@ article{
   /* animation: blink 2s linear infinite; */
 }
 
+/* #essays[data-selected='center'] article{
+  min-height:var(--centerheight);
+} */
+
 
 @keyframes blink {
   50% {
@@ -201,6 +216,8 @@ article{
   --primary:green;
   --highlight:#d1ffd1;
   --shift-x:-145%;
+  border-left:1px solid black;
+  right:1px;
 }
 
 
@@ -600,9 +617,9 @@ strong{
 
 
 @media(min-width:1200px){
-   #theory .content{
+   /* #theory .content{
      padding-bottom:1200px;
-   }
+   } */
 
   /* #essays.center .article-wrapper{
     position:absolute;

@@ -1,5 +1,7 @@
 import Database from 'better-sqlite3';
 
+//removed base class from init
+//added meta prop to createTable
 
 class Project{
   constructor(source){
@@ -42,7 +44,8 @@ class Project{
       console.log('opened goby database');
     }
     this.run={
-      class_meta:this.db.prepare(`SELECT metadata FROM system_classlist WHERE id = ?`)
+      class_meta:this.db.prepare(`SELECT metadata FROM system_classlist WHERE id = ?`),
+      junction_meta:this.db.prepare(`SELECT metadata FROM system_junctionlist WHERE id = ?`)
     }
 
 
@@ -77,7 +80,7 @@ class Project{
     this.createTable('system','images',['file_path TEXT','img_type TEXT','img BLOB']);
 
     //A starting class with a name field
-    this.createTable('class','base');
+    // this.createTable('class','base');
   }
 
   addEmptyRow(class_name,name_value){
@@ -93,7 +96,7 @@ class Project{
 
   }
 
-  createTable(type,name,columns){
+  createTable(type,name,columns,meta){
     //type will pass in 'class' or 'system' to use as a name prefix
     //columns will for now pass in an array of raw SQL column strings
     columns=columns?columns:['system_id INTEGER UNIQUE','system_order INTEGER','user_Name TEXT',`FOREIGN KEY(system_id) REFERENCES system_root(id)`];
@@ -124,6 +127,8 @@ class Project{
         ],
         style:{
           color:this.colors[latest],
+          stowed:meta.stowed,
+          position:meta.position
         }
       };
 
@@ -338,6 +343,113 @@ class Project{
     return images;
   }
 
+  retrieveClassUpdated(class_name,class_id,class_meta){
+    class_meta=class_meta?class_meta:JSON.parse(this.run.class_meta.get(class_id).metadata);
+    const class_string=`[class_${class_name}]`;
+
+    //joined+added at beginning of the query, built from relations
+    const cte_strings=[];
+
+    //joined+added near the end of the query, built from relations
+    const joins=[];
+
+    //joined+added between SELECT and FROM, built from relations
+    const relation_selections=[];
+
+    let relation_properties=class_meta.properties.filter(a=>a.type=='relation');
+
+    for (let prop of relation_properties){
+      let junct_string=`junction_${prop.junction_id}`;
+      const concat_strings=[];
+
+      //creates instruction to concatenate all the selected items of a single class, puts them in array
+      for(let target of prop.targets){
+        concat_strings.push(
+          `'${target.class_id}', json('[' || GROUP_CONCAT(class_${target.class_id}) || ']')`
+        )
+      }
+      //creates JS object with class ids as keys to the items of each class
+      const cte=`[${prop.name}_cte] AS (
+        SELECT class_${class_id},
+               json_object(${concat_strings.join(',')}) [user_${prop.name}]
+        FROM ${junct_string}
+        GROUP BY class_${class_id}
+      )`;
+
+      const join=`LEFT JOIN [${prop.name}_cte] ON [${prop.name}_cte].class_${class_id} = ${class_string}.system_id`;
+
+      const selection=`[${prop.name}_cte].[user_${prop.name}]`;
+
+      cte_strings.push(cte);
+      relation_selections.push(selection);
+      joins.push(join);
+    }
+
+    // let groupby=`GROUP BY ${class_string}.system_id ORDER BY ${class_string}.system_order`;
+
+    let orderby=`ORDER BY ${class_string}.system_order`;
+
+    let query=`
+    ${cte_strings.length>0?"WITH "+cte_strings.join(','):''}
+    SELECT [class_${class_name}].* ${cte_strings.length>0?', '+relation_selections.join(', '):''}
+    FROM [class_${class_name}]
+    ${joins.join(' ')}
+    ${orderby}`;
+
+    let class_data=this.db.prepare(query).all();
+    let stringified_properties=class_meta.properties.filter(a=>a.type=='relation'||a.count=='multiple');
+    class_data.map(row=>{
+      for (let prop of stringified_properties){
+        row['user_'+prop.name]=JSON.parse(row['user_'+prop.name]);
+      }
+    })
+    return class_data;
+
+  }
+
+  deleteProperty(class_name,class_id,prop_name){
+    let class_meta=JSON.parse(this.run.class_meta.get(class_id).metadata);
+    let prop=class_meta.properties.find(a=>a.name==prop_name);
+
+    if(prop.type=='relation'){
+
+      //get junction table
+      let junction_id=prop.junction_id;
+      let junction_meta=JSON.parse(this.run.junction_meta.get(junction_id).metadata);
+      //loop through junction table to remove prop definition from all participating properties
+      //IN THE FUTURE: will need to instead allow you to keep other properties and just delink them
+      for (var participant of junction_meta.participants) {
+        if(participant.prop_name){
+          //retrieve class meta
+          let participant_meta=JSON.parse(this.run.class_meta.get(participant.class_id).metadata);
+          //delete definition from all linked participants
+          this.deletePropertyDefinition(participant.class_id,participant_meta,participant.prop_name);
+        }
+      }
+
+      //delete junction table
+      this.db.prepare(`DROP TABLE IF EXISTS [junction_${junction_id}]`).run();
+
+      //delete junction row from junction list
+      this.db.prepare(`DELETE FROM system_junctionlist WHERE id=${junction_id}`).run();
+
+    }else{
+      console.log(prop_name,'is a data prop')
+    }
+
+
+  }
+
+  deletePropertyDefinition(class_id,class_meta,prop_name){
+
+    //remove prop from array
+    let removeIndex=class_meta.properties.findIndex(a=>a.name==prop_name);
+    class_meta.properties.splice(removeIndex,1);
+
+    //stringify and save back to class meta
+    this.db.prepare(`UPDATE system_classlist set metadata = '${JSON.stringify(class_meta)}' WHERE id = ${class_id}`).run();
+  }
+
 
   retrieveClass(class_name,class_id,class_meta){
     class_meta=class_meta?class_meta:JSON.parse(this.run.class_meta.get(class_id).metadata);
@@ -349,6 +461,7 @@ class Project{
     let relation_properties=class_meta.properties.filter(a=>a.type=='relation');
 
     for (let prop of relation_properties){
+
       let junct_string=`junction_${prop.junction_id}`;
       const concat_strings=[];
       for(let target of prop.targets){
@@ -380,7 +493,8 @@ class Project{
 
     for(let cls of classes){
       cls.metadata=JSON.parse(cls.metadata);
-      cls.objects=this.retrieveClass(cls.name,cls.id,cls.metadata);
+      // cls.objects=this.retrieveClass(cls.name,cls.id,cls.metadata);
+      cls.objects=this.retrieveClassUpdated(cls.name,cls.id,cls.metadata);
     }
 
     return classes;
