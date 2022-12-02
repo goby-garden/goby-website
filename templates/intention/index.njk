@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../css/clearstyle.css">
     <link rel="stylesheet" href="../css/purpose.css">
   </head>
-  <body>
+  <body class='center' data-selected='theory'>
     <header>
       <h1>Meaning Without Purpose,<br>Purpose Without Meaning</h1>
       {# <h1>How to mean<br>without meaning</h1> #}
@@ -18,10 +18,16 @@
 
       </div>
     </header>
-    <div id="essays" class='center' data-selected='theory'>
-      <div class="article-wrapper">
+    <nav>
+      <h2 class='left'>
+        <span data-which='theory'>a theory</span>
+        <span data-which='center'>and</span>
+      </h2>
+      <h2 class='right'><span data-which='practice'>practice</span></h2>
+    </nav>
+    <div id="essays">
+
         <article id='theory' class="active">
-          <h2><span class='col-heading nav' data-which='theory'>a theory</span> <span data-which='center' class='nav yes-and'>and</span></h2>
           <div class="content charter">
             {% for par in essay1.text %}
               {% if par.value[0] == '%' %}
@@ -85,10 +91,14 @@
             </ol>
           </div>
         </article>
+
+      <div class="centerline">
+        <div class="bottomline">
+
+        </div>
       </div>
-      <div class="article-wrapper">
+
         <article id='practice' class="">
-          <h2><span data-which='practice' class='col-heading nav'>practice</span></h2>
           <div class="content charter">
             {% for par in essay2.text %}
               {% if par.value[0] == '%' %}
@@ -148,7 +158,7 @@
 
           </div>
         </article>
-      </div>
+
 
 
     </div>

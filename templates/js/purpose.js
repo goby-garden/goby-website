@@ -3,13 +3,14 @@ const presentSteps = [];
 let topDist = window.scrollY;
 let readMode='theory';
 let passedIntro=false;
+const tooSmallForTwoCol=window.matchMedia('(max-width:900px)');
 
 const aside={
   id:undefined,
   on:false
 };
 
-const essayBox=document.querySelector('#essays');
+const bodyEl=document.querySelector('body');
 
 window.addEventListener('load',function(){
   createObserver({
@@ -21,8 +22,11 @@ window.addEventListener('load',function(){
   });
 
 
+
+
   navSetUp();
 
+  checkForTooSmall();
 
   footNotesSetUp('theory');
   footNotesSetUp('practice');
@@ -32,21 +36,19 @@ window.addEventListener('load',function(){
   });
 
 
-
-
 })
 
 function navSetUp(){
-  document.querySelectorAll('.nav').forEach((item, i) => {
+  document.querySelectorAll('nav span').forEach((item, i) => {
 
     item.addEventListener('mouseenter',function(){
-      essayBox.dataset.selected=item.dataset.which;
+      bodyEl.dataset.selected=item.dataset.which;
     })
     item.addEventListener('mouseleave',function(){
-      essayBox.dataset.selected=readMode;
+      bodyEl.dataset.selected=readMode;
     })
     item.addEventListener('click',function(){
-      // essayBox.dataset.selected=item.dataset.which;
+      // bodyEl.dataset.selected=item.dataset.which;
       readMode=item.dataset.which;
 
       if(passedIntro){
@@ -87,7 +89,7 @@ function intersectionControl(entries){
       switch(step.dataset.trigger){
         case 'scale':
         passedIntro=boxIn;
-        scaleArticles(boxIn?readMode:'center');
+        scaleArticles(boxIn||tooSmallForTwoCol.matches?readMode:'center');
         break;
         case 'language-games':
         if(boxIn){
@@ -103,6 +105,22 @@ function intersectionControl(entries){
   });
 
 }
+
+function checkForTooSmall(){
+  console.log('too small?')
+  if(tooSmallForTwoCol.matches&&(readMode=='center'||!passedIntro)){
+    console.log('too small!')
+    readMode=readMode=='center'?'theory':readMode;
+    bodyEl.dataset.which=readMode;
+    scaleArticles(readMode);
+  }else if(!passedIntro){
+    scaleArticles('center');
+  }
+}
+
+
+window.addEventListener('resize',checkForTooSmall)
+
 
 
 function footNotesSetUp(essay){
@@ -140,8 +158,8 @@ function footNotesSetUp(essay){
         const counterPart=document.querySelector(`#${otherEssay} span[data-type="crossover"][data-id="${item.dataset.id}"]`);
 
         if(readMode!=='center'){
-          readMode='center';
-          scaleArticles('center');
+          readMode=tooSmallForTwoCol.matches?otherEssay:'center';
+          scaleArticles(readMode);
           setTimeout(function () {
             let yPos=window.scrollY + counterPart.getBoundingClientRect().top - window.innerHeight/2;
             window.scrollTo({left:0,top:yPos,behavior:'smooth'});
@@ -168,20 +186,22 @@ function footNotesSetUp(essay){
     }
 
     item.addEventListener('mouseover',function(){
-      switch(item.dataset.type){
-        case 'comment':
-        aside.on=true;
-        panel.classList.add('on');
-        panel.style.left=checkPos(event.clientX,'x')+'px';
-        panel.style.top=checkPos(event.clientY,'y')+'px';
-        if(aside.id!==item.dataset.id){
-          panel.querySelector('.f-content').innerHTML=fdata.find(a=>a.id==item.dataset.id).html;
+      if(!tooSmallForTwoCol.matches){
+        switch(item.dataset.type){
+          case 'comment':
+          aside.on=true;
+          panel.classList.add('on');
+          panel.style.left=checkPos(event.clientX,'x')+'px';
+          panel.style.top=checkPos(event.clientY,'y')+'px';
+          if(aside.id!==item.dataset.id){
+            panel.querySelector('.f-content').innerHTML=fdata.find(a=>a.id==item.dataset.id).html;
+          }
+          panel.style.border=`1px solid ${essay=='theory'?'darkviolet':'green'}`;
+          break;
+          case 'expand':
+          document.querySelector(`.real-blockquote[data-id="${item.dataset.id}"]`).classList.add('possible');
+          break;
         }
-        panel.style.border=`1px solid ${essay=='theory'?'darkviolet':'green'}`;
-        break;
-        case 'expand':
-        document.querySelector(`.real-blockquote[data-id="${item.dataset.id}"]`).classList.add('possible');
-        break;
       }
 
     })
@@ -230,21 +250,11 @@ function footNotesSetUp(essay){
 
 }
 
-//
-function setArticleHeight(){
-  let h=0;
-  if(readMode=='center'){
-    document.documentElement.style.setProperty('--centerheight', 0);
-    document.querySelectorAll('article').forEach((article, a) => {
-      if(article.offsetHeight>h) h=article.offsetHeight;
-    });
-  }
 
-  document.documentElement.style.setProperty('--centerheight', h+'px');
-}
 
 function scaleArticles(mode){
-  essayBox.className=mode;
+  bodyEl.className=mode;
+  console.log('set to',mode)
 
   if(document.querySelector('.active')){
     document.querySelector('.active').classList.remove('active');
@@ -254,12 +264,8 @@ function scaleArticles(mode){
 
   }
 
-  setArticleHeight();
 }
 
-
-
-window.addEventListener('resize',setArticleHeight)
 
 function createObserver(d) {
   let callback = d.callback;
