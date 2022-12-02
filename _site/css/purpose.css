@@ -21,6 +21,8 @@ header{
 
 
 
+
+
 #essays{
   position:relative;
   width:100vw;
@@ -408,7 +410,7 @@ body:not(.center) article:not(.active) .content{
 
 
 .content p>img{
-  max-width:330px;
+  max-width:min(100%,330px);
   margin-left:50%;
   transform:translateX(-50%);
 }
@@ -744,11 +746,20 @@ strong{
 
 @media(max-width:490px){
 
+  .content p>img{
+    max-width:100%;
+  }
+
+  .content .diptych[data-name="cooker"] figure{
+    padding:0px;
+  }
 
 
-  .content.charter{
-    font-size: 14px;
-    line-height: 20px;
+
+  .content.charter,.content.charter p{
+    -webkit-text-size-adjust: 100%;
+    font-size: 16px;
+    line-height: 22px;
   }
 
   .content h3{
