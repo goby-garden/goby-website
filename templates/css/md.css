@@ -1,0 +1,446 @@
+/* SPACED TEXT - BOILERPLATE STYLESHEET */
+/* styles adapted from https://github.com/sindresorhus/github-markdown-css/blob/main/github-markdown-light.css */
+
+/* root container styles and variables --------------*/
+.prose {
+
+    /* colors */
+    --color-fg:var(--fg);
+    --color-bg:var(--bg);
+    --color-link:rgb(194, 226, 255);
+    --color-highlight:#fff8c5;
+    --color-code-bg:rgba(0,0,0,0.5);
+    --color-linerule:var(--color-fg);
+  
+    /* dimensions */
+    --content-width:100%; /* width of block elements */
+  
+  
+    /* sizing and spacing */
+    --root-size:18px;
+    --bl:0.7em; /* (bl = baseline) */
+    --block-indent:20px;
+    --graf-spacing:var(--bl); /* (graf = paragraph) */
+  
+  
+    /* special features */
+    --heading-border-bottom:none;
+  
+    /* body type */
+    font-family: var(--ff);
+    font-size: var(--root-size); /* ^ em units are based on this value */
+    line-height: calc(2*var(--bl));
+  
+  
+    /* set colors */
+    color:var(--color-fg);
+    /* background-color:var(--color-bg); */
+  
+    /* removes aspect ratio inflation on mobile */
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+  
+    /* line break rules */
+    word-wrap: break-word;
+    hyphens:none;
+    text-wrap:pretty;
+
+    
+    /* ^ instructs browser to use better line break algorithm */
+    /* not yet functional, part of the css textmodule 4 draft */
+    /* https://www.w3.org/TR/css-text-4/#valdef-text-wrap-pretty */
+    /* more info on line breaks in the browser: https://www.are.na/nico-chilla/algorithmic-line-breaking */
+  
+  }
+  
+  /* direct children of markdown container */
+  .prose>*{
+    box-sizing: border-box;
+    max-width:var(--content-width);
+  }
+  
+  
+  /* inline  elements ------------------*/
+  
+  .prose em{
+    /* italic */
+    font-style:italic;
+  }
+  
+  .prose b,
+  .prose strong {
+    /* bold */
+    font-weight: 600;
+  }
+  
+  .prose mark {
+    /* highlight (not supported with only commonmark) */
+    background-color: var(--color-highlight);
+    color: #404040;
+  }
+  
+  
+  
+  /* links */
+  .prose a {
+    color: var(--color-link);
+    text-decoration: none;
+  }
+  .prose a:active,
+  .prose a:hover {
+    outline-width: 0;
+  }
+  
+  .prose a:hover {
+    text-decoration: underline;
+  }
+  
+  .prose a:not([href]) {
+    color: inherit;
+    text-decoration: none;
+  }
+  
+  
+  
+  /* headings ------------------- */
+  
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4,
+  .prose h5,
+  .prose h6 {
+    /* set spacing for all headers */
+    margin-top: calc(var(--bl)*2);
+    margin-bottom:var(--bl);
+    font-weight: 600;
+    line-height: 1.25em;
+  }
+  
+  .prose h1 {
+    font-weight: 600;
+    /* font-size: 2em; */
+    border-bottom:var(--heading-border-bottom);
+  }
+  
+  .prose h2 {
+    font-weight: 400;
+    font-size: 1.5em;
+    border-bottom:var(--heading-border-bottom);
+  }
+  
+  .prose h3 {
+    font-weight: 600;
+    font-size: 1em;
+  }
+  
+  .prose h4 {
+    font-weight: 400;
+    font-size: 1em;
+  }
+  
+  
+  /* block elements ---------------------------- */
+  
+  /* standard element spacing */
+  .prose p,
+  .prose blockquote,
+  .prose figure,
+  .prose>ul,
+  .prose>ol,
+  .prose blockquote>ul,
+  .prose blockquote>ol,
+  .prose dl,
+  .prose table,
+  .prose pre,
+  .prose details {
+    margin-top: 0;
+    margin-bottom: var(--graf-spacing);
+  }
+  
+  /* keep settings */
+  .prose p{
+    widows:3;
+    orphans:3;
+  }
+  
+  /* images */
+  .prose img {
+    border-style: none;
+    max-width: 100%;
+    box-sizing: content-box;
+  }
+  
+  /* horizontal rules */
+  .prose hr {
+    box-sizing: content-box;
+    overflow: hidden;
+    background: transparent;
+    border: 0;
+    margin:calc(var(--bl) *2) 0;
+    border-bottom:1px dashed var(--color-linerule);
+  
+  }
+  
+  /* image and blockquote spacing */
+  .prose blockquote,.prose figure{
+    /* extra vertical spacing */
+    margin: calc(var(--bl)*2) 0;
+  }
+  
+  .prose figcaption{
+    text-align: center;
+  }
+  
+  /* blockquotes */
+  .prose blockquote {
+    /* indent */
+    padding-left:var(--block-indent);
+  }
+  
+  .prose blockquote>:first-child {
+    margin-top: 0; /* remove margin from beginning of nested elements  */
+  }
+  .prose blockquote>:last-child {
+    margin-bottom: 0; /* remove margin from end of nested elements */
+  }
+  
+  
+  
+  /* general --------------------------- */
+  
+  .prose>*:first-child {
+    /* prevent extra gap at top */
+    margin-top: 0 !important;
+  }
+  
+  .prose>*:last-child {
+    /* prevent extra gap at bottom */
+    margin-bottom: 0 !important;
+  }
+  
+  
+  /* lists ------------------- */
+  
+  .prose ul ul,
+  .prose ul ol,
+  .prose ol ol,
+  .prose ol ul {
+    /* lists inside lists don't get spacing */
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  
+  .prose ul,
+  .prose ol {
+    /* set indent for list level with padding */
+    padding-left:var(--block-indent);
+  }
+
+  .prose li{
+    list-style:disc;
+  }
+  
+  .prose li>p {
+    /* will have to investigate when <p> tags appear inside lists */
+    /* margin-top: var(--bl); */
+    margin:0;
+  }
+  
+  .prose li+li {
+    /* extra internal spacing for list elements at the same level  */
+    margin-top: calc(0.25 * var(--bl));
+  }
+  
+  .prose ol[type="1"] {
+    /* digits list style */
+    list-style-type: decimal;
+  }
+  
+  .prose ol[type=a] {
+    /* letters list style */
+    list-style-type: lower-alpha;
+  }
+  
+  .prose ol[type=i] {
+    /* roman numerals list style */
+    list-style-type: lower-roman;
+  }
+  
+  .prose div>ol:not([type]) {
+    /* if no list type, use decimal */
+    list-style-type: decimal;
+  }
+  
+  .prose ol ol,
+  .prose ul ol {
+    /* one level of nesting list-style for ordered lists */
+    list-style-type: lower-roman;
+  }
+  
+  .prose ul ul ol,
+  .prose ul ol ol,
+  .prose ol ul ol,
+  .prose ol ol ol {
+    /* two levels of nesting list-style for ordered lists */
+    list-style-type: lower-alpha;
+  }
+  
+  /* ^^^ we could add a nested <ul> selector, but this styling (empty discs) is already built into browsers */
+  
+  /* inline footnotes */
+  .prose sub,
+  .prose sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+  }
+  
+  .prose sub {
+    bottom: -0.25em;
+  }
+  
+  .prose sup {
+    top: -0.5em;
+  }
+  
+  
+  /* --------------------------------------------------------------------------------------- */
+  /* --------- not much annotations or important stuff beyond this point for now ----------- */
+  /* --------------------------------------------------------------------------------------- */
+  
+  
+  
+  /* tables----------------- */
+  /* not supported in pure commonmark */
+  
+  .prose table {
+    border-spacing: 0;
+    border-collapse: collapse;
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    overflow: auto;
+    margin:calc(var(--bl)*2) 0;
+  }
+  
+  .prose td,
+  .prose th {
+    padding: 0;
+  }
+  
+  .prose table th {
+    font-weight: 600;
+  }
+  
+  .prose table th,
+  .prose table td {
+    padding: 6px 13px;
+    border: 1px solid #d0d7de;
+  }
+  
+  .prose table tr {
+    /* background-color: #ffffff; */
+    border-top: 1px solid hsla(210,18%,87%,1);
+  }
+  
+  .prose table tr:nth-child(2n) {
+    background-color: #f6f8fa;
+  }
+  
+  .prose table img {
+    background-color: transparent;
+  }
+  
+  
+  /* code -------------------- */
+  
+  .prose pre {
+    font-family: 'Fragment Mono','Menlo',monospace;
+    word-wrap: normal;
+    padding:var(--bl);
+    background-color: var(--color-code-bg);
+    overflow:scroll;
+    /* margin-left: var(--block-indent); */
+  }
+  
+  .prose tt,
+  .prose code {
+    font-family: 'Fragment Mono','Menlo',monospace;
+    padding:0px 4px;
+  }
+  
+  .prose code,
+  .prose kbd,
+  .prose pre,
+  .prose samp {
+    font-family: 'Fragment Mono','Menlo',monospace;
+    font-size:0.9em;
+    line-height:1em;
+  }
+  
+  
+  .prose code,
+  .prose tt {
+    margin: 0;
+    background-color: var(--color-code-bg);
+    position:relative;
+    top:-0.05px;
+    padding-bottom: 1px;
+  }
+  
+  .prose code br,
+  .prose tt br {
+    display: none;
+  }
+  
+  .prose del code {
+    text-decoration: inherit;
+  }
+  
+  .prose pre code {
+    font-size: 100%;
+  }
+  
+  .prose pre>code {
+    padding: 0;
+    margin: 0;
+    word-break: normal;
+    white-space: pre;
+    background: transparent;
+    border: 0;
+  }
+  
+  .prose pre code,
+  .prose pre tt {
+    display: inline;
+    max-width: auto;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    line-height: inherit;
+    word-wrap: normal;
+    background-color: transparent;
+    border: 0;
+  }
+  
+
+  input[type="checkbox"]{
+    appearance: none;
+    border:1px solid var(--color-fg);
+    width:12px;
+    height:12px;
+    margin:0;
+  }
+
+  input[type="checkbox"]:checked{
+    background-color:var(--color-fg);
+  }
+
+
+  @media(max-width:600px){
+    .prose h2{
+        font-size:1.2em;
+    }
+  }

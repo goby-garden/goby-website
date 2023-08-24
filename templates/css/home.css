@@ -1,87 +1,203 @@
-
-
-
-/* .centered{
-  margin:auto;
-  max-width:700px;
-  padding:0px 20px;
-}
-
-.info{
-  margin-top:100px;
-  padding-bottom:100px;
-}
-
-.img-wrap{
-  --w:400px;
-  width:var(--w);
-  margin:auto;
-  box-shadow: 2px 2px 7px 0px rgb(0 0 0 / 16%);
-  border-radius: 5px;
-  padding-bottom:calc(var(--w) * 0.62);
-  position:relative;
-  margin-bottom:40px;
-}
-
-
-
-
-.img-wrap img{
-  /* max-width:100%; */
-  position:absolute;
-  width:100%;
-  object-fit: contain;
-  height:100%;
+main{
+  width:100vw;
+  height:100vh;
+  height:100dvh;
+  display:flex;
+  flex-flow:column nowrap;
+  position:fixed;
   top:0;
   left:0;
+  --fg:white;
+  --bg:grey;
+  background-color:var(--bg);
+  --ff:'Authentic Sans','Menlo',monospace;
+  font-family:var(--ff);
+  /* font-size:20px; */
+  letter-spacing:-0.02em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --top:100px;
 }
 
-.centered-inline{
-  text-align: center;
-  margin:30px 0px;
+
+
+header{
+  /* height:var(--top); */
+  min-height:fit-content;
+  /* border-bottom:1px solid var(--fg); */
+  padding:20px 10px;
+  box-sizing:border-box;
 }
 
-.info.prose{
-  font-size:22px;
-  line-height: 33px;
+.streams{
+  flex:1;
+  display:flex;
+  flex-flow:row nowrap;
+  justify-content:flex-start;
+  overflow:scroll;
+
 }
 
-
-@media(max-width:500px){
-  .img-wrap{
-    --w:100%;
-  }
-
-  .info.prose{
-    font-size:18px;
-    line-height: 28px;
-  }
-
-} */
-
-/*
-.new-prose{
-
-
-  font-family:'Charter',serif;
-  font-size:17px;
-  line-height: 26px;
-  margin-top:100px;
-  -webkit-font-smoothing: auto;
-  -moz-osx-font-smoothing: auto;
+.stream{
+  --min:calc(100vw - 20px);
+  min-width:min(480px,var(--min));
+  
+  max-height:100%;
+  overflow-y:scroll;
+  overflow-x:hidden;
+  position:relative;
+  border-right:1px solid var(--fg);
 }
-.new-prose>*{
+
+.stream:last-of-type{
+  border-right:none;
+}
+
+.grad{
+  --h:40px;
+  height:var(--h);
+  background: linear-gradient(180deg, rgba(128,128,128,1) 0%, rgba(128,128,128,0) 100%);
+  position:sticky;
+  width:100%;
+  z-index:100;
+  top:0;
+  padding:0px 10px;
   margin-bottom:10px;
 }
 
-.new-prose h1{
-  text-align: left;
-  margin-top:100px;
+.grad h2{
+  display:inline-block;
+}
+/* 
+.grad::after{
+  content:'';
+  display:block;
+  position:absolute;
+  right:0;
+  height:calc(100vh - (var(--h) + var(--top)/2));
+  top:calc(var(--h)/2);
+  border-right:1px solid var(--fg);
+} */
 
-  font-family: 'ia-writer';
+
+
+.prose h3 .date{
+  font-weight:400;
+  opacity:0.5;
+}
+
+.prose h3 .date.following::before{
+  content:' • ';
+}
+
+/* 
+#arena_journal{
+  --fg:rgb(255, 255, 255);
+  --bg:rgb(247, 224, 255);
+  background-color:var(--bg);
+} */
+
+
+
+.contents{
+  padding:0px 10px;
+  box-sizing:border-box;
+  padding-bottom:30px;
+  min-height:100vh;
+}
+
+.contents>*{
+  max-width:100%;
+  /* overflow-x:hidden; */
+}
+
+.prose-test{
+  background-color:red;
+  width:20px;
+  height:20px;
+  max-height:20px;
+}
+
+.block{
+  /* min-height:100px; */
+  border-bottom:1px dashed var(--fg);
+  margin-bottom:20px;
+  padding-bottom:20px;
+  box-sizing:border-box;
+}
+
+.block img{
+  width:100%;
+  object-fit:fit-content;
+}
+
+.block.prose[data-type="Channel"]{
+  color:var(--color-bg);
+  --color-link:var(--color-bg);
+ 
+}
+
+.block.prose[data-type="Channel"] a{
+  display:block;
+  background-color:var(--color-fg);
+  padding:20px;
+}
+
+.block.prose h3{
+  margin-top:0;
+}
+
+
+
+.block[data-type="Link"] a{
+  display:flex;
+  flex-flow:row nowrap;
+  justify-content:space-between;
+}
+
+.block.prose[data-type="Link"] h3{
+  margin-top:0;
+  margin-right:20px;
+}
+
+.block.prose[data-type="Channel"] h3{
+  margin-top:0;
+  margin-bottom:0;
+}
+
+.block[data-type="Link"] img{
+  width: 190px;
+  height:190px;
+}
+
+
+.bottom-detect{
+  height:10px;
+}
+
+@font-face{
+  font-family: 'Authentic Sans';
+  src: url('../assets/authentic-sans-90.woff2');
+}
+
+@font-face{
+  font-family: 'Authentic Sans';
+  src: url('../assets/authentic-sans-130.woff2');
   font-weight:600;
 }
- */
+
+
+@font-face{
+  font-family: 'fragment-mono';
+  src: url('../assets/fragment-mono-regular.ttf');
+}
+
+@font-face{
+  font-family: 'fragment-mono';
+  src: url('../assets/fragment-mono-regular-italic.ttf');
+  font-style:italic;
+}
+
 
 /* @font-face{
   font-family: 'ia-writer';
@@ -104,3 +220,5 @@
   font-weight:600;
   src: url('../assets/ibm-plex-sans-bold.ttf');
 } */
+
+

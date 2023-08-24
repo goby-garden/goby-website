@@ -3,22 +3,75 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html;" charset="utf-8" >
     <meta name="viewport" charset="UTF-8" content="width=device-width, initial-scale=1">
-    <title>Goby</title>
+    <title>goby.garden</title>
     <link rel="stylesheet" href="css/clearstyle.css">
-    <link rel="stylesheet" href="css/global.css">
+ 
+    <link rel="stylesheet" href="css/md.css">
     <link rel="stylesheet" href="css/home.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐚</text></svg>">
+    <link rel="preload" as="fetch" href="https://raw.githubusercontent.com/goby-garden/goby-database/main/notes.md" crossorigin>
+    <link rel="preload" as="fetch" href="https://raw.githubusercontent.com/goby-garden/goby-interface/main/notes.md" crossorigin>
   </head>
   <body data-page="">
-
+    <main>
+      <header class='prose'>
+        <h1>goby.garden</h1>
+        <p>goby is a work-in-progress desktop application. this page is inspired by <a target="_blank" href="https://broadsheet.chasem.co/">Broadsheet</a>, and tracks my live progress through various notetaking contexts. — <a target="_blank" href="https://nicochilla.com">Nico</a></p>
+      </header>
+      <div class="streams">
+        <section id="arena_journal" class="stream">
+          <div class='grad prose'>
+            <h2><code>goby journal</code>
+              
+            </h2>
+            <a target="_blank" href="https://www.are.na/goby-garden/goby-journal">[src]</a>
+          </div>
+          <div class='contents'></div>
+          <div class='bottom-detect'></div>
+        </section>
+        <section id="database_notes" class="stream">
+          <div class='grad prose'>
+          <h2><code>goby-database/notes.md</code></h2>
+          <a target="_blank" href="https://github.com/goby-garden/goby-database/blob/main/notes.md">[src]</a>
+          </div>
+          <div class='contents prose'></div>
+        </section>
+        <section id="interface_notes" class="stream">
+           <div class='grad prose'>
+            <h2><code>goby-interface/notes.md</code></h2>
+            <a target="_blank" href="https://raw.githubusercontent.com/goby-garden/goby-interface/main/notes.md">[src]</a>
+           </div>
+          <div class='contents prose'></div>
+        </section>
+        <section id="arena_feature_repo" class="stream">
+          
+           <div class='grad prose'>
+            <h2><code>goby feature repository</code></h2>
+            <a target="_blank" href="https://www.are.na/goby-garden/goby-feature-repository">[src]</a>
+          </div>
+          <div class='contents'></div>
+          <div class='bottom-detect'></div>
+        </section>
+        <section id="arena_moods" class="stream">
+          
+          <div class='grad prose'>
+            <h2><code>goby moods</code></h2>
+            <a target="_blank" href="https://www.are.na/goby-garden/goby-moods">[src]</a>
+          </div>
+          <div class='contents'></div>
+          <div class='bottom-detect'></div>
+        </section>
+      </div>
+    
+    </main>
 
   
 
-    {% include 'icons.html' %}
 
 
 
-    <script src="../js/d3.min.js" defer></script>
-    <script src="js/global.js" charset="utf-8" defer></script>
+    <script src="../js/marked.min.js" defer></script>
+    <script src="../js/d3.js" defer></script>
     <script src="js/home.js" charset="utf-8" defer></script>
   </body>
 </html>
