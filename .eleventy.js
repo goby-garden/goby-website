@@ -13,14 +13,14 @@ module.exports = function(eleventyConfig) {
   // Add a filter using the Config API
 
   eleventyConfig.addPassthroughCopy("templates/js");
-  eleventyConfig.addPassthroughCopy("templates/assets/fonts");
-  eleventyConfig.addPassthroughCopy("templates/assets/purpose");
-  eleventyConfig.addPassthroughCopy("templates/assets/journey");
-  eleventyConfig.addPassthroughCopy("templates/assets/video");
-  eleventyConfig.addPassthroughCopy("templates/assets/home");
+  // eleventyConfig.addPassthroughCopy("templates/assets/fonts");
+  // eleventyConfig.addPassthroughCopy("templates/assets/purpose");
+  // eleventyConfig.addPassthroughCopy("templates/assets/journey");
+  // eleventyConfig.addPassthroughCopy("templates/assets/video");
+  // eleventyConfig.addPassthroughCopy("templates/assets/home");
 
   eleventyConfig.addFilter( "myFilter", function() {});
-  eleventyConfig.setTemplateFormats("html,css,njk,ttf");
+  eleventyConfig.setTemplateFormats("html,css,js,njk,otf,woff,woff2,md,vtt,gif");
 
   eleventyConfig.addNunjucksFilter( "findwhere", function(value,data,key) {
     return data.find(a=>a[key]==value);
