@@ -74,7 +74,6 @@ function init(){
     observer.observe(options.root.querySelector('.bottom-detect'))
 
     function callback(entries){
-      console.log(entries[0])
       if(entries[0].intersectionRatio>0.9){
         console.log('load next page')
         load_next_page(chan);
@@ -108,7 +107,7 @@ function populate_md(item){
 function populate_arena(item){
   let blocks=d3.select('#'+item.key+' .contents').selectAll('.block')
     .data(item.contents,d=>d.id)
-
+  console.log(item.contents)
   blocks.enter()
     .append('div')
     .attr('class','block prose')
@@ -118,9 +117,10 @@ function populate_arena(item){
       let ref=block
       // https://www.are.na/block/
       if(d.class=='Link'||d.class=='Image'||d.class=='Channel'||d.class=='Attachment'){
-        ref=block.append('a').attr('href',d.source?d.source.url
+        ref=block.append('a').attr('href',d.class=='Link'?d.source.url
                     :d.class=='Channel'?'https://www.are.na/channel/'+d.id
                     : 'https://www.are.na/block/'+d.id)
+                    .attr('target','_blank')
       }
       let date=new Date(d.connected_at);
       let date_string=date.toLocaleDateString('en-US')
