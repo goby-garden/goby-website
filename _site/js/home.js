@@ -37,6 +37,13 @@ let arena_streams=[
     slug:'goby-moods',
     pages_loaded:0,
     contents:[]
+  },
+  {
+    key:'arena_use_cases',
+    populated:false,
+    slug:'goby-hypothetical-use-cases',
+    pages_loaded:0,
+    contents:[]
   }
 ]
 
