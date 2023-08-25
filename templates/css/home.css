@@ -27,6 +27,11 @@ header{
   /* border-bottom:1px solid var(--fg); */
   padding:20px 10px;
   box-sizing:border-box;
+  max-width:1000px;
+}
+
+summary{
+  cursor:pointer;
 }
 
 .streams{
