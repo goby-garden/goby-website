@@ -1,0 +1,1 @@
+This repo holds the code for [the goby.garden website](https://goby.garden/) (built with eleventy), and was previously a general repository for work on the project. Right now the home page loads live feeds from various notetaking documents and repositories to track my status.
