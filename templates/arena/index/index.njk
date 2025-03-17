@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;" charset="utf-8" >
+    <meta name="viewport" charset="UTF-8" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../css/clearstyle.css">
+    <link rel="stylesheet" href="../../css/arena/index.css">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✱</text></svg>">
+    <title>are.na rich index</title>
+  </head>
+  <body >
+    {# next:
+        - figure out netlify functions and move the access token to .env so that I can push this live!
+        - add a way of parsing "pinned" channels - maybe put above uncategorized in the third col
+        - Add an end notes at the bottom explaining/linking to how the data is retrieved, linking to examples, etc
+        - edit my own index taxonomy so I don't have a gigantic "micro-collections" category
+        - maybe add refresh button
+        - possibly double-list channels that fall into multiple categories, if I can match both of them in the string (or possibly just add a display option that accomodates non-hierarchical organizing)
+        - figure out a better name then "rich index"
+        - add some key parsing options (maybe its own dropdown?), e.g. allow parentheses
+     #}
+    <main>
+        <header id="profile-selection">
+            <div class="row">
+                {# <label for="identity-input">Profile:</label> #}
+                <input id="identity-input" type="url" placeholder="enter the link to an are.na profile or group"/>
+            </div>
+            <div class="page-grid">
+                <div id="profile-info">
+                    <h1 id="profile-name"></h1>
+                    <div id="profile-bio"></div>
+                </div>
+                <div id="index-display-options">
+                    <details>
+                        <summary>display options</summary>
+                        <div class="row"><label for="index-in-description">index key in description</label><input id="index-in-description" type="checkbox"/></div>
+                        <div class="row" id="key-block-picker"><label for="key-block">index key block:</label><input id="key-block" type="url" placeholder="https://www.are.na/block/<id>" /></div>
+                        <p class="hint">(if you leave this alone, the tool makes some guesses about it on its own)</p>
+                    </details>
+                    
+                </div>
+            </div>
+            
+            {# <p>https://www.are.na/nico-chilla/index</p> #}
+            
+        </header >
+        <section id="profile-channels" class="page-grid">
+            <div id="categories" class="can-be-sticky"></div>
+            <div id="uncategorized" class="can-be-sticky">
+
+            </div>
+        </section>
+    </main>
+
+  
+    <script preload src='../../js/arena/gql.js'></script>
+    <script src="../../js/marked.min.js"></script>
+    <script defer src='../../js/arena/index.js'></script>
+  </body>
+</html>

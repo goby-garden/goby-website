@@ -86,7 +86,8 @@ summary{
 
 
 
-.prose h3 .date{
+.prose h3 .date,
+.prose h4 .date{
   font-weight:400;
   opacity:0.5;
 }

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;" charset="utf-8" >
+    <meta name="viewport" charset="UTF-8" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../css/clearstyle.css">
+    <link rel="stylesheet" href="../../css/arena/index.css">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✱</text></svg>">
+    <title>are.na rich index</title>
+  </head>
+  <body >
+    
+    <main>
+        <header id="profile-selection">
+            <div class="row">
+                
+                <input id="identity-input" type="url" placeholder="enter the link to an are.na profile or group"/>
+            </div>
+            <div class="page-grid">
+                <div id="profile-info">
+                    <h1 id="profile-name"></h1>
+                    <div id="profile-bio"></div>
+                </div>
+                <div id="index-display-options">
+                    <details>
+                        <summary>display options</summary>
+                        <div class="row"><label for="index-in-description">index key in description</label><input id="index-in-description" type="checkbox"/></div>
+                        <div class="row" id="key-block-picker"><label for="key-block">index key block:</label><input id="key-block" type="url" placeholder="https://www.are.na/block/<id>" /></div>
+                        <p class="hint">(if you leave this alone, the tool makes some guesses about it on its own)</p>
+                    </details>
+                    
+                </div>
+            </div>
+            
+            
+            
+        </header >
+        <section id="profile-channels" class="page-grid">
+            <div id="categories" class="can-be-sticky"></div>
+            <div id="uncategorized" class="can-be-sticky">
+
+            </div>
+        </section>
+    </main>
+
+  
+    <script preload src='../../js/arena/gql.js'></script>
+    <script src="../../js/marked.min.js"></script>
+    <script defer src='../../js/arena/index.js'></script>
+  </body>
+</html>
