@@ -20,6 +20,12 @@ header{
 }
 
 input[type="url"]{
+    appearance:none;
+    border:none;
+    outline:1px solid black;
+    border-radius:3px;
+    box-sizing:border-box;
+    padding-inline:10px;
     /* width:100%; */
     flex:1;
     
@@ -97,8 +103,17 @@ h1{
 
 
 
-#profile-bio p{
+.prose{
+    line-height:1.3em;
+}
+
+.prose > *{
     margin-bottom:10px;
+}
+
+.prose ul{
+    list-style:disc;
+    list-style-position:inside;
 }
 
 #index-display-options .row{
@@ -120,6 +135,10 @@ h1{
     /* grid-column: 1 / 3; */
     /* columns:2;
     column-gap:var(--g); */
+}
+
+#about-text{
+    grid-column:1 / 2;
 }
 
 
@@ -200,12 +219,18 @@ details[open] summary::after{
     content:'-';
 }
 
-a.channel{
-    display:block;
-    width: fit-content;
-    margin-bottom:10px;
+a.channel,.prose a{
+    
+    
+    
     text-decoration:none;
     font-family:'Times New Roman','Arial';
+}
+
+a.channel{
+    width: fit-content;
+    display:block;
+    margin-bottom:10px;
 }
 
 a.channel.open-channel::after{
@@ -224,7 +249,7 @@ a.channel.open-channel::after{
     text-decoration-thickness:5px; */
     
 }
-li{
+#profile-channels li{
     width:100%;
     display:flex;
     flex-flow:row nowrap;
@@ -254,6 +279,12 @@ pre{
     padding:5px;
     border-radius:3px;
     border:1px solid rgba(0,0,0,0.1);
+    margin-bottom:10px;
+    font-size:0.9rem;
+}
+
+em{
+    font-style:italic;
 }
 
 .key-label{
@@ -279,7 +310,7 @@ pre{
 }
 
 @media(min-width:600px){
-    .can-be-sticky{
+    .profile-populated .can-be-sticky{
         height: fit-content;
         padding-bottom:40px;
         box-sizing:border-box;
@@ -287,7 +318,7 @@ pre{
     }
     
     
-    .can-be-sticky.height-set{
+    .profile-populated .can-be-sticky.height-set{
         position:sticky;
         top:calc(100vh - var(--h) + 20px);
         margin-bottom:-20px;
@@ -307,6 +338,10 @@ pre{
     #uncategorized,#index-display-options{
         grid-column:2/2;
     }
+
+    #about-text{
+        grid-column:1 / 3;
+    }
 }
 
 @media(min-width:1000px){
@@ -321,5 +356,9 @@ pre{
 
     #uncategorized,#index-display-options{
         grid-column:3/ 3;
+    }
+
+    #about-text{
+        grid-column:1 / 3;
     }
 }

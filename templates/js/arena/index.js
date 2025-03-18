@@ -73,14 +73,21 @@ function update_display_options(){
     display_options_box.classList.toggle('key-in-description',index_in_description);
 }
 
+let cue_index_search;
+
 function init(){
     
     identity_input.addEventListener('input',()=>{
-        index_in_description=null;
-        index_key_block='';
-        update_display_options();
-        handle_query_params([{key:'desc',value:null},{key:'key',value:null}]);
-        handle_slug_input();
+        if(cue_index_search) clearTimeout(cue_index_search);
+
+        cue_index_search=setTimeout(()=>{
+            index_in_description=null;
+            index_key_block='';
+            update_display_options();
+            handle_query_params([{key:'desc',value:null},{key:'key',value:null}]);
+            handle_slug_input();
+        },100)
+        
     });
     
     handle_query_params();

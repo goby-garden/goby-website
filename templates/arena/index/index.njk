@@ -1,61 +1,100 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html;" charset="utf-8" >
-    <meta name="viewport" charset="UTF-8" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../../css/clearstyle.css">
-    <link rel="stylesheet" href="../../css/arena/index.css">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;" charset="utf-8" >
+        <meta name="viewport" charset="UTF-8" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../../css/clearstyle.css">
+        <link rel="stylesheet" href="../../css/arena/index.css">
 
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✱</text></svg>">
-    <title>are.na rich index</title>
-  </head>
-  <body >
-    {# next:
-        - figure out netlify functions and move the access token to .env so that I can push this live!
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✱</text></svg>">
+        <title>are.na index viewer</title>
+    </head>
+    <body >
+        {# next:
+        - [x] figure out netlify functions and move the access token to .env so that I can push this live!
         - add a way of parsing "pinned" channels - maybe put above uncategorized in the third col
-        - Add an end notes at the bottom explaining/linking to how the data is retrieved, linking to examples, etc
+        - [x] Add an end notes at the bottom explaining/linking to how the data is retrieved, linking to examples, etc
         - edit my own index taxonomy so I don't have a gigantic "micro-collections" category
         - maybe add refresh button
         - possibly double-list channels that fall into multiple categories, if I can match both of them in the string (or possibly just add a display option that accomodates non-hierarchical organizing)
-        - figure out a better name then "rich index"
+        - [x] figure out a better name then "rich index"
         - add some key parsing options (maybe its own dropdown?), e.g. allow parentheses
      #}
-    <main>
-        <header id="profile-selection">
-            <div class="row">
-                {# <label for="identity-input">Profile:</label> #}
-                <input id="identity-input" type="url" placeholder="enter the link to an are.na profile or group"/>
-            </div>
-            <div class="page-grid">
-                <div id="profile-info">
-                    <h1 id="profile-name"></h1>
-                    <div id="profile-bio"></div>
+        <main>
+            <header id="profile-selection">
+                <div class="row">
+                    {# <label for="identity-input">Profile:</label> #}
+                    <input id="identity-input" type="url" placeholder="enter the link to an are.na profile or group"/>
                 </div>
-                <div id="index-display-options">
-                    <details>
-                        <summary>display options</summary>
-                        <div class="row"><label for="index-in-description">index key in description</label><input id="index-in-description" type="checkbox"/></div>
-                        <div class="row" id="key-block-picker"><label for="key-block">index key block:</label><input id="key-block" type="url" placeholder="https://www.are.na/block/<id>" /></div>
-                        <p class="hint">(if you leave this alone, the tool makes some guesses about it on its own)</p>
-                    </details>
-                    
+                <div class="page-grid">
+                    <div id="profile-info">
+                        <h1 id="profile-name"></h1>
+                        <div id="profile-bio" class="prose"></div>
+                    </div>
+                    <div id="index-display-options">
+                        <details>
+                            <summary>display options</summary>
+                            <div class="row">
+                                <label for="index-in-description">index key in description</label><input id="index-in-description" type="checkbox"/></div>
+                            <div class="row" id="key-block-picker">
+                                <label for="key-block">index key block:</label><input id="key-block" type="url" placeholder="https://www.are.na/block/<id>"/></div>
+                            <p class="hint">(if you leave this alone, the tool makes some guesses about it on its own)</p>
+                        </details>
+
+                    </div>
                 </div>
-            </div>
-            
-            {# <p>https://www.are.na/nico-chilla/index</p> #}
-            
-        </header >
-        <section id="profile-channels" class="page-grid">
-            <div id="categories" class="can-be-sticky"></div>
-            <div id="uncategorized" class="can-be-sticky">
 
-            </div>
-        </section>
-    </main>
+                {# <p>https://www.are.na/nico-chilla/index</p> #}
 
-  
-    <script preload src='../../js/arena/gql.js'></script>
-    <script src="../../js/marked.min.js"></script>
-    <script defer src='../../js/arena/index.js'></script>
-  </body>
+            </header >
+            <section id="profile-channels" class="page-grid">
+                <div id="categories" class="can-be-sticky"></div>
+                <div id="uncategorized" class="can-be-sticky"></div>
+            </section>
+            <section>
+                <details open>
+                    <summary>Info</summary>
+                    <div class="page-grid">
+                        <div id="about-text" class="prose">
+                            <p>This page displays an are.na user’s channels, grouped and categorized using their custom <a href="https://help.are.na/docs/guides/creating-personal-taxonomies" target="_blank">index key</a>. Enter the link to any are.na profile or group above to view/link to their index.</p>
+                            <p>The tool makes groups by matching special characters at the beginning of channel names, and then looks for a valid index keys in the profile bio and any linked blocks (can also be linked manually in the display options). A parseable key usually looks something like this:</p>
+                            <pre style="pointer-events: auto;">
+<code style="pointer-events: auto;">. trains of thought
+: traditions and dialogues in philosophy that I’m exploring
+; notes and research
+= channels driving a specific point of view
+> collections
+^ micro-collections</code></pre>
+                            <p>You can also separate the keys and labels using <a target="_blank" href="https://www.are.na/emily-force/index">" = "</a> or <a href="https://www.are.na/cucumber-salad/index">": "</a>. If an index key block isn’t linked anywhere in the bio, you can also link it manually in the display options menu.</p>
+                            <p>
+                                <em>[WIP] made by <a href="https://goby.garden/arena/index/?profile=nico-chilla" target="_blank" >Nico</a> using the are.na API. Write me <a target="_blank" href="https://www.are.na/nico-chilla/span-span-span-span">here</a> if you have any questions or suggestions!</em>
+                            </p>
+
+                        </div>
+                        <div id="examples" class="prose">
+                            <p>Example indexes:</p>
+                            <ul>
+                                <li><a href="https://goby.garden/arena/index/?profile=charles-broskoski" target="_blank">cab</a></li>
+                                <li><a href="https://goby.garden/arena/index/?profile=meg-miller" target="_blank">Meg Miller</a></li>
+                                <li><a href="https://goby.garden/arena/index/?profile=homeostatic-mechanisms" target="_blank">homeostatic mechanisms</a> (group by ultimape)</li>
+                                <li><a href="https://goby.garden/arena/index/?profile=leslie-liu" target="_blank">leslie liu</a></li>
+                                <li><a href="https://goby.garden/arena/index/?profile=selina-kehuan-wu" target="_blank">Selina Kehuan Wu</a></li>
+                                <li><a href="https://goby.garden/arena/index/?profile=dani-bloop&key=14790178" target="_blank">dani bloop</a></li>
+                                <li><a href="https://goby.garden/arena/index/?profile=shea" target="_blank">shea ,</a></li>
+                                <li><a href="https://goby.garden/arena/index/?profile=jon-chen" target="_blank">jon chen</a></li>
+                                <li><a href="https://goby.garden/arena/index/?profile=mindy-seu" target="_blank">Mindy Seu</a></li>
+                                {# <li><a href="" target="_blank"></a></li> #}
+                            </ul>
+                        </div>
+                    </div>
+
+                </details>
+
+            </section>
+        </main>
+
+        <script preload src='../../js/arena/gql.js'></script>
+        <script src="../../js/marked.min.js"></script>
+        <script defer src='../../js/arena/index.js'></script>
+    </body>
 </html>
