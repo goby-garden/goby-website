@@ -15,12 +15,13 @@ export default async (req) => {
       });
 
     let data={};
-
+    const clone = response.clone();
+    
     try{
         data = await response.json();
     }catch(e){
         console.log(e)
-        const clone = response.clone();
+        
         const responseText= await clone.text();
         console.log('responseText',responseText);
     }
