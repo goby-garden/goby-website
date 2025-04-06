@@ -59,6 +59,12 @@ h1{
     transition:background-color 0.3s;
 }
 
+#error-banner{
+    background-color:palegoldenrod;
+    padding:10px;
+    box-sizing:border-box;
+}
+
 @media(hover:hover){
     #profile-bio.expandable:not(.view-full):hover{
         
