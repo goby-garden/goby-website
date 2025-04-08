@@ -60,9 +60,51 @@ h1{
 }
 
 #error-banner{
+    display:none;
     background-color:palegoldenrod;
     padding:10px;
     box-sizing:border-box;
+}
+
+#loading-animation{
+    width:100%;
+    display:none;
+    padding-top:40px;
+    box-sizing:border-box;
+    flex-flow:row nowrap;
+    justify-content:center;
+    grid-column:1 / 1;
+}
+
+.loading-state #loading-animation{
+    display:flex;
+}
+
+#loading-animation span::after{
+    content:'✱';
+}
+
+#loading-animation span::after{
+    animation:loading 1s steps(1) infinite forwards; 
+}
+
+@keyframes loading{
+    0%{
+        content:'✱';
+    }
+
+    25%{
+        content:'✱✱';
+    }
+
+    50%,
+    100%{
+        content:'✱✱✱';
+    }
+}
+
+main.error-state #error-banner{
+    display:block;
 }
 
 @media(hover:hover){
@@ -287,6 +329,7 @@ pre{
     border:1px solid rgba(0,0,0,0.1);
     margin-bottom:10px;
     font-size:0.9rem;
+    overflow:hidden;
 }
 
 em{
@@ -322,6 +365,11 @@ em{
         box-sizing:border-box;
         min-height:100vh;
     }
+
+    #loading-animation{
+        grid-column:1 / 4;
+    }
+    
     
     
     .profile-populated .can-be-sticky.height-set{

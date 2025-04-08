@@ -4,6 +4,8 @@ export default async (req) => {
     const fetch_endpoint='https://api.are.na/graphql';
     const token=process.env.ARENA_GQL;
 
+    let data={};
+    
     const response = await fetch(fetch_endpoint, {
         method: req.method,
         headers: {
@@ -14,7 +16,7 @@ export default async (req) => {
         duplex: "half"
       });
 
-    let data={};
+    
     const clone = response.clone();
     
     try{

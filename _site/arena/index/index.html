@@ -13,7 +13,7 @@
         
         <main>
             <div id="error-banner">
-                <p>Hi! This page is currently having some issues, I think because the are.na API is giving me bad responses — I’m working on figuring it out 🫡</p>
+                <p>Looks like we’re having trouble accessing the API - you may have better luck trying again later, sorry!</p>
             </div>
             <header id="profile-selection">
                 <div class="row">
@@ -21,6 +21,9 @@
                     <input id="identity-input" type="url" placeholder="enter the link to an are.na profile or group"/>
                 </div>
                 <div class="page-grid">
+                    <div id="loading-animation">
+                            <span class="asterisks"></span>
+                        </div>
                     <div id="profile-info">
                         <h1 id="profile-name"></h1>
                         <div id="profile-bio" class="prose"></div>

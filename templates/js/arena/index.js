@@ -25,7 +25,11 @@ let index_in_description=null;
 let index_key_block='';
 let gql_result={};
 
+let current_request_id=0;
+
 window.addEventListener('load',init);
+
+const delay = time => new Promise(r => setTimeout(r, time));
 
 function find_index_key_labels(md_str){
     // .replaceAll('`','')
@@ -105,7 +109,6 @@ function init(){
 
 
     profile_bio_wrapper.addEventListener('click',function(e){
-        console.log(e);
         if(profile_bio_wrapper.classList.contains('expandable')){
             profile_bio_wrapper.classList.toggle('view-full');
         }
@@ -150,6 +153,7 @@ async function handle_slug_input(){
         const url_components=v.split('/');
         const i=url_components.findIndex((a)=>a.includes('are.na')) + 1;
         const slug=url_components[i];
+        main.classList.add('loading-state');
         gql_result=await get_index(slug);
         if(gql_result.channel_index){
             profile_data.name=gql_result.name;
@@ -275,6 +279,8 @@ function populate_index(){
     }
 
     main.classList.add('profile-populated');
+    main.classList.remove('error-state');
+    main.classList.remove('loading-state');
 }
 
 async function process_api_result(result){
@@ -345,16 +351,7 @@ async function process_api_result(result){
 
     let space1="️ ";
     let space2=" ";
-    console.log('special space?',space1.charCodeAt(0),'space:',space2.charCodeAt(0))
 
-    for(let key of Object.keys(groups)){
-        console.log(key,'-----------------')
-        for(let char of key){
-            console.log(char,char.charCodeAt(0));
-        }
-        // console.log(key,key.length,key.charCodeAt(0),key.charCodeAt(0));
-    }
-    // console.log(groups.keys());
 
     groups.uncategorized=groups.uncategorized.toSorted((a,b)=>{
         let a_order=arena_order(a.title[0].toUpperCase());
@@ -447,30 +444,56 @@ function handle_query_params(set_params = []){
 
 async function get_index(slug){
     let fetch_endpoint='/.netlify/functions/arena-gql';
-    // fetch_endpoint='https://api.are.na/graphql';
 
-    let result=await fetch(fetch_endpoint, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
+    const headers={
+        'Content-Type': 'application/json'
+    };
+    current_request_id++;
+
+    let request_id=current_request_id;
+    let attempts=1;
+    let valid_response;
+
+    const body=JSON.stringify({
+        query: gql_fetch_index,
+        variables: {
+            id: slug,
+            type: "OWN"
         },
-        body: JSON.stringify({
-            query: gql_fetch_index,
-            variables: {
-                id: slug,
-                type: "OWN"
-            },
+    });
+
+   
+
+    while((valid_response==undefined)&&(request_id==current_request_id)&&(attempts<11)){
+        console.log(`attempt #${attempts}`)
+        let result=await fetch(fetch_endpoint, {
+            method: 'POST',
+            headers,
+            body
         })
-    })
-    .then((res) => res.json())
-    .then((result) => result);
-    console.log(result?.data?.identity);
+        .then((res) => res.json())
+        .then((result) => result);
+
+        if(result?.data!==undefined){
+            valid_response=result;
+            break;
+        }
+
+        await delay(500);
+        attempts++;
+    }
+
+    if(attempts>10){
+        main.classList.add('error-state');
+    }
+
+
     return {
-        id:result?.data?.identity?.id,
-        channel_index:result?.data?.identity?.identifiable?.channels_index,
-        bio:result?.data?.identity?.identifiable?.bio,
-        bio_html:result?.data?.identity?.identifiable?.bio_html,
-        name:result?.data?.identity?.name
+        id:valid_response?.data?.identity?.id,
+        channel_index:valid_response?.data?.identity?.identifiable?.channels_index,
+        bio:valid_response?.data?.identity?.identifiable?.bio,
+        bio_html:valid_response?.data?.identity?.identifiable?.bio_html,
+        name:valid_response?.data?.identity?.name
     };
 }
 
