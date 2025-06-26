@@ -121,27 +121,47 @@ function populate_arena(item){
     .attr('data-type',(d)=>d.class)
     .each(function(d){
       let block=d3.select(this)
-      let ref=block
+      let ref=block;
+      let link_wrap;
       // https://www.are.na/block/
       if(d.class=='Link'||d.class=='Image'||d.class=='Channel'||d.class=='Attachment'){
-        ref=block.append('a').attr('href',d.class=='Link'?d.source.url
+        link_wrap=block.append('a').attr('href',d.class=='Link'?d.source.url
                     :d.class=='Channel'?'https://www.are.na/channel/'+d.id
                     : 'https://www.are.na/block/'+d.id)
                     .attr('target','_blank')
+          
       }
       let date=new Date(d.connected_at);
       let date_string=date.toLocaleDateString('en-US')
       
-      ref.append('h3').text(d.title)
-      .append('span').attr('class',`date ${d.title.length>0?'following':''}`).text(date_string)
+      
+      if(link_wrap){
+        add_title(link_wrap);
+      }else{
+        add_title(ref);
+      }
+      
+      function add_title(el){
+        el.append('h3').text(d.title)
+        .append('span').attr('class',`date ${d.title.length>0?'following':''}`).text(date_string)
+      }
+      
+      
       
       if(d.class=='Text'){
         ref.append('div').html(d.content_html);
       }else if(d.class=='Image'){
       
-        ref.append('img').attr('src',d.image.display.url)
+        link_wrap.append('img').attr('src',d.image.display.url)
+        
+        console.log("slug=nico-chilla",d.user?.slug=='nico-chilla')
+        const img_description=(d.user?.slug=='nico-chilla')?d.description_html:`<span class="attribution-note">— added to are.na by ${d.user.full_name}</span>`;
+        
+        if(img_description){
+          ref.append('div').attr('class','image-desc').html(img_description);
+        }
       }else if(d.class=="Link"){
-        ref.append('img').attr('src',d.image.thumb.url)
+        link_wrap.append('img').attr('src',d.image.thumb.url)
       }
       
     })

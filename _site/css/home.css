@@ -87,10 +87,16 @@ summary{
 
 
 .prose h3 .date,
-.prose h4 .date{
+.prose h4 .date,
+.prose .attribution-note{
   font-weight:400;
   opacity:0.5;
 }
+
+/* .prose .attribution-note{
+  margin-top:-10px;
+  display:block;
+} */
 
 .prose h3 .date.following::before{
   content:' • ';
@@ -135,6 +141,10 @@ summary{
 .block img{
   width:100%;
   object-fit:fit-content;
+}
+
+.block .image-desc{
+  margin-top:10px;
 }
 
 .block.prose[data-type="Channel"]{
