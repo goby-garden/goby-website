@@ -140,7 +140,7 @@ summary{
 
 .block img{
   width:100%;
-  object-fit:fit-content;
+  object-fit:cover;
 }
 
 .block .image-desc{

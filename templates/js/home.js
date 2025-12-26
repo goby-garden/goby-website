@@ -25,9 +25,9 @@ let arena_streams=[
     contents:[]
   },
   {
-    key:'arena_feature_repo',
+    key:'arena_references',
     populated:false,
-    slug:'goby-feature-repository',
+    slug:'goby-references',
     pages_loaded:0,
     contents:[]
   },
@@ -38,13 +38,6 @@ let arena_streams=[
     pages_loaded:0,
     contents:[]
   },
-  {
-    key:'arena_use_cases',
-    populated:false,
-    slug:'goby-hypothetical-use-cases',
-    pages_loaded:0,
-    contents:[]
-  }
 ]
 
 load_md('https://raw.githubusercontent.com/goby-garden/goby-database/main/notes.md','database_notes')
@@ -97,9 +90,11 @@ function init(){
 }
 
 async function load_md(url,delivery_address){
+  const highlight_match = /==(.*?)==/gm;
+
   const response = await fetch(url);
   let txt=await response.text();
-  let parsed=marked(txt);
+  let parsed=marked(txt).replace(highlight_match, '<mark>$1</mark>');
   md_streams[delivery_address].contents = parsed;
   if(init_fired) populate_md(md_streams[delivery_address])
 }
@@ -124,7 +119,8 @@ function populate_arena(item){
       let ref=block;
       let link_wrap;
       // https://www.are.na/block/
-      if(d.class=='Link'||d.class=='Image'||d.class=='Channel'||d.class=='Attachment'){
+      console.log('d.class',d.class)
+      if(d.class=='Link'||d.class=='Image'||d.class=='Channel'||d.class=='Attachment'||d.class=='Media'){
         link_wrap=block.append('a').attr('href',d.class=='Link'?d.source.url
                     :d.class=='Channel'?'https://www.are.na/channel/'+d.id
                     : 'https://www.are.na/block/'+d.id)
@@ -160,7 +156,7 @@ function populate_arena(item){
         if(img_description){
           ref.append('div').attr('class','image-desc').html(img_description);
         }
-      }else if(d.class=="Link"){
+      }else if(d.class=="Link"||d.class=="Media"){
         link_wrap.append('img').attr('src',d.image.thumb.url)
       }
       

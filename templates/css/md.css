@@ -8,7 +8,7 @@
     --color-fg:var(--fg);
     --color-bg:var(--bg);
     --color-link:rgb(194, 226, 255);
-    --color-highlight:#fff8c5;
+    --color-highlight:#75a842;
     --color-code-bg:rgba(0,0,0,0.5);
     --color-linerule:var(--color-fg);
   
@@ -75,8 +75,9 @@
   
   .prose mark {
     /* highlight (not supported with only commonmark) */
-    background-color: var(--color-highlight);
-    color: #404040;
+        background-color: var(--color-highlight);
+        color: var(--color-fg);
+        padding: 2px 5px;
   }
   
   
@@ -438,6 +439,8 @@
 
   input[type="checkbox"]:checked{
     background-color:var(--color-fg);
+    outline:2px solid var(--color-bg);
+    outline-offset:-3px;
   }
 
 
