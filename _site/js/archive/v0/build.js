@@ -53,7 +53,7 @@ async function inspectChannel(newSlug,metadata){
   //check if goby is initiated already, and if so, send you to it
 
   if(metadata.contents[0].title=='goby.json'){
-    window.location.href =baseurl+'edit/?channel='+slug;
+    window.location.href =baseurl+'archive/v0/edit/?channel='+slug;
   }
 
 

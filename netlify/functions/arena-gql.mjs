@@ -1,4 +1,3 @@
-
 export default async (req) => {
     // forward the request straight to the are.na gql API
     const fetch_endpoint='https://api.are.na/graphql';
@@ -15,7 +14,6 @@ export default async (req) => {
         body: req.body,
         duplex: "half"
       });
-
     
     const clone = response.clone();
     

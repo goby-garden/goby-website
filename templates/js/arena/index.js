@@ -466,13 +466,23 @@ async function get_index(slug){
 
     while((valid_response==undefined)&&(request_id==current_request_id)&&(attempts<11)){
         console.log(`attempt #${attempts}`)
-        let result=await fetch(fetch_endpoint, {
-            method: 'POST',
-            headers,
-            body
-        })
-        .then((res) => res.json())
-        .then((result) => result);
+
+        let result;
+        try{
+            result=await fetch(fetch_endpoint, {
+                method: 'POST',
+                headers,
+                body
+            })
+            
+            result=await result.json().then((result) => result);            
+            
+
+        }catch(e){
+            console.log('e',e)
+        }
+
+        
 
         if(result?.data!==undefined){
             valid_response=result;

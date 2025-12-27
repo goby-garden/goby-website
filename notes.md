@@ -1,3 +1,16 @@
+### Run commands:
+
+
+| command | function | server |
+| --- | --- | --- |
+| `npm run dev` | run 11ty without any server functions | `http://localhost:8081/` |
+| `npm run start | run 11ty with netlify server proxy for server functions | `http://localhost:8888/` |
+
+
+
+
+---
+
 run eleventy
 npx @11ty/eleventy
 

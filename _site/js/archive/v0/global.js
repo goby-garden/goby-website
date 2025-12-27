@@ -1,6 +1,6 @@
 let slugRegex=/\/(?:.(?!\/))+$/g;
 const baseurl=window.location.hostname === "localhost"
-  ? "http://localhost:8000/"
+  ? "http://localhost:8888/"
   : "https://goby.garden/";
 
 const redirect=baseurl+document.querySelector('body').dataset.page;
