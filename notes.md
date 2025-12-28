@@ -22,6 +22,10 @@ npx @11ty/eleventy --serve
 "type": "module"
 
 
+
+ "start": "NODE_ENV=development concurrently -n=s,e,n -c='#6495ED','#ff3d7b','#0ff5b4' \"npm run svelte:dev\" \"npm run 11ty:dev\" \"wait-on http://localhost:8080/ && npm run netlify\""
+
+
 #### FFMPEG golden 1-step command for mov->scaled mp4 saved in video folder:
 `for i in *.mov; do ffmpeg -i "$i" -vf "scale=1800:-1" "../processed/${i%.*}.mp4"; done`
 

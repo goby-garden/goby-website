@@ -1,23 +1,26 @@
-const yaml = require("js-yaml");
 const aml = require("archieml");
 const marked = require('marked');
 
-
-
-
-
-
-
+console.log('hello hello eleventy config')
 
 module.exports = function(eleventyConfig) {
-  // Add a filter using the Config API
+  
 
   eleventyConfig.addPassthroughCopy("templates/js");
-  // eleventyConfig.addPassthroughCopy("templates/assets/fonts");
-  // eleventyConfig.addPassthroughCopy("templates/assets/purpose");
-  // eleventyConfig.addPassthroughCopy("templates/assets/journey");
-  // eleventyConfig.addPassthroughCopy("templates/assets/video");
-  // eleventyConfig.addPassthroughCopy("templates/assets/home");
+  eleventyConfig.addPassthroughCopy({"sveltekit/_build/": "." });
+
+
+
+  // eleventyConfig.setServerPassthroughCopyBehavior("passthrough");
+  
+  // eleventyConfig.addPassthroughCopy({"sveltekit/_build/_app": "_app" });
+  // eleventyConfig.addPassthroughCopy({"sveltekit/_build/arena/channel": "arena/channel" });
+  
+
+  // "sveltekit/build/_app": "_app" 
+
+
+  
 
   eleventyConfig.addFilter( "myFilter", function() {});
   eleventyConfig.setTemplateFormats("html,css,js,njk,otf,woff,woff2,md,vtt,gif");

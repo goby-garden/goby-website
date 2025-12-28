@@ -4,3 +4,4 @@ node_modules/
 .netlify
 .env
 deno.lock
+_site/

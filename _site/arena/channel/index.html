@@ -1,22 +1,48 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html;" charset="utf-8" >
-        <meta name="viewport" charset="UTF-8" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="../../css/clearstyle.css">
-        <link rel="stylesheet" href="../../css/arena/channel.css">
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="/css/clearstyle.css?url">
+		
+		<link href="../../_app/immutable/assets/2.BTxU-tzu.css" rel="stylesheet">
+		<link rel="modulepreload" href="../../_app/immutable/entry/start.TCF4kizq.js">
+		<link rel="modulepreload" href="../../_app/immutable/chunks/DJy_S9wH.js">
+		<link rel="modulepreload" href="../../_app/immutable/chunks/4d8790ON.js">
+		<link rel="modulepreload" href="../../_app/immutable/chunks/D_P-2BF2.js">
+		<link rel="modulepreload" href="../../_app/immutable/entry/app.CLR4NQ-L.js">
+		<link rel="modulepreload" href="../../_app/immutable/chunks/D3DXHTh_.js">
+		<link rel="modulepreload" href="../../_app/immutable/chunks/beceJ3Eq.js">
+		<link rel="modulepreload" href="../../_app/immutable/chunks/COa-jnDy.js">
+		<link rel="modulepreload" href="../../_app/immutable/chunks/C3WQiyRb.js">
+		<link rel="modulepreload" href="../../_app/immutable/nodes/0.BwXYIqWl.js">
+		<link rel="modulepreload" href="../../_app/immutable/nodes/2.8aYKupu8.js">
+		<link rel="modulepreload" href="../../_app/immutable/chunks/BFOCLVdH.js">
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents"><!--[--><!--[--><!----><!----><input id="channel-input" type="text" placeholder="https://are.na/&lt;user>/&lt;channel-slug>" class="svelte-724kd8"/> <br/> <button id="test-meta" class="svelte-724kd8">test channel meta</button> <br/> <button id="test-contents" class="svelte-724kd8">test channel contents</button><!----><!----><!----><!--]--> <!--[!--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_v31zhs = {
+						base: new URL("../..", location).pathname.slice(0, -1)
+					};
 
-        <title>are.na channel viewer</title>
-        
-    </head>
+					const element = document.currentScript.parentElement;
 
-    <body>
-        <input id="channel-input" type="text" placeholder="https://are.na/<user>/<channel-slug>" />
-        <br>
-        <button id="test-meta">test channel meta</button>
-        <br>
-        <button id="test-contents">test channel contents</button>
-
-        <script defer src='../../js/arena/channel.js'></script>
-    </body>
+					Promise.all([
+						import("../../_app/immutable/entry/start.TCF4kizq.js"),
+						import("../../_app/immutable/entry/app.CLR4NQ-L.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 2],
+							data: [{type:"data",data:null,uses:{},slash:"always"},null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+	</body>
 </html>
