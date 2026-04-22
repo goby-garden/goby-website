@@ -1,18 +1,17 @@
 {
   "name": "goby",
-  "type":"module",
+  "type": "module",
   "version": "0.0.5",
   "description": "A web app that will enrich Are.na channels with more complex ontology-building tools",
   "main": "index.js",
   "scripts": {
-    "svelte:dev": "cd sveltekit && vite build --watch --logLevel silent",
-    "svelte:build": "cd sveltekit && vite build",
-    "11ty:dev": "npx @11ty/eleventy --config=.eleventy.cjs --serve",
-    "11ty:build":"npx @11ty/eleventy --config=.eleventy.cjs",
-    "build":"npm run svelte:build && npm run 11ty:build",
-    "dev":"NODE_ENV=development concurrently -n=s,e -c='#ff3d7b','#0ff5b4' \"npm run svelte:dev\" \"npm run 11ty:dev\"",
-    "netlify": "netlify dev",
-    "start": "npm run netlify"
+    "dev:svelte": "cd sveltekit && vite dev",
+    "build:svelte": "cd sveltekit && vite build",
+    "dev:11ty": "npx @11ty/eleventy --config=.eleventy.cjs --serve",
+    "build:11ty": "npx @11ty/eleventy --config=.eleventy.cjs",
+    "build": "npm run build:svelte && npm run build:11ty",
+    "server:svelte": "netlify dev --command=\"npm run dev:svelte\" --target-port=5173",
+    "server:11ty": "netlify dev --command=\"npm run dev:11ty\" --target-port=8080"
   },
   "repository": {
     "type": "git",
@@ -30,6 +29,7 @@
     "@sveltejs/adapter-static": "^3.0.10",
     "@sveltejs/kit": "^2.49.1",
     "@sveltejs/vite-plugin-svelte": "^6.2.1",
+    "@types/marked": "^5.0.2",
     "concurrently": "^9.1.2",
     "svelte": "^5.45.6",
     "svelte-check": "^4.3.4",
@@ -41,6 +41,6 @@
     "archieml": "^0.5.0",
     "d3": "^7.4.0",
     "js-yaml": "^4.1.0",
-    "marked": "^4.0.7"
+    "marked": "^17.0.1"
   }
 }

@@ -1,0 +1,7 @@
+.monospace{
+    font-family:'Courier New','Menlo',monospace;
+    font-size:14px;
+    --text-color:rgb(43,43,43);
+    color:var(--text-color);
+    /* -webkit-text-stroke:0.03em var(--text-color); */
+}

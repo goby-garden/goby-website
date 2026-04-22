@@ -1,5 +1,2 @@
 [dev]
     autoLaunch=false
-    command = "npm run dev"
-    framework = "#custom"
-    targetPort = 8080
