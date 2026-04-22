@@ -1,5 +1,6 @@
 const aml = require("archieml");
 const marked = require('marked');
+const Nunjucks = require('nunjucks');
 
 console.log('hello hello eleventy config')
 
@@ -18,7 +19,11 @@ module.exports = function(eleventyConfig) {
   
 
   // "sveltekit/build/_app": "_app" 
+  const nunjucksEnvironment = new Nunjucks.Environment(
+     new Nunjucks.FileSystemLoader("templates/_includes")
+   );
 
+   eleventyConfig.setLibrary("njk", nunjucksEnvironment);
 
   
 
