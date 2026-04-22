@@ -1,9 +1,18 @@
 const aml = require("archieml");
 const marked = require('marked');
+const nunjucks = require("nunjucks");
+const path = require("path");
 
 console.log('hello hello eleventy config')
 
 module.exports = function(eleventyConfig) {
+
+  const nunjucksEnv = new nunjucks.Environment(
+    new nunjucks.FileSystemLoader([
+      path.resolve(__dirname, "templates/_includes"),
+    ])
+  );
+  eleventyConfig.setLibrary("njk", nunjucksEnv);
   
 
   eleventyConfig.addPassthroughCopy("templates/js");
