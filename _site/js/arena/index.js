@@ -382,37 +382,70 @@ function request_arena_block(block_id){
 
 function process_title_string(str,{format}={}){
     const str_validated=str.replaceAll("️","");
+    const alphanum_regex=/[a-zA-Z\d\[“"\ ]+/;
+    const not_alphanum_regex=/[^a-zA-Z\d\[“"\ ]/;
+    const endingPunctuation=['?','!','.','...','','…',','];
     
     let key='';
     let title=str_validated;
 
+
     if(!format){
-        const alphanumeric_regex=/[a-zA-Z\d\[“"]/;
-        for(let char of str_validated){
-            
-            if(!char.match(alphanumeric_regex)){
-                key+=char;
-            }else{
-                break;
+        
+        /**
+         * Converts string into an array representing alternation 
+         * of icons and alphanumeric characters
+         * where alphanumeric chars are represented as empty strings
+         * 
+         * Examples:
+         * 
+         * "🦀 icon at start" → ["🦀",""]
+         * 
+         * "icon at end 🦀" → ["","🦀"]
+         * 
+         * "🦀 icons on both ends 🦀" → ["🦀","","🦀"]
+         */
+        const splitOnAlphanumeric=str_validated.split(alphanum_regex)
+        const first=splitOnAlphanumeric[0];
+        const last=splitOnAlphanumeric.at(-1);
+        
+        
+        if(first){
+            key = first;
+            title=str_validated.replace(key,'');
+        }else if(last && !endingPunctuation.includes(last)){
+            // omitting some ending punctuation
+            key = last;
+
+            const str_end=str_validated.lastIndexOf(key);
+            title=str_validated.substring(0,str_end);
+        }        
+    }else if(format==' = '){
+        explicit_format('=')
+    }else if(format==': '){
+        explicit_format(':')
+    }
+
+    function explicit_format(delimiter){
+        let split=str_validated.split(delimiter);
+        if(split.length>1){
+            const firstChar=split[0].trim()[0];
+            const lastChar=split[1].trim().at(-1);
+
+
+            if(not_alphanum_regex.exec(`${firstChar}`)){
+                // if first character of first segment is not an alphanum, use segment as key
+                key=split[0].trim();
+                title=str_validated.replace(key,'')
+            }else if(not_alphanum_regex.exec(`${lastChar}`) && !endingPunctuation.includes(split[1])){
+                // if last character of second segment is not an alphanum, use segment as key
+                key=split[1].trim();
+                const str_end=str_validated.lastIndexOf(key);
+                title=str_validated.substring(0,str_end);
             }
         }
-        title=str_validated.replace(key,'');
-    }else if(format==' = '){
-        let split=str_validated.split('=');
-        if(split.length>1){
-            key=split[0].trim();
-        }else{
-            key='';
-        }
-        title=str_validated.replace(key,'').replace('=','');
-    }else if(format==': '){
-        let split=str_validated.split(':');
-        if(split.length>1){
-            key=split[0].trim();
-        }else{
-            key='';
-        }
-        title=str_validated.replace(key,'').replace(':','');
+
+        title=title.replace(delimiter,'');
     }
     
     return {
@@ -465,7 +498,7 @@ async function get_index(slug){
    
 
     while((valid_response==undefined)&&(request_id==current_request_id)&&(attempts<11)){
-        console.log(`attempt #${attempts}`)
+        console.log(`fetch attempt #${attempts}`)
 
         let result;
         try{
