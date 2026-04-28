@@ -17,6 +17,30 @@ export async function get_channel_meta(slug:string){
 }
 
 
+export async function get_channel_contents(
+    {
+        slug,
+        page = 1,
+        per = 12, 
+        sort = 'position_desc'
+    }:{slug:string,page?:number,per?:number,sort?:'position_asc'|'position_desc'}
+){
+    return await make_v3_request(
+        {
+            method:"GET",
+            type:'api',
+            category:`channels`,
+            endpoint:"/contents",
+            resourceId:slug,
+            params:{
+                page,
+                per,
+                sort
+            }
+        }
+    );
+}
+
 // export async function get_channel_contents(
 //     {slug,page = 1,per = 10, direction = 'desc', user}:{slug:string,page?:number,per?:number,direction?:'asc'|'desc',user?:string}
 // ){
@@ -50,7 +74,7 @@ async function make_v3_request(data:{
         type:"api" | 'auth';
         resourceId:string;
         category:"channels";
-        endpoint:"/";
+        endpoint:"/" | "/contents";
         params:{[key:string]:string|number}
         user?:string;
     }){

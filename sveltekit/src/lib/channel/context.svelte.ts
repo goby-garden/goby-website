@@ -3,5 +3,6 @@ export let channel_data:{
     description?:string;
     owner?:string;
     url?:string;
-
+    blocks?:any[]
+    length?:number;
 }=$state({})

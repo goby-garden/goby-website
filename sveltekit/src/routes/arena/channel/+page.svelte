@@ -1,18 +1,18 @@
 <script lang="ts">
     import { marked } from "marked";
-
-    import Nav from '$lib/channel/Nav.svelte';
-    import {get_channel_meta} from '$lib/arena-v3';
-
+   
+    import {get_channel_meta, get_channel_contents} from '$lib/arena-v3';
     import {channel_data} from '$lib/channel/context.svelte';
 
+    import Nav from '$lib/channel/Nav.svelte';
+    import Contents from '$lib/channel/Contents.svelte';
 
 
     let user:string | undefined;
 
 
 
-    async function test_channel_meta(slug:string){
+    async function load_channel(slug:string){
         let results=await get_channel_meta(slug);
         if(results){
             channel_data.title=results.title;
@@ -20,7 +20,16 @@
             channel_data.owner=results.owner?.name;
         }
 
-        console.log(results);
+        // delay 300ms
+        await new Promise((res)=>setTimeout(res,300));
+
+        let {data,meta}=await get_channel_contents({
+            slug
+        })
+
+        channel_data.blocks=data;
+        channel_data.length=meta.total_count;
+        
     }
 
     // async function test_channel_contents(slug:string){
@@ -33,7 +42,7 @@
 
     $effect(()=>{
         if(channel_slug){
-            test_channel_meta(channel_slug);
+            load_channel(channel_slug);
         }
     })
 
@@ -48,16 +57,21 @@
     
     {#if channel_data.description}
         <header>
-            <div class="description">
+            <div class="description prose">
                 {@html marked(channel_data.description || '')}
             </div>
         </header>
     {/if}
+    
+    
+        <Contents />
+
     <details id="what-is-this" open>
         <summary>what is this?</summary>
         {@html note_to_team}
     </details>
-    <main></main>
+
+
     <!-- <sidebar>
         <div id="arena-connection">
             <span class="icon">✱</span>
@@ -80,6 +94,7 @@
             cursor:pointer;
         }
         line-height:1.3em;
+        margin-bottom:10px;
     }
 
     .grid{
@@ -91,12 +106,6 @@
         box-sizing:border-box;
         padding-inline:15px;
         padding-top:15px;
-    }
-
-    main{
-        grid-column:1 / calc(var(--block-columns) + 1);
-        grid-row:2;
-        min-height:100vh;
     }
 
     header{

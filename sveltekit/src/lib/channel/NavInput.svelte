@@ -93,7 +93,8 @@
         position:relative;
         height:fit-content;
         width:100%;
-        --input-bg:rgb(236, 236, 236);
+        /* --input-bg:rgb(236, 236, 236); */
+        --input-bg: rgb(245, 245, 245);
         background-color:var(--input-bg);
         border-radius:5px;
         overflow:hidden;
@@ -153,7 +154,7 @@
         font-family:Arial;
         transform:translateY(var(--shift));
         font-weight:600;
-        font-size:14px;
+        font-size:13px;
         color:#111111;
         /* letter-spacing:1px; */
     }

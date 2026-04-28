@@ -1,38 +1,26 @@
-# sv
+## What is this?
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+The bulk of goby-website runs on [11ty](https://www.11ty.dev/), hosted (mostly) statically on netlify. However, I wanted to build a page with some app-like qualities, and a declarative web framework like svelte makes it much easier and faster to build a dynamic interface. So this is a sveltekit app using [adapter-static](https://svelte.dev/docs/kit/adapter-static), and it generates routes which are then folded into the eleventy site using `addPassthroughCopy`, which was just as beautifully simple to set up as I hoped, to the credit of both tools.
 
-## Creating a project
+## are.na/channel route
 
-If you're seeing this, you've probably already done this step. Congrats!
+Next steps:
 
-```sh
-# create a new project in the current directory
-npx sv create
+- [x] write function for arena v3 contents request in arena-v3.ts and make adjustments to netlify function if necessary
+- [ ] render blocks of different types in a basic grid
+    - use int observer to load more as you scroll (can follow a similar pattern to the goby.garden root page; or maybe use placeholders with knowing the full length of the channel) 
+    - use total length from latest request to render placeholder blocks for the entire channel
+    - populate them as the come in
 
-# create a new project in my-app
-npx sv create my-app
-```
+- [ ] render basic lightbox for block with title/description/author/source/dates/etc.
+- [ ] custom field editing UI
+- [ ] the display/indication of that custom metadata in the top nav needs some work
+    - probaby for now it can just have an option to copy paste the generated json into a block to save
+- [ ] let’s halt our ambitions here for now
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+Far horizon:
+- authentication, so you can actually edit!
+- “bento box” system for deciding how fields display in block list and lightbox
+    - clip or fit for text
+    - fit or cover for images
+- sorting and filtering by fields, both custom and are.na-native

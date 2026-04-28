@@ -53,13 +53,11 @@
         <NavInput bind:str_components={block_str_components} url_type="block" input_id="block-input" placeholder="https://are.na/<block>/<id>" />
     </li>
     <li class="arena">
-        <div class="profile">
-
-        </div>
+        <!-- <div class="profile"></div>
         <div id="arena-connection">
             <span class="icon">✱</span>
             <span class="icon">✱</span>
-        </div>
+        </div> -->
     </li>
 </nav>
 <!-- <div id="arena-connection">
@@ -81,7 +79,7 @@
         /* grid-column: 1 / 12;
         grid-row:1; */
         position:sticky;
-        top:15px;
+        top:-50px;
         background-color: rgba(255,255,255,0.5);
         /* backdrop-filter:blur(20px); */
         transition:opacity 0.3s, transform 0.3s;
@@ -89,8 +87,8 @@
     }
 
     nav.hide{
-        opacity:0;
-        transform:translateY(-100%);
+        /* opacity:0;
+        transform:translateY(-100%); */
     }
 
 

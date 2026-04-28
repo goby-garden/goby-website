@@ -1,7 +1,19 @@
 .monospace{
     font-family:'Courier New','Menlo',monospace;
-    font-size:14px;
+    font-size:13px;
     --text-color:rgb(43,43,43);
     color:var(--text-color);
     /* -webkit-text-stroke:0.03em var(--text-color); */
+}
+
+.prose{
+    & a{
+        color:inherit;
+        text-decoration-color: rgba(0, 0, 0, 0.2);
+        text-underline-offset: 3px;
+    }
+
+    & p{
+        margin-bottom:10px;
+    }
 }
