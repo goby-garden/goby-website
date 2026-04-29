@@ -154,7 +154,7 @@
         font-family:Arial;
         transform:translateY(var(--shift));
         font-weight:600;
-        font-size:13px;
+        font-size:14px;
         color:#111111;
         /* letter-spacing:1px; */
     }

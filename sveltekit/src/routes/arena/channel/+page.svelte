@@ -1,11 +1,12 @@
 <script lang="ts">
-    import { marked } from "marked";
+    import parse from "$lib/markdown";
    
-    import {get_channel_meta, get_channel_contents} from '$lib/arena-v3';
+    import {get_channel_meta} from '$lib/arena-v3';
     import {channel_data} from '$lib/channel/context.svelte';
 
     import Nav from '$lib/channel/Nav.svelte';
     import Contents from '$lib/channel/Contents.svelte';
+    import BlockModal from "$lib/channel/BlockModal.svelte";
 
 
     let user:string | undefined;
@@ -14,34 +15,27 @@
 
     async function load_channel(slug:string){
         let results=await get_channel_meta(slug);
+        console.log('results',results)
         if(results){
             channel_data.title=results.title;
             channel_data.description=results?.description?.markdown;
             channel_data.owner=results.owner?.name;
+            channel_data.length=results.counts?.contents;
         }
 
         // delay 300ms
-        await new Promise((res)=>setTimeout(res,300));
-
-        let {data,meta}=await get_channel_contents({
-            slug
-        })
-
-        channel_data.blocks=data;
-        channel_data.length=meta.total_count;
+        
         
     }
 
-    // async function test_channel_contents(slug:string){
-    //     let results=await get_channel_contents({slug:slug});
-    //     console.log(results);
-    // }
+  
 
     let channel_slug:string | undefined=$state();
     let block_id:string | undefined=$state()
 
     $effect(()=>{
         if(channel_slug){
+            channel_data.slug=channel_slug;
             load_channel(channel_slug);
         }
     })
@@ -58,13 +52,14 @@
     {#if channel_data.description}
         <header>
             <div class="description prose">
-                {@html marked(channel_data.description || '')}
+                {@html parse(channel_data.description || '')}
             </div>
         </header>
     {/if}
     
     
-        <Contents />
+    <Contents />
+    <BlockModal />
 
     <details id="what-is-this" open>
         <summary>what is this?</summary>
@@ -109,7 +104,9 @@
     }
 
     header{
-        margin-block:10px;
+        margin-block:40px 20px;
+        max-width:1100px;
+        margin-inline: auto;
     }
 
 </style>

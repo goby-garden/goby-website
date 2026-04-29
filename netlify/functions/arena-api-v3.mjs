@@ -11,6 +11,9 @@ const auth_params={
 }
 
 export default async (req) => {
+    console.log("received a request")
+
+
     let input={};
     try{
         input=await req.json();
