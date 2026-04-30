@@ -42,7 +42,7 @@
 
     $inspect('channel_data',channel_data)
 
-    const note_to_team=`Hi are.na team! There’s nothing here yet, but this is a WIP <a href="https://www.are.na/block/41094297">idea</a> that I’m working on getting running in time for the meetup next week :^). Please prioritize other people who have projects ready — I just wanted it to put this in my RSVP so you know I’m potentially interested in sharing something. And no hard feelings if you can’t include me. Thank you / looking forward to it!!`;
+    // const note_to_team=`Hi are.na team! There’s nothing here yet, but this is a WIP <a href="https://www.are.na/block/41094297">idea</a> that I’m working on getting running in time for the meetup next week :^). Please prioritize other people who have projects ready — I just wanted it to put this in my RSVP so you know I’m potentially interested in sharing something. And no hard feelings if you can’t include me. Thank you / looking forward to it!!`;
 </script>
 
 
@@ -61,10 +61,10 @@
     <Contents />
     <BlockModal />
 
-    <details id="what-is-this" open>
+    <!-- <details id="what-is-this" open>
         <summary>what is this?</summary>
         {@html note_to_team}
-    </details>
+    </details> -->
 
 
     <!-- <sidebar>
@@ -101,6 +101,7 @@
         box-sizing:border-box;
         padding-inline:15px;
         padding-top:15px;
+        padding-bottom:40px;
     }
 
     header{

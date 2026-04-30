@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
   import parse from "$lib/markdown";
 
-  import { channel_data, page_size } from "$lib/channel/context.svelte";
+  import { channel_data, page_size, focused_block } from "$lib/channel/context.svelte";
   import { get_channel_contents } from "$lib/arena-v3";
 
   let rendered_blocks: any[] = $state([]);
@@ -99,6 +99,14 @@
       if (observer && element) observer.unobserve(element);
     };
   };
+
+  function set_focused_block(id:number | undefined){
+    if(id){
+      console.log('focus',id);
+      focused_block.id=id;
+    }
+    
+  }
 </script>
 
 <main>
@@ -109,9 +117,11 @@
       class="block"
       class:loaded={block}
       class:channel={block?.type === "Channel"}
+      class:focused={focused_block.id && block?.id == focused_block.id}
       {@attach !block?.id && observer_attachment}
       href={block?.id ? `#block-${block?.id}` : null}
       data-page={Math.ceil((b + 1) / page_size)}
+      onclick={()=>set_focused_block(block.id)}
     >
       <figure class="block-inner">
         <div class="block-preview">
@@ -266,7 +276,8 @@
   }
 
   .block-connector.secondary,
-  .block:hover .block-connector {
+  .block:hover .block-connector,
+  .block.focused .block-connector {
     background-color: #363636;
     color: var(--block-bg);
     /* background-color: rgba(255, 255, 255, 0.5);
@@ -306,18 +317,17 @@
     background-color: rgba(200, 200, 200, 0.5);
   }
 
-  .block:hover {
-    z-index: 5000;
-  }
 
   .no-title .authors,
   .block:hover .authors,
+  .block.focused .authors,
   .block.channel .authors{
     display:flex;
   }
 
 
-  .block:hover .block-connector {
+  .block:hover .block-connector,
+  .block.focused .block-connector {
     display: inline-block;
   }
 
@@ -339,7 +349,9 @@
   }
 
   .block[href]:hover,
-  .block.channel[href]:hover {
+  .block.focused,
+  .block.channel[href]:hover,
+  .block.channel[href].focused {
     border: 1px solid #363636;
   }
 
