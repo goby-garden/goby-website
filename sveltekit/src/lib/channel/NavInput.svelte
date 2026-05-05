@@ -179,6 +179,7 @@
     }
 
     .input-mirror{
+        color:transparent;
         pointer-events:none;
     }
 

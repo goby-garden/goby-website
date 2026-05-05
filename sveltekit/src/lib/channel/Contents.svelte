@@ -169,6 +169,7 @@
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     gap: 15px;
+    width:100%;
     max-width: 1100px;
     margin-inline: auto;
     /* margin-top: 40px; */

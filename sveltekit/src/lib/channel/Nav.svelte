@@ -83,6 +83,7 @@
         background-color: rgba(255,255,255,0.5);
         /* backdrop-filter:blur(20px); */
         transition:opacity 0.3s, transform 0.3s;
+        margin-bottom:20px;
         
     }
 

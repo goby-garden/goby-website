@@ -7,7 +7,7 @@ The bulk of goby-website runs on [11ty](https://www.11ty.dev/), hosted (mostly) 
 Next steps:
 
 - [x] write function for arena v3 contents request in arena-v3.ts and make adjustments to netlify function if necessary
-- [ ] render blocks of different types in a basic grid
+- [x] render blocks of different types in a basic grid
     - use int observer to load more as you scroll (can follow a similar pattern to the goby.garden root page; or maybe use placeholders with knowing the full length of the channel) 
     - use total length from latest request to render placeholder blocks for the entire channel
     - populate them as the come in
@@ -24,3 +24,7 @@ Far horizon:
     - clip or fit for text
     - fit or cover for images
 - sorting and filtering by fields, both custom and are.na-native
+
+
+Bugs:
+- [ ] gotta figure out whatever is going on with markdown single line break parsing (see https://www.are.na/nico-chilla/_-type-an-ode-to-the-monospace for example)

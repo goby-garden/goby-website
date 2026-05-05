@@ -97,7 +97,9 @@
         --block-columns:4;
         /* grid-template-columns:repeat(var(--block-columns),1fr);
         grid-template-rows:min-content 1fr; */
-        gap:15px;
+        display:flex;
+        flex-flow:column nowrap;
+        gap:20px;
         box-sizing:border-box;
         padding-inline:15px;
         padding-top:15px;
@@ -105,9 +107,9 @@
     }
 
     header{
-        margin-block:40px 20px;
         max-width:1100px;
         margin-inline: auto;
+        width:100%;
     }
 
 </style>

@@ -4,6 +4,8 @@
     import {onMount} from 'svelte';
     import {channel_data,focused_block} from './context.svelte';
     import parse from "$lib/markdown";
+    import FieldInput from './FieldInput.svelte';
+    import type {GobyFieldType} from './goby.d.ts';
 
     
  
@@ -24,17 +26,29 @@
 
     let block:any = $derived(open && channel_data.blocks.find(({id})=>id==focused_block.id));
     
+    type FieldDef={
+        name:string;
+        type:GobyFieldType;
+        value?:string;
+        base?:boolean;
+    }
 
-    let core_fields=$derived([
-        {name:'Title', type:'string',value:block.title || ''},
-        {name:'Description', type:'string',value:parse(block.description?.markdown || '')}
+
+    let goby_temp_fields:FieldDef[]=[
+        {type:'string',name:'Comments'},
+        {type:'string',name:'Watched'}
+    ]
+
+
+    let base_fields:FieldDef[]=$derived([
+        {name:'Title', type:'string',value:block.title || '', base:true},
+        {name:'Description', type:'string',value:parse(block.description?.markdown || ''), base:true}
     ])
 
-    // $effect(()=>{
-    //     if(browser && open && !block){
-    //         closeModal();
-    //     }
-    // })
+    let fields=$derived([
+        ...base_fields,
+        ...goby_temp_fields
+    ])
 
     function closeModal(){
         open=false;
@@ -43,17 +57,11 @@
             focused_block.id=undefined;
             prev_focused=focused_block.id;
         }, 300)
-
-        // setTimeout(()=>{
-
-        // })
     }
 
     function setHash(v:string){
         replaceState("",`${window.location.pathname}${window.location.search}#${v}`);
     }
-
-    $inspect('block',block)
 
     function parseHash(){
         if(browser){
@@ -68,7 +76,7 @@
     }
 
     onMount(()=>{
-        parseHash();
+        // parseHash();
         window.addEventListener('hashchange',parseHash);
     })
 
@@ -96,29 +104,18 @@
             </div>
           {/if}
         </figure>
-        <sidebar>
-            {#each core_fields as field}
-                {#if field.value}
-                    <div class="field panel-element" data-name="{field.name}">
-                        <!-- <label class="monospace">{field.name}</label> -->
-                        <div class="field-value">
-                            {#if field.type=='string'}
-                            <div class="display prose">
-                                {@html field.value}
-                                <!-- {core_fields} -->
-                                <!-- {field.name=='title'} -->
-                            </div>
-                            {/if}
-                        </div>
-                        
-                    </div>
-                {/if}
-                <!-- {@const v=block[field.arena_field]} -->
+        <sidebar class="panel-element">
+            <section class="base-fields">
+                {#each base_fields as field}
+                    <FieldInput {...field} />
+                {/each}
+            </section>
+            {#each goby_temp_fields as field}
+                <FieldInput {...field} />
             {/each}
-            <!-- <button onclick={closeModal}>x</button> -->
-            <!-- {#if block}
-
-            {/if} -->
+            <details id="add-new-field">
+                <summary class="monospace">+</summary>
+            </details>
         </sidebar>
     </div>
 </div>
@@ -154,7 +151,8 @@
         left:0;
         opacity:0;
         background-color:rgba(255,255,255,0.85);
-        transition:opacity 0.3s;
+        /* transition:opacity 0.3s; */
+        cursor:default;
     }
 
     .open .backdrop-close{
@@ -180,7 +178,7 @@
 
     figure,sidebar{
         opacity:0;
-        transition:transform 0.3s, opacity 0.3s;
+        /* transition:transform 0.3s, opacity 0.3s; */
         
     }
     
@@ -202,35 +200,22 @@
     }
 
     sidebar{
-        display:flex;
-        flex-flow:column nowrap;
-        gap:10px;
         color:#363636;
+        padding:15px;
         /* transform:translate(20px,20px); */
     }
 
-    .field{
-        box-sizing:border-box;
-        padding:15px;
+    sidebar,sidebar section{
         display:flex;
         flex-flow:column nowrap;
-        gap:5px;
+        gap:10px;
     }
 
-    .field[data-name="Title"]{
-        font-weight:600;
-        font-family:Arial;
+    sidebar section{
+        margin-bottom:5px;
     }
 
-    .field-value .prose{
-        line-height:1.4em;
-        font-family:Arial;
-
-        & > :global(p:last-child){
-            margin-bottom:0px;
-        }
-    }
-
+   
     
 
     .open figure{
@@ -239,7 +224,7 @@
 
     .open sidebar{
         transform:translate(0px,0px);
-        transition-delay:0.3s;
+        /* transition-delay:0.3s; */
     }
 
     .open figure,
@@ -252,6 +237,8 @@
     }
     
     figure .prose{
+        -moz-font-smoothing:antialiased;
+        -webkit-font-smoothing:antialiased;
         font-size:20px;
         line-height:1.25em;
 
@@ -273,7 +260,31 @@
     figure :global(iframe){
         width:100%;
     }
+
+    #add-new-field{
+        background-color:rgb(245, 245, 245);
+        
+        summary{
+            cursor:pointer;
+            padding:5px 10px;
+        }
+        
+    }
+
+    details summary{
+        list-style:none;
+    }
+
+    details summary::before{
+        content:"";
+    }
     
+
+    details summary::-webkit-details-marker,
+    details summary::marker {
+        display:none;
+    }
+        
 
     @media(min-width:900px){
         .modal-panel{
@@ -296,7 +307,7 @@
         }
 
         sidebar{
-            grid-column:9 / 12;
+            grid-column:9 / 13;
         }
     }
     
