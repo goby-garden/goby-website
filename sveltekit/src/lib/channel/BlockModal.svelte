@@ -5,12 +5,14 @@
     import {channel_data,focused_block} from './context.svelte';
     import parse from "$lib/markdown";
     import FieldInput from './FieldInput.svelte';
-    import type {GobyFieldType} from './goby.d.ts';
+    import type {GobyFieldType, GobyField} from './goby.d.ts';
 
     
  
 
     let open=$state(false);
+
+    let edit_mode=$state(false);
 
     let prev_focused=$state(focused_block.id);
     
@@ -26,32 +28,22 @@
 
     let block:any = $derived(open && channel_data.blocks.find(({id})=>id==focused_block.id));
     
-    type FieldDef={
-        name:string;
-        type:GobyFieldType;
-        value?:string;
-        base?:boolean;
-    }
 
 
-    let goby_temp_fields:FieldDef[]=[
-        {type:'string',name:'Comments'},
-        {type:'string',name:'Watched'}
+    let goby_temp_fields:GobyField[]=[
+        {type:'string',name:'Comments',value:''},
+        {type:'boolean',name:'Watched',value:false}
     ]
 
 
-    let base_fields:FieldDef[]=$derived([
+    let base_fields:GobyField[]=$derived([
         {name:'Title', type:'string',value:block.title || '', base:true},
-        {name:'Description', type:'string',value:parse(block.description?.markdown || ''), base:true}
-    ])
-
-    let fields=$derived([
-        ...base_fields,
-        ...goby_temp_fields
+        {name:'Description', type:'string',value:block.description?.markdown || '', base:true}
     ])
 
     function closeModal(){
         open=false;
+        edit_mode=false;
         setHash("");
         clear_focus_timeout=setTimeout(()=>{
             focused_block.id=undefined;
@@ -105,14 +97,16 @@
           {/if}
         </figure>
         <sidebar class="panel-element">
-            <section class="base-fields">
-                {#each base_fields as field}
-                    <FieldInput {...field} />
+            {#key block.id}
+                <section class="base-fields">
+                    {#each base_fields as field}
+                        <FieldInput {field} bind:edit_mode />
+                    {/each}
+                </section>
+                {#each goby_temp_fields as field}
+                    <FieldInput {field} bind:edit_mode />
                 {/each}
-            </section>
-            {#each goby_temp_fields as field}
-                <FieldInput {...field} />
-            {/each}
+            {/key}
             <details id="add-new-field">
                 <summary class="monospace">+</summary>
             </details>
@@ -131,7 +125,7 @@
         height:100%;
         display:grid;
         grid-template-columns:repeat(12,1fr);
-        padding-block:40px;
+        padding-block:20px;
         padding-inline:20px;
         box-sizing:border-box;
         pointer-events:none;
@@ -151,7 +145,7 @@
         left:0;
         opacity:0;
         background-color:rgba(255,255,255,0.85);
-        /* transition:opacity 0.3s; */
+        transition:opacity 0.3s;
         cursor:default;
     }
 
@@ -178,7 +172,7 @@
 
     figure,sidebar{
         opacity:0;
-        /* transition:transform 0.3s, opacity 0.3s; */
+        transition:transform 0.3s, opacity 0.3s;
         
     }
     
@@ -224,7 +218,7 @@
 
     .open sidebar{
         transform:translate(0px,0px);
-        /* transition-delay:0.3s; */
+        transition-delay:0.3s;
     }
 
     .open figure,
@@ -303,7 +297,7 @@
 
     @media(min-width:1200px){
         figure{
-            grid-column:2 / 9;
+            grid-column:1 / 9;
         }
 
         sidebar{
