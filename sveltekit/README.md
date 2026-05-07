@@ -16,7 +16,6 @@ Next steps:
 - [ ] custom field editing UI
 - [ ] the display/indication of that custom metadata in the top nav needs some work
     - probaby for now it can just have an option to copy paste the generated json into a block to save
-- [ ] let’s halt our ambitions here for now
 
 Far horizon:
 - authentication, so you can actually edit!
@@ -24,7 +23,7 @@ Far horizon:
     - clip or fit for text
     - fit or cover for images
 - sorting and filtering by fields, both custom and are.na-native
-
+- consider making edit_mode for fields in mobile field-specific, rather than global
 
 Bugs:
 - [ ] gotta figure out whatever is going on with markdown single line break parsing (see https://www.are.na/nico-chilla/_-type-an-ode-to-the-monospace for example)

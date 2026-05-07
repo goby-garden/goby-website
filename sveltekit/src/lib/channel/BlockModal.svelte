@@ -13,6 +13,8 @@
     let open=$state(false);
 
     let edit_mode=$state(false);
+    
+    let editing:string | undefined=$state();
 
     let prev_focused=$state(focused_block.id);
     
@@ -31,14 +33,23 @@
 
 
     let goby_temp_fields:GobyField[]=[
-        {type:'string',name:'Comments',value:''},
-        {type:'boolean',name:'Watched',value:false}
+        {type:'string',name:'Comments',value:'',key:'goby[Comments]'},
+        {type:'boolean',name:'Watched',value:false,key:'goby[Watched]'}
     ]
 
 
     let base_fields:GobyField[]=$derived([
-        {name:'Title', type:'string',value:block.title || '', base:true},
-        {name:'Description', type:'string',value:block.description?.markdown || '', base:true}
+        {
+            name:'Title', type:'string',value:block.title || '', base:true,
+            key:"goby.title"
+        },
+        {
+            name:'Description', 
+            type:'string',
+            value:block.description?.markdown || '', 
+            base:true,
+            key:"goby.description"
+        }
     ])
 
     function closeModal(){
@@ -73,6 +84,9 @@
     })
 
     let isImage=$derived(block.type=='Image' || block.type == 'Link');
+
+    let owner= $derived(block?.user?.name)
+    let connector=$derived(block?.connection?.connected_by?.name);
 </script>
 
 
@@ -100,16 +114,26 @@
             {#key block.id}
                 <section class="base-fields">
                     {#each base_fields as field}
-                        <FieldInput {field} bind:edit_mode />
+                        <FieldInput {field} bind:editing/>
                     {/each}
                 </section>
                 {#each goby_temp_fields as field}
-                    <FieldInput {field} bind:edit_mode />
+                    <FieldInput {field}  bind:editing/>
                 {/each}
             {/key}
             <details id="add-new-field">
                 <summary class="monospace">+</summary>
             </details>
+            {#if owner && connector}
+                
+                <!-- {@const add_date=new Date(block.created_at)} -->
+                <!-- <footer class="block-attributes">
+                    <p>Added{owner==connector?" and connected":""} by {owner}</p>
+                    {#if owner!==connector}
+                        <p>Connected by {connector}</p>
+                    {/if}
+                </footer> -->
+            {/if}
         </sidebar>
     </div>
 </div>
@@ -277,6 +301,19 @@
     details summary::-webkit-details-marker,
     details summary::marker {
         display:none;
+    }
+
+    .block-attributes{
+        font-size:13px;
+        color:#a8a8a8;
+        text-align:center;
+        font-family:Arial;
+        display:flex;
+        flex-flow:row wrap;
+        align-items:center;
+        justify-content:center;
+        gap:10px 15px;
+        margin-top:10px;
     }
         
 

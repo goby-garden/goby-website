@@ -3,65 +3,99 @@
     import { keyToClick } from "$lib/dom-utils";
     import parse from "$lib/markdown";
     import type { Attachment } from "svelte/attachments";
+    import {tick} from 'svelte';
 
     let {
         field,
-        edit_mode = $bindable(false),
+        editing=$bindable()
+        // edit_mode = $bindable(false),
     }: {
-        edit_mode: boolean;
+        // edit_mode: boolean;
+        editing:string | undefined,
         field:GobyField;
     } = $props();
+
+    let edit_mode=$derived(editing === field.key);
 
     let {
         name,
         base = false
     } = $derived(field);
 
+    let editable_field=$state(field);
+    $effect(()=>{
+        if(edit_mode){
+            editable_field=field;
+        }
+    })
+
+
     let input_el:HTMLDivElement | undefined=$state();
 
-    let textField=$derived(field.type==="string");
+    let textField=$derived(editable_field.type==="string");
 
     function handle_click() {
         if (textField) {
-            if(!edit_mode) edit_mode = true;
+            if(!edit_mode){
+                editing=field.key;
+            }
             if(input_el) input_el.focus();
-        }else if(field.type=="boolean"){
-            field.value=!Boolean(field.value);
+        }else if(editable_field.type=="boolean"){
+            editable_field.value=!Boolean(editable_field.value);
         }
     }
 
     let focused = $state(false);
+    let mouseup=$state(true);
+
+    $effect(()=>{
+        if(focused && textField){
+            editing=field.key;
+        }
+    })
     const watchFocus:Attachment=(element)=>{
         element.addEventListener('focus',()=>{
             focused=true;
+            if(textField) editing=field.key;
         })
 
-        element.addEventListener('blur',()=>{
+        element.addEventListener('blur',async ()=>{
             focused=false;
+            // if(textField && editing == field.key) editing=undefined;
         })
     }
 
+    $effect(()=>{
+        if(mouseup && textField && !focused && editing === field.key){
+            editing=undefined;
+        }
+    })
+
+    
 
     let uid=$props.id();
     let el_id=$derived(`field-${name}-${uid}`)
 </script>
 
+<svelte:window onmousedown={()=>mouseup=false} onmouseup={()=>mouseup=true}/>
+
+
 <div
     role="button"
-    tabindex={edit_mode&&textField?-1:1}
+    tabindex={-1}
     onclick={handle_click}
     onkeydown={keyToClick(handle_click)}
     class="field"
     class:edit-mode={edit_mode}
     class:custom={!base}
-    data-type={field.type}
+    data-type={editable_field.type}
     class:focused
     id={el_id}
 >
     {#if !base || edit_mode}
         <div class="monospace field-label">{name}</div>
     {/if}
-    {#if field.type==="string"}
+    {#if editable_field.type==="string"}
         <div class="value-wrapper">
             <div
                 aria-labelledby={el_id}
@@ -69,20 +103,20 @@
                 contenteditable="plaintext-only"
                 {@attach watchFocus}
                 bind:this={input_el}
-                bind:textContent={field.value}
+                bind:textContent={editable_field.value}
             ></div>
             <div class="display prose" aria-hidden={edit_mode}>
-                {#if !field.value}
+                {#if !editable_field.value}
                     <span class="placeholder monospace"
                         >{base ? `No ${name}` : "None"}</span
                     >
                 {:else}
-                    {@html parse(field.value)}
+                    {@html parse(editable_field.value)}
                 {/if}
             </div>
         </div>
-    {:else if field.type==="boolean"}
-        <input type="checkbox" bind:checked={field.value} />
+    {:else if editable_field.type==="boolean"}
+        <input type="checkbox" bind:checked={editable_field.value} />
     {/if}
 </div>
 
@@ -111,12 +145,13 @@
         padding: 10px;
     }
 
-    .field.edit-mode.focused{
+    .field.focused,
+    .field.edit-mode{
         border: 1px solid rgba(54, 54, 54, 0.5);
     }
 
 
-    .edit-mode.field {
+    .edit-mode.field[data-type="string"] {
         background-color: rgb(245, 245, 245);
     }
 
@@ -173,6 +208,8 @@
         width:18px;
         box-sizing:border-box;
         padding:3px;
+        pointer-events:all;
+        cursor:pointer;
     }
 
     input[type="checkbox"]:checked::after{
