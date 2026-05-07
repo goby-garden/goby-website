@@ -52,7 +52,14 @@
         }
     ])
 
+    $inspect('editing',editing);
+
     function closeModal(){
+        console.log('cue close modal',editing)
+        if(editing!==undefined){
+            editing=undefined;
+            return;
+        }
         open=false;
         edit_mode=false;
         setHash("");

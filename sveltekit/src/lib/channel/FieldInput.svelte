@@ -66,10 +66,23 @@
     }
 
     $effect(()=>{
-        if(mouseup && textField && !focused && editing === field.key){
-            editing=undefined;
-        }
+        if(mouseup && textField && !focused && editing === field.key) clearEditing();
     })
+
+    async function clearEditing(){
+        requestAnimationFrame(()=>{
+            if(editing === field.key){
+                console.log('clear editing')
+                editing=undefined;
+            }
+        })
+        // setTimeout(()=>{
+        //     if(editing === field.key){
+        //         console.log('clear editing')
+        //         editing=undefined;
+        //     }
+        // },100)
+    }
 
     
 
