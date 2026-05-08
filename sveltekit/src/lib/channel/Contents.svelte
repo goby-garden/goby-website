@@ -109,7 +109,7 @@
   }
 </script>
 
-<main>
+<main inert={focused_block.id!==undefined}>
   {#each rendered_blocks as block, b (block.render_id)}
     {@const block_author = block.user || block.owner}
     {@const block_connector = block.connection?.connected_by}

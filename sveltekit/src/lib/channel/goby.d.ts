@@ -1,7 +1,7 @@
 type GobyFieldMap = {
     "string":string;
     "boolean":boolean;
-    "tags":string[];
+    "select":string[];
 }
 
 export type GobyFieldType = keyof GobyFieldMap;
@@ -13,5 +13,7 @@ type GobyField = {
         base?:boolean;
         type:T;
         value:GobyFieldMap[T];
-    }
+    } & (T extends "select" ? {
+        max:number;
+    } : {})
 }[GobyFieldType]

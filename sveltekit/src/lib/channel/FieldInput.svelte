@@ -1,16 +1,13 @@
 <script lang="ts">
-    import type { GobyFieldType,GobyField } from "./goby.d.ts";
+    import type { GobyField } from "./goby.d.ts";
     import { keyToClick } from "$lib/dom-utils";
     import parse from "$lib/markdown";
     import type { Attachment } from "svelte/attachments";
-    import {tick} from 'svelte';
 
     let {
         field,
         editing=$bindable()
-        // edit_mode = $bindable(false),
     }: {
-        // edit_mode: boolean;
         editing:string | undefined,
         field:GobyField;
     } = $props();
@@ -24,9 +21,7 @@
 
     let editable_field=$state(field);
     $effect(()=>{
-        if(edit_mode){
-            editable_field=field;
-        }
+        editable_field=field;
     })
 
 
@@ -40,7 +35,7 @@
                 editing=field.key;
             }
             if(input_el) input_el.focus();
-        }else if(editable_field.type=="boolean"){
+        }else if(editable_field.type=="boolean"&&!editing){
             editable_field.value=!Boolean(editable_field.value);
         }
     }
@@ -53,16 +48,25 @@
             editing=field.key;
         }
     })
-    const watchFocus:Attachment=(element)=>{
-        element.addEventListener('focus',()=>{
-            focused=true;
-            if(textField) editing=field.key;
-        })
 
-        element.addEventListener('blur',async ()=>{
-            focused=false;
-            // if(textField && editing == field.key) editing=undefined;
-        })
+    const focusOn=()=>{
+        focused=true;
+        if(textField) editing=field.key;
+    };
+
+    const focusOff=()=>{
+        focused=false;
+    }
+    
+    const watchFocus:Attachment=(element)=>{
+        
+        element.addEventListener('focus',focusOn)
+        element.addEventListener('blur', focusOff)
+
+        return ()=>{
+            element.removeEventListener('focus',focusOn);
+            element.removeEventListener('blur',focusOff);
+        }
     }
 
     $effect(()=>{
@@ -76,21 +80,27 @@
                 editing=undefined;
             }
         })
-        // setTimeout(()=>{
-        //     if(editing === field.key){
-        //         console.log('clear editing')
-        //         editing=undefined;
-        //     }
-        // },100)
     }
 
     
 
     let uid=$props.id();
     let el_id=$derived(`field-${name}-${uid}`)
+
+    const blurOnEsc = (e:KeyboardEvent) => {
+        if(e.key==="Escape" && focused){
+            requestAnimationFrame(()=>{
+                focused=false;
+                console.log('blurring')
+                if(document.activeElement && document.activeElement instanceof HTMLElement){
+                    document.activeElement.blur();
+                }
+            })
+        }
+    }
 </script>
 
-<svelte:window onmousedown={()=>mouseup=false} onmouseup={()=>mouseup=true}/>
+<svelte:window onkeydown={blurOnEsc} onmousedown={()=>mouseup=false} onmouseup={()=>mouseup=true}/>
 
 
 <div
@@ -101,8 +111,10 @@
     class="field"
     class:edit-mode={edit_mode}
     class:custom={!base}
+    data-name={editable_field.name}
     data-type={editable_field.type}
     class:focused
+    class:base
     id={el_id}
 >
     {#if !base || edit_mode}
@@ -129,7 +141,7 @@
             </div>
         </div>
     {:else if editable_field.type==="boolean"}
-        <input type="checkbox" bind:checked={editable_field.value} />
+        <input {@attach watchFocus} type="checkbox" bind:checked={editable_field.value} />
     {/if}
 </div>
 
@@ -139,6 +151,10 @@
         display: flex;
         flex-flow: column nowrap;
         gap: 5px;
+    }
+
+    .field.base[data-name="Title"] .prose.display{
+        font-weight:600;
     }
     
     .field[data-type="boolean"]{
@@ -175,7 +191,8 @@
     .field .prose {
         line-height: 1.4em;
         font-family: Arial;
-
+        min-width:0;
+        width:100%;
         & > :global(p:last-child) {
             margin-bottom: 0px;
         }

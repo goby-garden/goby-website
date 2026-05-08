@@ -31,6 +31,7 @@
     let block:any = $derived(open && channel_data.blocks.find(({id})=>id==focused_block.id));
     
 
+    let modal:HTMLElement | undefined = $state();
 
     let goby_temp_fields:GobyField[]=[
         {type:'string',name:'Comments',value:'',key:'goby[Comments]'},
@@ -62,42 +63,57 @@
         }
         open=false;
         edit_mode=false;
-        setHash("");
+        // setHash("");
         clear_focus_timeout=setTimeout(()=>{
             focused_block.id=undefined;
             prev_focused=focused_block.id;
         }, 300)
     }
 
-    function setHash(v:string){
-        replaceState("",`${window.location.pathname}${window.location.search}#${v}`);
-    }
+    // function setHash(v:string){
+    //     replaceState("",`${window.location.pathname}${window.location.search}#${v}`);
+    // }
 
-    function parseHash(){
-        if(browser){
-            const hash=window.location.hash;
-            if(hash){
-                const [,id]=hash.split('-');
-                if(id){
-                    focused_block.id=parseInt(id);
-                }
-            }
-        }
-    }
+    // function parseHash(){
+    //     if(browser){
+    //         const hash=window.location.hash;
+    //         if(hash){
+    //             const [,id]=hash.split('-');
+    //             if(id){
+    //                 focused_block.id=parseInt(id);
+    //             }
+    //         }
+    //     }
+    // }
 
     onMount(()=>{
         // parseHash();
-        window.addEventListener('hashchange',parseHash);
+        // window.addEventListener('hashchange',parseHash);
     })
 
     let isImage=$derived(block.type=='Image' || block.type == 'Link');
 
     let owner= $derived(block?.user?.name)
     let connector=$derived(block?.connection?.connected_by?.name);
+
+    const closeOnEsc = (e:KeyboardEvent) =>{
+        if(e.key==="Escape" && open){
+            const currentlyFocusedInput=document.activeElement 
+                && document.activeElement instanceof HTMLElement
+                && modal
+                && modal.contains(document.activeElement)
+                && (document.activeElement.isContentEditable || document.activeElement.tagName==="INPUT");
+
+            if(!currentlyFocusedInput){
+                closeModal();
+            }
+        }
+    }
 </script>
 
+<svelte:window onkeydown={closeOnEsc} />
 
-<div class="modal" class:open>
+<div bind:this={modal} class="modal" class:open aria-modal="true">
     <button aria-label="Close block modal" class="backdrop-close" onclick={closeModal}></button>
     <div class="modal-panel" role="dialog">
         <figure
@@ -117,31 +133,34 @@
             </div>
           {/if}
         </figure>
-        <sidebar class="panel-element">
-            {#key block.id}
-                <section class="base-fields">
-                    {#each base_fields as field}
-                        <FieldInput {field} bind:editing/>
+        <div class="sidebar-overscroll">
+            <sidebar class="panel-element">
+                {#key block.id}
+                    <section class="base-fields">
+                        {#each base_fields as field}
+                            <FieldInput {field} bind:editing/>
+                        {/each}
+                    </section>
+                    {#each goby_temp_fields as field}
+                        <FieldInput {field}  bind:editing/>
                     {/each}
-                </section>
-                {#each goby_temp_fields as field}
-                    <FieldInput {field}  bind:editing/>
-                {/each}
-            {/key}
-            <details id="add-new-field">
-                <summary class="monospace">+</summary>
-            </details>
-            {#if owner && connector}
-                
-                <!-- {@const add_date=new Date(block.created_at)} -->
-                <!-- <footer class="block-attributes">
-                    <p>Added{owner==connector?" and connected":""} by {owner}</p>
-                    {#if owner!==connector}
-                        <p>Connected by {connector}</p>
-                    {/if}
-                </footer> -->
-            {/if}
-        </sidebar>
+                {/key}
+                <details id="add-new-field">
+                    <summary class="monospace">+</summary>
+                </details>
+                {#if owner && connector}
+                    
+                    <!-- {@const add_date=new Date(block.created_at)} -->
+                    <!-- <footer class="block-attributes">
+                        <p>Added{owner==connector?" and connected":""} by {owner}</p>
+                        {#if owner!==connector}
+                            <p>Connected by {connector}</p>
+                        {/if}
+                    </footer> -->
+                {/if}
+            </sidebar>
+
+        </div>
     </div>
 </div>
 
@@ -159,13 +178,14 @@
         padding-block:20px;
         padding-inline:20px;
         box-sizing:border-box;
-        pointer-events:none;
+        --pointer-events:none;
+        pointer-events:var(--pointer-events) !important;
         --block-bg: rgb(245, 245, 245);
     }
 
     .modal.open{
         opacity:1;
-        pointer-events:all;
+        --pointer-events:all;
     }
 
     .backdrop-close{
@@ -178,6 +198,7 @@
         background-color:rgba(255,255,255,0.85);
         transition:opacity 0.3s;
         cursor:default;
+        pointer-events:var(--pointer-events) !important;
     }
 
     .open .backdrop-close{
@@ -208,6 +229,7 @@
     }
     
     .panel-element{
+        pointer-events:var(--pointer-events) !important;
         background-color:white;
         box-shadow: 1px 1px 10px 0px rgba(153, 113, 133, 0.15);
     }
@@ -227,7 +249,32 @@
     sidebar{
         color:#363636;
         padding:15px;
+        width: 100%;
+        box-sizing: border-box;
+        pointer-events:var(--pointer-events);
         /* transform:translate(20px,20px); */
+    }
+
+    .sidebar-overscroll{
+        overflow-y:auto;
+        scrollbar-width:0px;
+        margin-top:-20px;
+        height:calc(100% + 40px);
+        width:calc(100% + 20px);
+        padding-right:20px;
+        box-sizing:border-box;
+        pointer-events:none !important;
+
+        &::before,
+        &::after{
+            content:'';
+            height:20px;
+            display:block;
+        }
+
+        &::-webkit-scrollbar{
+            width:0px;
+        }
     }
 
     sidebar,sidebar section{
@@ -334,7 +381,7 @@
             grid-column:1 / 9;
         }
 
-        sidebar{
+        .sidebar-overscroll{
             grid-column:9 / 13;
         }
     }
@@ -344,7 +391,7 @@
             grid-column:1 / 9;
         }
 
-        sidebar{
+        .sidebar-overscroll{
             grid-column:9 / 13;
         }
     }
