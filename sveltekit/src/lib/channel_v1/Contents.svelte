@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
   import parse from "$lib/markdown";
 
-  import { channel_data, page_size, focused_block } from "$lib/channel/context.svelte";
+  import { channel_data, page_size, focused_block } from "$lib/channel_v1/context.svelte";
   import { get_channel_contents } from "$lib/arena-v3";
 
   let rendered_blocks: any[] = $state([]);

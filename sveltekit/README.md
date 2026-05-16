@@ -4,6 +4,33 @@ The bulk of goby-website runs on [11ty](https://www.11ty.dev/), hosted (mostly) 
 
 ## are.na/channel route
 
+**5/16/26**
+
+I sort of rushed into the UI without a technical plan or a notion of how the whole interface would function, and I think it is slowing down progress, because I am getting distracted with small decisions and spending time implementing things just to test how they’d feel. It definitely helped inform my sense of some of the interface and interactions I want though.
+
+ I want to start somewhat from scratch, maybe not with a full vision for the look & feel, but with some specific constraints for the structure of the interface:
+
+- a top “nav” input for channel. don’t worry about metadata block for now
+    - don’t worry about the title change-in-place-thing. just add it below when it’s available, leaving a space for it so it doesn’t cause reflow
+- a grid with int observer to load more blocks, just keep the same mechanism you have
+    - left-align title for static, block author if no title
+    - on hover, show block author ... and block connector inline next to them if not the same
+        - (can save the timestamps for lightbox)
+        - (and can maybe mix things up later w/alt+hover or something)
+- simple lightbox with column for main block content and column for metadata
+    - don’t worry about grid; also can add drag-resizeable width
+    - editing one field converts everything to edit mode, just like platform
+    - quad-directional arrow keys to move between blocks in the grid
+        - I obv have ideas for animation but that can come later
+- no hash or localstorage shenanigans for now
+- UI can generally feel pretty dry, no animations, minimal drop shadows for now
+    - refs: neil.computer
+- fragment for the mono for now
+
+----------------------
+
+**Earlier**
+
 Next steps:
 
 - [x] write function for arena v3 contents request in arena-v3.ts and make adjustments to netlify function if necessary

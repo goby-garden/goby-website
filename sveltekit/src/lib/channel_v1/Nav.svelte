@@ -1,6 +1,6 @@
 <script lang="ts">
     import NavInput from './NavInput.svelte';
-    import {channel_data} from '$lib/channel/context.svelte';
+    import {channel_data} from '$lib/channel_v1/context.svelte';
     let {
         channel_slug=$bindable(),
         block_id=$bindable(),
