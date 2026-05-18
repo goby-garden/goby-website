@@ -4,6 +4,11 @@ The bulk of goby-website runs on [11ty](https://www.11ty.dev/), hosted (mostly) 
 
 ## are.na/channel route
 
+**5/17/26**
+
+- I am thinking the text fields can have some in-built padding and no padding on the panels, so that the only thing that changes is the markdown and the labels that appear for title/desc
+
+
 **5/16/26**
 
 I sort of rushed into the UI without a technical plan or a notion of how the whole interface would function, and I think it is slowing down progress, because I am getting distracted with small decisions and spending time implementing things just to test how they’d feel. It definitely helped inform my sense of some of the interface and interactions I want though.
@@ -15,6 +20,8 @@ I sort of rushed into the UI without a technical plan or a notion of how the who
 - a grid with int observer to load more blocks, just keep the same mechanism you have
     - left-align title for static, block author if no title
     - on hover, show block author ... and block connector inline next to them if not the same
+        - maybe for connector, `→*` in mono
+        - aggressive box highlight instead of pill
         - (can save the timestamps for lightbox)
         - (and can maybe mix things up later w/alt+hover or something)
 - simple lightbox with column for main block content and column for metadata
@@ -26,6 +33,16 @@ I sort of rushed into the UI without a technical plan or a notion of how the who
 - UI can generally feel pretty dry, no animations, minimal drop shadows for now
     - refs: neil.computer
 - fragment for the mono for now
+
+
+maybe for author connectors in block meta view, I can do something like this:
+
++----------------+---------------+--------------+
+| + Added by     |               | A year ago   |
++----------------+  Nico Chilla  +--------------+
+| * Connected by |               | 2 months ago |
++----------------+---------------+--------------+
+
 
 ----------------------
 

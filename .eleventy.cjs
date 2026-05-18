@@ -23,7 +23,7 @@ module.exports = function(eleventyConfig) {
   
 
   eleventyConfig.addFilter( "myFilter", function() {});
-  eleventyConfig.setTemplateFormats("html,css,js,njk,otf,woff,woff2,md,vtt,gif");
+  eleventyConfig.setTemplateFormats("html,css,js,njk,otf,ttf,woff,woff2,md,vtt,gif");
 
   eleventyConfig.addNunjucksFilter( "findwhere", function(value,data,key) {
     return data.find(a=>a[key]==value);

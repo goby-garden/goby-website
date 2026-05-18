@@ -1,0 +1,54 @@
+html,body{
+    font-size:16px;
+    line-height:1.3em;
+    font-family:'Arial', sans-serif;
+}
+
+.monospace{
+    font-size:0.9em;
+    font-family: 'Fragment Mono','Menlo',monospace;
+    -webkit-font-smoothing:antialiased;
+}
+
+
+.prose,
+textarea.prose{
+    font-family:'Arial';
+    & a{
+        color:inherit;
+        text-decoration-color: rgba(0, 0, 0, 0.2);
+        text-underline-offset: 3px;
+    }
+
+    & p{
+        margin-bottom:10px;
+    }
+
+    strong{
+        font-weight:600;
+    }
+
+    em{
+        font-style:italic;
+    }
+
+    & blockquote{
+        padding-left:8px;
+        border-left:1px solid rgba(0,0,0,0.3);
+    }
+
+    & mark{
+        background-color:palegoldenrod;
+    }
+}
+
+@font-face{
+  font-family: 'fragment-mono';
+  src: url('https://goby.garden/assets/fragment-mono-regular.ttf');
+}
+
+@font-face{
+  font-family: 'fragment-mono';
+  src: url('https://goby.garden/assets/fragment-mono-regular-italic.ttf');
+  font-style:italic;
+}

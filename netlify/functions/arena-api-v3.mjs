@@ -1,5 +1,6 @@
 const api_client_id=process.env.ARENA_CLIENT_ID;
 const api_client_token=process.env.ARENA_CLIENT_TOKEN;
+import path from 'node:path'
 
 // const api_client_secret=process.env.ARENA_V2_SECRET;
 
@@ -37,9 +38,7 @@ export default async (req) => {
 
     console.log(input.method)
 
-
-
-    const url=components.join('/');
+    const url=path.join(...components)
     
     let data={};
 
