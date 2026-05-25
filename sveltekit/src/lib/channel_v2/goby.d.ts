@@ -16,4 +16,4 @@ type GobyField = {
     } & (T extends "select" ? {
         max:number;
     } : {})
-}[GobyFieldType]
+}[GobyFieldType];

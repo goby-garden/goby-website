@@ -73,13 +73,13 @@
 
 <svelte:window onkeydown={closeOnEsc} />
 
-<div bind:this={modal} class="modal" class:open aria-modal="true">
+<div bind:this={modal} class="modal" class:open aria-modal="true" class:edit-mode={edit_mode}>
     <button aria-label="Close block modal" class="backdrop-close" onclick={closeModal}></button>
     {#if block}
         <figure class="block-content panel" data-type={block?.type}>
             {#if isImage}
                 {#key block.id}
-                    <img alt={block.image.alt_text} src={block.image.medium?.src} />
+                    <img width={block.image.width || 2000} height={block.image.height || 2000} alt={block.image.alt_text} src={block.image.medium?.src} />
                 {/key}
             {:else if block.type=='Embed'}
                 {@html block.embed?.html || ''}
@@ -94,21 +94,22 @@
                             type:'string',
                             value:block.content.markdown
                         }} bind:edit_mode
-                    
+                        height="fill"
                      />
                 <!-- {@html parse(block.content.markdown)} -->
                 </div>
             {/if}
         </figure>
         <sidebar class="panel">
-            {#key block.id}
-                <section class="base-fields">
-                    {#each base_fields as field}
-                        <!-- <div>{field.value}</div> -->
-                        <FieldInput {field} bind:edit_mode/>
+            <section class="fields">
+                {#key block.id}
+                    {#each base_fields as field,f}
+                        <div class="field-wrapper" class:base={field.base}>
+                            <FieldInput {field} bind:edit_mode markdown={field.key!=="goby.title"}/>
+                        </div>
                     {/each}
-                </section>
-            {/key}
+                {/key}
+            </section>
         </sidebar>
     {/if}
 </div>
@@ -125,7 +126,7 @@
         transition:opacity 0.3s;
         display:flex;
         flex-flow:column nowrap;
-        gap:20px;
+        /* gap:20px; */
 
         overflow-y:auto;
         box-sizing:border-box;
@@ -155,20 +156,62 @@
         flex:1;
         min-height:0;
         height:fit-content;
+        margin-left:-1px;
     }
 
     sidebar,sidebar section{
         display:flex;
         flex-flow:column nowrap;
-        gap:10px;
+        /* gap:10px; */
     }
 
     sidebar section{
-        margin-bottom:5px;
+        display:contents;
+    }
+    
+
+    .field-wrapper{
+        --pad-v-outer:20px;
+        --pad-v-inner:15px;
+        --field-padding-block:var(--pad-v-inner);
+        --field-padding-inline:20px;
+        /* --inline-padding
+        --field-padding:15px 20px; */
+        border-bottom:1px solid gainsboro;
+    }
+
+    .modal:not(.edit-mode) .field-wrapper.base{
+        --pad-v-inner:5px;
+    }
+
+    .modal:not(.edit-mode) .field-wrapper.base,
+    .field-wrapper:last-child{
+        border-bottom:none;
+    }
+
+    .field-wrapper:first-child{
+        --field-padding-block:var(--pad-v-outer) var(--pad-v-inner);
+    }
+
+    .field-wrapper:last-child{
+        --field-padding-block:var(--pad-v-inner) var(--pad-v-outer);
+    }
+
+    /* :edit-mode */
+
+    .field-wrapper:first-child{
+        /* --field-padding:20px 20px 15px; */
+    }
+
+    .field-wrapper:last-child{
+        /* --field-padding:15px 20px 20px; */
     }
 
     figure{
-        aspect-ratio:1;
+        padding:20px;
+        box-sizing:border-box;
+        /* flex: 1; */
+        /* aspect-ratio:1; */
     }
 
     figure iframe,
@@ -183,12 +226,17 @@
     figure[data-type="Text"]{
         max-width:800px;
         overflow-y:auto;
+        padding:0px;
     }
 
     figure .prose{
         /* font-family:'Times New Roman', serif; */
         font-size:20px;
         line-height:1.4em;
+        min-height:100%;
+        display:contents;
+        --field-padding-block:20px;
+        --field-padding-inline:20px;
     }
 
     .panel{
@@ -196,7 +244,7 @@
         border:1px solid gainsboro;
         box-sizing:border-box;
         background-color:white;
-        padding:20px;
+        /* padding:20px; */
     }
 
     @media(min-width:900px){
@@ -212,6 +260,7 @@
         sidebar{
              width:var(--sidebar-w);
              max-width:var(--sidebar-w);
+             min-width: var(--sidebar-w);
         }
     }
 </style>

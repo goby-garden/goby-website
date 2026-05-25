@@ -300,12 +300,13 @@
   }
 
   .block[href]:hover,
-  .block.expanded,
   .block.channel[href]:hover,
+  .block.expanded,
   .block.channel[href].expanded {
     border: 1px solid #363636;
   }
 
+  .block.expanded,
   .block[href]:not(.channel):hover{
     & .title-overflow-wrap{
       display:none;
@@ -327,7 +328,7 @@
     }
   }
 
-  .block[href]:not(:hover) .person:not(.no-title .author,.channel .author){
+  .block[href]:not(:hover,.expanded) .person:not(.no-title .author,.channel .author){
     display:none;
   }
 

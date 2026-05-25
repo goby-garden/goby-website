@@ -7,11 +7,15 @@
     let {
         field,
         edit_mode=$bindable(),
-        readonly = false
+        readonly = false,
+        height = 'fit',
+        markdown = true
     }: {
         edit_mode:boolean,
         field:GobyField;
         readonly?:boolean;
+        height?: 'fill' | 'fit';
+        markdown?:boolean;
     } = $props();
 
 
@@ -31,8 +35,12 @@
     let textField=$derived(editable_field.type==="string");
 
     function handle_click() {
-        if (textField) {
-            if(input_el) input_el.focus();
+        if (editable_field.type==="string") {
+            if(input_el && !focused){
+                input_el.focus();
+
+                moveCursorToEnd();
+            }
         }else if(editable_field.type=="boolean"){
             editable_field.value=!Boolean(editable_field.value);
         }
@@ -63,6 +71,20 @@
         }
     }
 
+    function moveCursorToEnd(){
+        if(input_el){
+            const range = document.createRange();
+            range.selectNodeContents(input_el);
+            const sel = window.getSelection();
+            if(sel){
+                sel.removeAllRanges();
+                sel.addRange(range);
+                sel.collapseToEnd();
+            }
+        }
+    }
+    
+
 
     let uid=$props.id();
     let el_id=$derived(`field-${name}-${uid}`)
@@ -79,14 +101,15 @@
     class="field"
     class:edit-mode={edit_mode}
     class:custom={!base}
+    class:fill-height={height==="fill"}
     data-name={editable_field.name}
     data-type={editable_field.type}
     class:focused
     class:base
     id={el_id}
 >
-    {#if !base || edit_mode}
-        <div class="monospace field-label">{name}</div>
+    {#if (!base || edit_mode) && name}
+        <div class="field-label"><span class="monospace">{name}</span></div>
     {/if}
     {#if editable_field.type==="string"}
         <div class="value-wrapper">
@@ -104,7 +127,12 @@
                         >{base ? `No ${name}` : "None"}</span
                     >
                 {:else}
-                    {@html parse(editable_field.value)}
+                    {#if markdown}
+                        {@html parse(editable_field.value)}
+                    {:else }
+                        { editable_field.value }
+                    {/if}
+                    
                 {/if}
             </div>
         </div>
@@ -117,8 +145,21 @@
     .field {
         box-sizing: border-box;
         display: flex;
-        flex-flow: column nowrap;
-        gap: 5px;
+        flex-flow: row wrap;
+        gap: 5px 10px;
+        box-sizing:border-box;
+        padding-inline:var(--field-padding-inline,0px);
+        padding-block:var(--field-padding-block,0px);
+        position:relative;
+        /* padding:20px; */
+    }
+
+    .field.edit-mode{
+        /* border-bottom:1px solid gainsboro; */
+    }
+
+    .field:not(.custom,.edit-mode){
+        /* padding-bottom:0; */
     }
 
     .field.base[data-name="Title"] .prose.display{
@@ -142,8 +183,8 @@
         /* padding: 10px; */
     }
 
-    .field.focused,
-    .field.edit-mode{
+    .field.focused{
+        outline:1px solid rgba(22, 22, 22, 1);
         /* border: 1px solid rgba(54, 54, 54, 0.5); */
     }
 
@@ -154,6 +195,12 @@
 
     .edit-mode.field[data-type="string"]{
         cursor:text;
+    }
+
+    .field.fill-height{
+        min-height:100%;
+        /* height:100%;
+        flex:1; */
     }
 
     .field .prose {
@@ -186,6 +233,9 @@
         opacity: 0;
         pointer-events: none;
         max-height:0px;
+        position:absolute;
+        top:0;
+        left:0;
     }
 
     .field.edit-mode .prose.display{
@@ -218,5 +268,9 @@
         width:100%;
         height:100%;
         cursor:pointer;
+    }
+
+    .field-label{
+        color:rgba(0,0,0,0.5);
     }
 </style>
