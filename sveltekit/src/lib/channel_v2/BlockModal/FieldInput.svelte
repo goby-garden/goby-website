@@ -50,15 +50,23 @@
     let mouseup=$state(true);
 
 
+    let queue_focus_change=$state(false);
 
     const focusOn=()=>{
-        focused=true;
-        if(!edit_mode) edit_mode=true;
+        window.requestAnimationFrame(()=>{
+            focused=true;
+            if(!edit_mode) edit_mode=true;
+        })
     };
 
     const focusOff=()=>{
-        focused=false;
+        if(mouseup){
+            focused=false;
+        }else if(focused){
+            queue_focus_change=true;
+        }
     }
+
     
     const watchFocus:Attachment=(element)=>{
         
@@ -83,6 +91,16 @@
             }
         }
     }
+
+    function handle_mouse_up(){
+        if(queue_focus_change){
+            console.log('cue unfocus')
+            focused=false;
+            queue_focus_change=false;
+        }
+        mouseup=true;
+        
+    }
     
 
 
@@ -90,7 +108,7 @@
     let el_id=$derived(`field-${name}-${uid}`)
 </script>
 
-<svelte:window onmousedown={()=>mouseup=false} onmouseup={()=>mouseup=true}/>
+<svelte:window onmousedown={()=>mouseup=false} onmouseup={handle_mouse_up}/>
 
 
 <div
@@ -123,9 +141,10 @@
             ></div>
             <div class="display prose" aria-hidden={edit_mode}>
                 {#if !editable_field.value}
-                    <span class="placeholder monospace"
-                        >{base ? `No ${name}` : "None"}</span
-                    >
+                    <span class="placeholder">
+                        <span class="monospace">{base ? `No ${name}` : "None"}</span>
+                    </span>
+                    
                 {:else}
                     {#if markdown}
                         {@html parse(editable_field.value)}
@@ -189,7 +208,7 @@
     }
 
 
-    .edit-mode.field[data-type="string"] {
+    .edit-mode.field {
         background-color: rgb(245, 245, 245);
     }
 
@@ -272,5 +291,6 @@
 
     .field-label{
         color:rgba(0,0,0,0.5);
+        line-height: 1.4em;
     }
 </style>

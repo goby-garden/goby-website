@@ -53,7 +53,27 @@
             base:true,
             key:"goby.description"
         }
-    ])
+    ]);
+
+    let goby_fields:GobyField[] = $derived((channel_data.schema?.fields || []).map((field)=>{
+        if(field.type==='select'){
+            return {
+                name:field.name,
+                key:field.key,
+                type:field.type,
+                value:null,
+                max:field.max
+            }
+            
+        }else{
+            return {
+                name:field.name,
+                key:field.key,
+                type:field.type,
+                value:null,
+            }
+        }
+    }))
 
     const closeOnEsc = (e:KeyboardEvent) =>{
         if(e.key==="Escape" && open){
@@ -103,8 +123,11 @@
         <sidebar class="panel">
             <section class="fields">
                 {#key block.id}
-                    {#each base_fields as field,f}
-                        <div class="field-wrapper" class:base={field.base}>
+                    {#each [
+                        ...base_fields,
+                        ...goby_fields
+                    ] as field,f}
+                        <div class="field-wrapper" class:description={field.key=="goby.description"} class:base={field.base}>
                             <FieldInput {field} bind:edit_mode markdown={field.key!=="goby.title"}/>
                         </div>
                     {/each}
@@ -157,6 +180,9 @@
         min-height:0;
         height:fit-content;
         margin-left:-1px;
+        overflow-y:auto;
+        height:100%;
+        pointer-events:var(--pointer-events);
     }
 
     sidebar,sidebar section{
@@ -177,16 +203,20 @@
         --field-padding-inline:20px;
         /* --inline-padding
         --field-padding:15px 20px; */
-        border-bottom:1px solid gainsboro;
+        border-top:1px solid gainsboro;
     }
 
     .modal:not(.edit-mode) .field-wrapper.base{
         --pad-v-inner:5px;
     }
 
+    .field-wrapper.base.description{
+        --field-padding-block:var(--pad-v-inner) 15px;
+    }
+
     .modal:not(.edit-mode) .field-wrapper.base,
-    .field-wrapper:last-child{
-        border-bottom:none;
+    .field-wrapper:first-child{
+        border-top:none;
     }
 
     .field-wrapper:first-child{
@@ -244,6 +274,8 @@
         border:1px solid gainsboro;
         box-sizing:border-box;
         background-color:white;
+        /* padding:1px;
+        margin:-1px; */
         /* padding:20px; */
     }
 
