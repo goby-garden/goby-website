@@ -11,8 +11,7 @@ html,body{
 }
 
 
-.prose,
-textarea.prose{
+.prose{
     font-family:'Arial';
     & a{
         color:inherit;
@@ -20,7 +19,9 @@ textarea.prose{
         text-underline-offset: 3px;
     }
 
-    & p{
+    & p,
+    & ul,
+    & ol{
         margin-bottom:10px;
     }
 
@@ -39,6 +40,15 @@ textarea.prose{
 
     & mark{
         background-color:palegoldenrod;
+    }
+
+    & ul,
+    & ol{
+        padding-left:1em;
+    }
+
+    & ul li{
+        list-style:disc;
     }
 }
 

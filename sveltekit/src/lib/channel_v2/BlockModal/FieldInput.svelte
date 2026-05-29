@@ -9,13 +9,15 @@
         edit_mode=$bindable(),
         readonly = false,
         height = 'fit',
-        markdown = true
+        markdown = true,
+        focused = $bindable(false)
     }: {
         edit_mode:boolean,
         field:GobyField;
         readonly?:boolean;
         height?: 'fill' | 'fit';
         markdown?:boolean;
+        focused?:boolean;
     } = $props();
 
 
@@ -46,7 +48,7 @@
         }
     }
 
-    let focused = $state(false);
+    // let focused = $state(false);
     let mouseup=$state(true);
 
 

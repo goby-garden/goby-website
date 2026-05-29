@@ -15,6 +15,8 @@
 
     let open=$derived(expanded_block.id!==undefined);
 
+    let content_focused=$state(false);
+
 
     function closeModal(){
         console.log('edit_mode',edit_mode)
@@ -86,9 +88,6 @@
             closeModal();
         }
     }
-
-
-    $inspect('block',block)
 </script>
 
 <svelte:window onkeydown={closeOnEsc} />
@@ -96,7 +95,7 @@
 <div bind:this={modal} class="modal" class:open aria-modal="true" class:edit-mode={edit_mode}>
     <button aria-label="Close block modal" class="backdrop-close" onclick={closeModal}></button>
     {#if block}
-        <figure class="block-content panel" data-type={block?.type}>
+        <figure class="block-content panel" data-type={block?.type} class:focused={content_focused}>
             {#if isImage}
                 {#key block.id}
                     <img width={block.image.width || 2000} height={block.image.height || 2000} alt={block.image.alt_text} src={block.image.medium?.src} />
@@ -114,6 +113,7 @@
                             type:'string',
                             value:block.content.markdown
                         }} bind:edit_mode
+                        bind:focused={content_focused}
                         height="fill"
                      />
                 <!-- {@html parse(block.content.markdown)} -->
@@ -201,8 +201,6 @@
         --pad-v-inner:15px;
         --field-padding-block:var(--pad-v-inner);
         --field-padding-inline:20px;
-        /* --inline-padding
-        --field-padding:15px 20px; */
         border-top:1px solid gainsboro;
     }
 
@@ -240,8 +238,11 @@
     figure{
         padding:20px;
         box-sizing:border-box;
+        pointer-events:var(--pointer-events) !important;
         /* flex: 1; */
         /* aspect-ratio:1; */
+        width:calc(100lvh - 80px);
+        max-width:100%;
     }
 
     figure iframe,
@@ -251,29 +252,53 @@
         height:100%;
         object-fit:contain;
         object-position:center;
+        pointer-events:var(--pointer-events) !important;
+    }
+
+    figure[data-type="Image"],
+    figure[data-type="Link"],
+    figure[data-type="Embed"]{
+        padding:20px;
     }
 
     figure[data-type="Text"]{
         max-width:800px;
-        overflow-y:auto;
-        padding:0px;
+        /* padding:0px; */
+
+        &.focused{
+            z-index:100;
+
+            outline:1px solid rgba(22, 22, 22, 1);
+        }
     }
+    
 
     figure .prose{
         /* font-family:'Times New Roman', serif; */
         font-size:20px;
         line-height:1.4em;
         min-height:100%;
-        display:contents;
+        height:100%;
         --field-padding-block:20px;
         --field-padding-inline:20px;
+        overflow-y:auto;
+        max-height:100%;
+        pointer-events:var(--pointer-events);
+        /* position:absolute;
+        top:0;
+        left:0;
+        width:100%; */
     }
 
     .panel{
         position:relative;
-        border:1px solid gainsboro;
+        /* border:1px solid gainsboro; */
         box-sizing:border-box;
         background-color:white;
+        padding:1px;
+        outline:1px solid gainsboro;
+        outline-offset:-1px;
+
         /* padding:1px;
         margin:-1px; */
         /* padding:20px; */
