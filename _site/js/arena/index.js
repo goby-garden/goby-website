@@ -208,13 +208,22 @@ function populate_index(){
     profile_bio_wrapper.classList.toggle('expandable',profile_bio_wrapper.scrollHeight>profile_bio_wrapper.clientHeight);
 
     const index_key_arr=Object.keys(index_key);
-    let sorted=Object.entries(groups).toSorted((a,b)=>{
-        return arena_order(a[0]) - arena_order(b[0]);
-    }).toSorted((a,b)=>{
-        const a_ind=index_key_arr.indexOf(a[0]);
-        const b_ind=index_key_arr.indexOf(b[0]);
-        return a_ind==-1?1:a_ind - b_ind==-1?1:b_ind;
+    console.log('index_key_arr',index_key_arr)
+    let sorted=Object.entries(groups).toSorted(([a_key],[b_key])=>{
+        return arena_order(a_key) - arena_order(b_key);
+    }).toSorted(([a_key],[b_key])=>{
+        const a_ind=index_key_arr.indexOf(a_key);
+        const b_ind=index_key_arr.indexOf(b_key);
+        // const outcome = a_ind==-1?1:a_ind - b_ind==-1?1:b_ind;
+        const outcome = a_ind==-1?1:(a_ind - b_ind);
+
+        // FOR DEBUGGING
+        if(![a_key,b_key].includes('uncategorized')) console.log(
+            `'${a_key}' is ${a_ind};\n'${b_key}' is ${b_ind}.\n'${a_key}' goes ${outcome>=0?'after':'before'} '${b_key}'`
+        )
+        return outcome;
     })
+    // let sorted=Object.entries(groups);
 
     for(let [key,channels] of sorted){
         const uncategorized=key=='uncategorized';
