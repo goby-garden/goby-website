@@ -1,3 +1,5 @@
+import type { Block, Channel } from "@aredotna/sdk";
+
 const netlify_fn='/.netlify/functions/arena-api-v3';
 
 /**
@@ -102,3 +104,6 @@ async function make_v3_request(data:{
         return result;
     }   
 }
+
+
+export type ChannelBlock = Block | Channel;

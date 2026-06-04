@@ -10,7 +10,8 @@
         readonly = false,
         height = 'fit',
         markdown = true,
-        focused = $bindable(false)
+        focused = $bindable(false),
+        changed = $bindable(false)
     }: {
         edit_mode:boolean,
         field:GobyField;
@@ -18,6 +19,7 @@
         height?: 'fill' | 'fit';
         markdown?:boolean;
         focused?:boolean;
+        changed?:boolean;
     } = $props();
 
 
@@ -28,7 +30,21 @@
 
     let editable_field=$state(field);
     $effect(()=>{
-        editable_field=field;
+        if(!edit_mode){
+            editable_field=field;
+        }
+    })
+
+
+    $effect(()=>{
+        const simplify = (v:typeof field.value)=>v=='\n' || !v ? '':v;
+        
+        changed = edit_mode && simplify(editable_field.value)!==simplify(field.value);
+        console.log({
+            og:field.value,
+            edited:editable_field.value,
+            changed
+        })
     })
 
 

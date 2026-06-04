@@ -4,21 +4,39 @@
   import parse from "$lib/markdown";
 
   import { channel_data, page_size, expanded_block } from "$lib/channel_v2/context.svelte";
-  import { get_channel_contents } from "$lib/arena-v3";
+  import { get_channel_contents, type ChannelBlock } from "$lib/arena-v3";
+  // import type { Block } from "@aredotna/sdk";
 
-  let rendered_blocks: any[] = $state([]);
+  let rendered_blocks: (
+    { render_id:string; } | { render_id:string; id:number; } & ChannelBlock
+  )[] = $state([]);
+
+  $inspect('channel_data.blocks',channel_data.blocks)
 
   $effect(() => {
-    let blocks = [];
+    let blocks:typeof rendered_blocks = [];
     for (let b = channel_data.length; b > 0; b--) {
       const matching = channel_data.blocks?.find(
         (block) => block.connection?.position == b,
       );
 
-      blocks.push({
-        ...(matching || {}),
-        render_id: `${matching ? "block" : "placeholder"}-${matching?.id || b}`,
-      });
+      const render_id=`${matching ? "block" : "placeholder"}-${matching?.id || b}`;
+      if(matching!==undefined){
+        blocks.push({
+          render_id,
+          ...matching
+        })
+      }else{
+        blocks.push({
+          render_id
+        })
+      }
+
+      // blocks.push({
+      //   ...(matching || {}),
+      //   placeholder:matching==undefined,
+      //   render_id: `${matching ? "block" : "placeholder"}-${matching?.id || b}`,
+      // });
     }
     rendered_blocks = blocks;
   });
@@ -86,7 +104,7 @@
       }
   }
 
-  function merge_blocks(new_blocks: any[] = []) {
+  function merge_blocks(new_blocks: ChannelBlock[] = []) {
     const brand_new = [];
     for (let block of new_blocks) {
       let matching = channel_data.blocks.find(
@@ -102,7 +120,6 @@
   }
 
   function handle_block_loading(entries: IntersectionObserverEntry[]) {
-    // console.log(entries);
     for (let entry of entries) {
       if (entry.intersectionRatio > 0) {
         const page = parseInt((entry.target as HTMLElement).dataset.page || "");
@@ -132,57 +149,53 @@
 
 <main inert={expanded_block.id!==undefined}>
   {#each rendered_blocks as block, b (block.render_id)}
-    {@const block_author = block.user || block.owner}
-    {@const block_connector = block.connection?.connected_by}
     <a
       data-sveltekit-reload
       class="block"
-      class:loaded={block}
-      class:channel={block?.type === "Channel"}
-      class:expanded={expanded_block.id && block?.id == expanded_block.id}
-      {@attach !block?.id && observer_attachment}
-      href={block?.id ? `#block-${block?.id}` : null}
+      class:loaded={"id" in block}
+      class:channel={"type" in block && block?.type === "Channel"}
+      class:expanded={expanded_block.id && "id" in block && block?.id == expanded_block.id}
+      {@attach !("id" in block) && observer_attachment}
+      href={"id" in block ? `#block-${block?.id}` : null}
       data-page={Math.ceil((b + 1) / page_size)}
-      onclick={()=>set_expanded_block(block.id)}
+      onclick={ ()=>set_expanded_block("id" in block ? block.id : undefined)}
     >
       <figure class="block-inner">
         <div class="block-preview">
-          {#if block?.image}
-            <img alt={block.image.alt_text} src={block.image.small?.src} />
-          {:else if block?.content?.markdown}
-            <div class="block-text-preview prose">
-              {@html parse(block.content.markdown)}
-            </div>
+          {#if "type" in block}
+            {#if "image" in block}
+              <img alt={block.image?.alt_text} src={block.image?.small?.src} />
+            {:else if block.type=="Text" && block?.content?.markdown}
+              <div class="block-text-preview prose">
+                {@html parse(block.content.markdown)}
+              </div>
+            {/if}
           {/if}
         </div>
 
-        <figcaption class="block-labels" class:no-title={!block?.title}>
-          {#if block?.title}
+        <figcaption class="block-labels" class:no-title={!("title" in block) || !block?.title}>
+          {#if "title" in block && block?.title}
             <div class="title-overflow-wrap">
                 <span class="block-title label-span" title="Block title"
                   >{block.title}</span
                 >
             </div>
             {/if}
-            {#if block_author}
-              {@const same_as_connector=block_connector.id == block_author.id}
-              <span title="block author{same_as_connector?" and connector":""}" class="person author" class:connector={same_as_connector}>
-                <span>{block_author.name}</span>
-              </span>
+            {#if "id" in block}
+              {@const block_author = block.type=="Channel" ?block.owner : block.user}
+              {@const block_connector = block.connection?.connected_by}
+              {#if block_author}
+                {@const same_as_connector=block_connector?.id == block_author.id}
+                <span title="block author{same_as_connector?" and connector":""}" class="person author" class:connector={same_as_connector}>
+                  <span>{block_author.name}</span>
+                </span>
+              {/if}
+              {#if block_connector && block_connector?.id !== block_author.id}
+                <span title="block connector" class="person connector">
+                  <span>{block_connector.name}</span>
+                </span>
+              {/if}
             {/if}
-            {#if block_connector && block_connector?.id !== block_author.id}
-              <span title="block connector" class="person connector">
-                <span>{block_connector.name}</span>
-              </span>
-            {/if}
-          
-          <!-- <div class="authors">
-            {#if block_author}<span
-                title="Owner of block"
-                class:block-connector={block_connector.id == block_author.id}
-                class="block-author label-span">{block_author.name}</span
-              >{/if}
-          </div> -->
         </figcaption>
       </figure>
     </a>
