@@ -211,7 +211,7 @@
 
 
     .edit-mode.field {
-        background-color: rgb(245, 245, 245);
+        background-color: var(--gray);
     }
 
     .edit-mode.field[data-type="string"]{

@@ -7,7 +7,6 @@
 
     let modal:HTMLElement | undefined = $state();
 
-    // let open=$state(false);
     let edit_mode=$state(false);
 
     let prev_expanded=$state(expanded_block.id);
@@ -116,7 +115,6 @@
                         bind:focused={content_focused}
                         height="fill"
                      />
-                <!-- {@html parse(block.content.markdown)} -->
                 </div>
             {/if}
         </figure>
@@ -302,6 +300,10 @@
         /* padding:1px;
         margin:-1px; */
         /* padding:20px; */
+    }
+
+    .edit-mode .panel{
+        background-color:var(--gray);
     }
 
     @media(min-width:900px){

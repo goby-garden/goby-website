@@ -12,7 +12,7 @@
     let blocks = [];
     for (let b = channel_data.length; b > 0; b--) {
       const matching = channel_data.blocks?.find(
-        (block) => block.connection.position == b,
+        (block) => block.connection?.position == b,
       );
 
       blocks.push({

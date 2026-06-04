@@ -1,4 +1,5 @@
 import type { GobySchema } from "./goby";
+import type { Block } from "@aredotna/sdk";
 
 export let page_size=24;
 
@@ -8,7 +9,7 @@ export let channel_data:{
     description?:string;
     owner?:string;
     url?:string;
-    blocks:any[]
+    blocks:Block[]
     length:number;
     schema?:GobySchema;
 }=$state({

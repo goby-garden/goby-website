@@ -38,6 +38,7 @@
     "wait-on": "^8.0.3"
   },
   "dependencies": {
+    "@aredotna/sdk": "^0.0.4",
     "archieml": "^0.5.0",
     "d3": "^7.4.0",
     "js-yaml": "^4.1.0",
