@@ -3,6 +3,7 @@
     import { keyToClick } from "$lib/dom-utils";
     import parse from "$lib/markdown";
     import type { Attachment } from "svelte/attachments";
+    import type { FieldBinding } from "./types";
 
     let {
         field,
@@ -11,7 +12,7 @@
         height = 'fit',
         markdown = true,
         focused = $bindable(false),
-        changed = $bindable(false)
+        field_binding = $bindable()
     }: {
         edit_mode:boolean,
         field:GobyField;
@@ -19,13 +20,13 @@
         height?: 'fill' | 'fit';
         markdown?:boolean;
         focused?:boolean;
-        changed?:boolean;
+        field_binding?:FieldBinding;
     } = $props();
 
 
     let {
         name,
-        base = false
+        canon = false
     } = $derived(field);
 
     let editable_field=$state(field);
@@ -38,13 +39,16 @@
 
     $effect(()=>{
         const simplify = (v:typeof field.value)=>v=='\n' || !v ? '':v;
-        
-        changed = edit_mode && simplify(editable_field.value)!==simplify(field.value);
-        console.log({
-            og:field.value,
-            edited:editable_field.value,
-            changed
-        })
+        if(field_binding){
+            field_binding.changed = edit_mode && simplify(editable_field.value)!==simplify(field.value);
+        }
+    })
+
+    $effect(()=>{
+        if(field_binding && !field_binding.getValue && field_binding.type==editable_field.type){
+
+            field_binding.getValue=(()=>editable_field.value) as any;
+        }
     })
 
 
@@ -136,15 +140,15 @@
     onkeydown={keyToClick(handle_click)}
     class="field"
     class:edit-mode={edit_mode}
-    class:custom={!base}
+    class:custom={!canon}
     class:fill-height={height==="fill"}
     data-name={editable_field.name}
     data-type={editable_field.type}
     class:focused
-    class:base
+    class:canon
     id={el_id}
 >
-    {#if (!base || edit_mode) && name}
+    {#if (!canon || edit_mode) && name}
         <div class="field-label"><span class="monospace">{name}</span></div>
     {/if}
     {#if editable_field.type==="string"}
@@ -160,7 +164,7 @@
             <div class="display prose" aria-hidden={edit_mode}>
                 {#if !editable_field.value}
                     <span class="placeholder">
-                        <span class="monospace">{base ? `No ${name}` : "None"}</span>
+                        <span class="monospace">{canon ? `No ${name}` : "None"}</span>
                     </span>
                     
                 {:else}
@@ -199,7 +203,7 @@
         /* padding-bottom:0; */
     }
 
-    .field.base[data-name="Title"] .prose.display{
+    .field.canon[data-name="Title"] .prose.display{
         font-weight:600;
     }
     

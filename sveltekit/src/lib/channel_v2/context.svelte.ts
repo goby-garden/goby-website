@@ -27,4 +27,11 @@ export let expanded_block:{id:number | undefined} = $state({
     id:undefined
 })
 
-
+export let profile: {
+    authenticated:false
+} | {
+    authenticated:true
+    // add more attributes once known
+} = $state({
+    authenticated:false
+})

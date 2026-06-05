@@ -1,4 +1,5 @@
 import type { Block, Channel } from "@aredotna/sdk";
+import type { GobyField, GobySchema } from "./channel_v2/goby";
 
 const netlify_fn='/.netlify/functions/arena-api-v3';
 
@@ -43,31 +44,49 @@ export async function get_channel_contents(
     );
 }
 
-// export async function get_channel_contents(
-//     {slug,page = 1,per = 10, direction = 'desc', user}:{slug:string,page?:number,per?:number,direction?:'asc'|'desc',user?:string}
-// ){
-//     const endpoint=`channels/${slug}/contents`;
-//     const params={
-//         page,
-//         per,
-//         direction
-//     };
 
-//     const data:Parameters<typeof make_v2_request>[0]={
-//         action:'channel_contents',
-//         method:"GET",
-//         type:'api',
-//         endpoint,
-//         params
-//     };
+export async function save_block_fields({
+    id,
+    changes,
+    authenticated,
+    channel_slug,
+    schema
+}:{id:number; changes:GobyField[]; authenticated:boolean; channel_slug?:string; schema?:GobySchema}){
+    if(!authenticated && schema!==undefined && channel_slug!==undefined){
+        // first save changes on schema
+        for(let change of changes){
 
-//     if(user) data.user=user;
+            // if are.na canonical field (title or description)
+            if(change.canon){
+                // saves to schema.overrides
+                if(!schema.overrides){
+                    schema.overrides={
+                        title:{values:{}},
+                        description:{values:{}}
+                    }
+                }
+                
+                type CanonicalKey = keyof typeof schema.overrides;
+                const isCanonicalKey=(k:string):k is CanonicalKey=>["title","description"].includes(k);
 
-//     // user
-//     const returned=await make_v2_request(data);
+                const key=change.key.split('.')[1];
+                if(isCanonicalKey(key) && change.type=="string"){
+                    schema.overrides[key].values[id]=change.value || '';
+                }
+            }else{
+                const field=schema.fields.find((f)=>f.key==change.key);
+                if(field){
+                    if(!field.values) field.values = {};
 
-//     return returned?.contents;
-// }
+                    field.values[id]=change.value;
+                }
+            }
+        }
+
+        // then write schema to localstorage as channel slug
+        window.localStorage.setItem(channel_slug,JSON.stringify(schema));
+    }
+}
 
 
 

@@ -20,17 +20,31 @@ export type GobyFieldType = keyof GobyFieldMap;
 export type GobyField = {
     [T in GobyFieldType]:
     GobyFieldDefinition[T] & {
-        base?: boolean;
+        canon?: boolean;
         value: GobyFieldMap[T] | null;
     }
 }[GobyFieldType];
 
 
 export type GobySchema = {
+    /** Definitions for each custom field on blocks in this channel */
     fields: {
         [T in GobyFieldType]:
         GobyFieldDefinition[T] & {
-            values?: Record<string, GobyFieldMap[T] | undefined>
+            /** Optionally save block field values, indexed by block ID. Only recorded here if not authenticated. */
+            values?: Record<string, GobyFieldMap[T] | undefined | null>
         }
-    }[GobyFieldType][]
+    }[GobyFieldType][];
+
+    /** Optionally override the default are.na title/description. Only recorded here if not authenticated.  */
+    overrides?:{
+        title:{
+            /** indexed by block ID */
+            values:Record<string,string>
+        },
+        description:{
+            /** indexed by block ID */
+            values:Record<string,string>
+        }
+    },
 }
