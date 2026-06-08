@@ -3,7 +3,6 @@
     import { keyToClick } from "$lib/dom-utils";
     import parse from "$lib/markdown";
     import type { Attachment } from "svelte/attachments";
-    import type { FieldBinding } from "./types";
 
     let {
         field,
@@ -12,15 +11,15 @@
         height = 'fit',
         markdown = true,
         focused = $bindable(false),
-        field_binding = $bindable()
+        editable_field = $bindable(field),
     }: {
         edit_mode:boolean,
         field:GobyField;
+        editable_field?:GobyField;
         readonly?:boolean;
         height?: 'fill' | 'fit';
         markdown?:boolean;
         focused?:boolean;
-        field_binding?:FieldBinding;
     } = $props();
 
 
@@ -29,25 +28,10 @@
         canon = false
     } = $derived(field);
 
-    let editable_field=$state(field);
+    // let editable_field=$state(field);
     $effect(()=>{
         if(!edit_mode){
             editable_field=field;
-        }
-    })
-
-
-    $effect(()=>{
-        const simplify = (v:typeof field.value)=>v=='\n' || !v ? '':v;
-        if(field_binding){
-            field_binding.changed = edit_mode && simplify(editable_field.value)!==simplify(field.value);
-        }
-    })
-
-    $effect(()=>{
-        if(field_binding && !field_binding.getValue && field_binding.type==editable_field.type){
-
-            field_binding.getValue=(()=>editable_field.value) as any;
         }
     })
 
@@ -127,7 +111,14 @@
 
 
     let uid=$props.id();
-    let el_id=$derived(`field-${name}-${uid}`)
+    let el_id=$derived(`field-${name}-${uid}`);
+
+
+
+    function isEmpty(field:GobyField){
+        if(field.type=='string') return (field.value || '').trim().length==0;
+        return !field.value;
+    }
 </script>
 
 <svelte:window onmousedown={()=>mouseup=false} onmouseup={handle_mouse_up}/>
@@ -162,12 +153,11 @@
                 bind:innerText={editable_field.value}
             ></div>
             <div class="display prose" aria-hidden={edit_mode}>
-                {#if !editable_field.value}
+                {#if isEmpty(field)}
                     <span class="placeholder">
                         <span class="monospace">{canon ? `No ${name}` : "None"}</span>
                     </span>
-                    
-                {:else}
+                {:else if editable_field.value}
                     {#if markdown}
                         {@html parse(editable_field.value)}
                     {:else }

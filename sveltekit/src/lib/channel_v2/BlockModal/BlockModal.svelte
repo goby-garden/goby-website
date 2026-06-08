@@ -1,11 +1,10 @@
 <script lang="ts">
     import {goto} from '$app/navigation';
     import {channel_data, expanded_block, profile} from '$lib/channel_v2/context.svelte';
-    import parse from '$lib/markdown';
     import type { GobyField, GobyFieldMap, GobyFieldType } from '$lib/channel_v2/goby';
-    import type {FieldBinding} from './types';
     import FieldInput from './FieldInput.svelte';
     import { save_block_fields, type ChannelBlock } from '$lib/arena-v3';
+    import { get_canon_value } from '../goby-utils';
 
     let modal:HTMLElement | undefined = $state();
 
@@ -18,30 +17,23 @@
 
     let content_focused=$state(false);
 
+    function differentValues({edited,field}:{edited:GobyField,field:GobyField}){
+        const simplify = (v:typeof field.value)=>v=='\n' || !v ? '':v;
+        return simplify(edited.value)!==simplify(field.value);
+    }
+
 
     async function closeModal(save = false){
         if(edit_mode){
-            const tracked_changes=field_bindings.filter((f)=>f.changed);
-            if(tracked_changes.length>0){
+            const changes=editable_fields.filter((field,f)=>differentValues({edited:field,field:fields[f]}));
+            if(changes.length>0){
                 if(save && block){
                     // create a save function
                     // depending on if authenticated + have edit access, save to localstorage or api
                     // if authenticated, also needs to decide whether to save canon fields to root or to metadata depending on block ownership and config
                     // for api, use https://www.are.na/developers/explore/block/put-block to batch changes in one request
                     // await the response before closing edit_mode (non-eager)
-                    const fields_with_changes=fields.filter((f)=>tracked_changes.some((b)=>b.key==f.key));
-
-                    const changes:GobyField[]=fields_with_changes.map((f)=>{
-                        const change={
-                            ...f
-                        }
-                        const binding=tracked_changes.find((a)=>a.key==change.key);
-
-                        if(binding && binding.key==change.key && binding.getValue){
-                            change.value=binding.getValue();
-                        }
-                        return change;
-                    })
+                    // const changes=fields.filter((f)=>tracked_changes.some((b)=>b.key==f.key));
                     // getValue
 
 
@@ -78,21 +70,20 @@
 
 
     let canon_fields:GobyField[]=$derived.by(()=>{
-        // need to generalize these as an accessor function, so they’re used in other places where title appears
-        // e.g. title of each block in block Contents
-        const title_override= block?.id && channel_data.schema?.overrides?.title?.values?.[block.id];
-        const description_override= block?.id && channel_data.schema?.overrides?.description?.values?.[block.id];
+
+        // probably need a way of noting whether there is an override value, so that
+        // we can determine where to make the change when the value is edited
         return [
             {
                 name:'Title', type:'string',
-                value:title_override ? title_override : block?.title || '', 
+                value:block && get_canon_value({field:'title', block,overrides:channel_data.schema?.overrides}) || null, 
                 canon:true,
                 key:"goby.title"
             },
             {
                 name:'Description', 
                 type:'string',
-                value:description_override ? description_override : block?.description?.markdown || '', 
+                value:block && get_canon_value({field:'description', block,overrides:channel_data.schema?.overrides}) || null, 
                 canon:true,
                 key:"goby.description"
             }
@@ -153,15 +144,11 @@
 
     // NOTE: now that I have this insane binding,
     // consider just binding up editable_field directly
-    let field_bindings:FieldBinding[] = $state([]);
+    let editable_fields:GobyField[] = $state([]);
     
     $effect(()=>{
         if(!edit_mode){
-            field_bindings = fields.map((f)=>({
-                key:f.key,
-                type:f.type,
-                changed:false
-            }));
+            editable_fields = [...fields];
         }
     })
     
@@ -216,7 +203,7 @@
                         {#each fields as field,f}
                             <div class="field-wrapper" class:description={field.key=="goby.description"} class:canon={field.canon}>
                                 <!-- bind:changed={field_bindings[f].changed}  -->
-                                <FieldInput bind:field_binding={field_bindings[f]} {field} bind:edit_mode markdown={field.key!=="goby.title"}/>
+                                <FieldInput bind:editable_field={editable_fields[f]} {field} bind:edit_mode markdown={field.key!=="goby.title"}/>
                             </div>
                         {/each}
                     {/key}
