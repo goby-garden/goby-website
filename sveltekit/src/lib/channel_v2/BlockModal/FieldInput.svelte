@@ -11,7 +11,7 @@
         height = 'fit',
         markdown = true,
         focused = $bindable(false),
-        editable_field = $bindable(field),
+        editable_field = $bindable(),
     }: {
         edit_mode:boolean,
         field:GobyField;
@@ -37,18 +37,21 @@
 
 
     let input_el:HTMLDivElement | undefined=$state();
-
-    let textField=$derived(editable_field.type==="string");
+    let checkbox_el:HTMLInputElement | undefined = $state();
 
     function handle_click() {
-        if (editable_field.type==="string") {
+        if (editable_field?.type==="string") {
             if(input_el && !focused){
                 input_el.focus();
 
                 moveCursorToEnd();
             }
-        }else if(editable_field.type=="boolean"){
-            editable_field.value=!Boolean(editable_field.value);
+        }else if(editable_field?.type=="boolean"){
+            if(edit_mode){
+                editable_field.value=!Boolean(editable_field.value);
+            }else if(checkbox_el){
+                checkbox_el.focus();
+            }
         }
     }
 
@@ -123,54 +126,56 @@
 
 <svelte:window onmousedown={()=>mouseup=false} onmouseup={handle_mouse_up}/>
 
-
-<div
-    role="button"
-    tabindex={-1}
-    onclick={handle_click}
-    onkeydown={keyToClick(handle_click)}
-    class="field"
-    class:edit-mode={edit_mode}
-    class:custom={!canon}
-    class:fill-height={height==="fill"}
-    data-name={editable_field.name}
-    data-type={editable_field.type}
-    class:focused
-    class:canon
-    id={el_id}
->
-    {#if (!canon || edit_mode) && name}
-        <div class="field-label"><span class="monospace">{name}</span></div>
-    {/if}
-    {#if editable_field.type==="string"}
-        <div class="value-wrapper">
-            <div
-                aria-labelledby={el_id}
-                class="edit prose"
-                contenteditable="plaintext-only"
-                {@attach watchFocus}
-                bind:this={input_el}
-                bind:innerText={editable_field.value}
-            ></div>
-            <div class="display prose" aria-hidden={edit_mode}>
-                {#if isEmpty(field)}
-                    <span class="placeholder">
-                        <span class="monospace">{canon ? `No ${name}` : "None"}</span>
-                    </span>
-                {:else if editable_field.value}
-                    {#if markdown}
-                        {@html parse(editable_field.value)}
-                    {:else }
-                        { editable_field.value }
+{#if editable_field}
+    <div
+        role="button"
+        tabindex={-1}
+        onclick={handle_click}
+        onkeydown={keyToClick(handle_click)}
+        class="field"
+        class:edit-mode={edit_mode}
+        class:custom={!canon}
+        class:fill-height={height==="fill"}
+        data-name={editable_field.name}
+        data-type={editable_field.type}
+        class:focused
+        class:canon
+        id={el_id}
+    >
+        {#if (!canon || edit_mode) && name}
+            <div class="field-label"><span class="monospace">{name}</span></div>
+        {/if}
+        {#if editable_field.type==="string"}
+            <div class="value-wrapper">
+                <div
+                    aria-labelledby={el_id}
+                    class="edit prose"
+                    contenteditable="plaintext-only"
+                    {@attach watchFocus}
+                    bind:this={input_el}
+                    bind:innerText={editable_field.value}
+                ></div>
+                <div class="display prose" aria-hidden={edit_mode}>
+                    {#if isEmpty(field)}
+                        <span class="placeholder">
+                            <span class="monospace">{canon ? `No ${name}` : "None"}</span>
+                        </span>
+                    {:else if editable_field.value}
+                        {#if markdown}
+                            {@html parse(editable_field.value)}
+                        {:else }
+                            { editable_field.value }
+                        {/if}
+                        
                     {/if}
-                    
-                {/if}
+                </div>
             </div>
-        </div>
-    {:else if editable_field.type==="boolean"}
-        <input {@attach watchFocus} type="checkbox" bind:checked={editable_field.value} />
-    {/if}
-</div>
+        {:else if editable_field.type==="boolean"}
+            <input bind:this={checkbox_el} {@attach watchFocus} type="checkbox" bind:checked={editable_field.value} />
+        {/if}
+    </div>
+{/if}
+
 
 <style>
     .field {
@@ -290,6 +295,10 @@
         padding:3px;
         pointer-events:all;
         cursor:pointer;
+    }
+
+    .field:not(.edit-mode) input[type="checkbox"]{
+        pointer-events:none;
     }
 
     input[type="checkbox"]:checked::after{

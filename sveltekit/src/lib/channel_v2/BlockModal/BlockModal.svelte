@@ -68,7 +68,6 @@
     let block:ChannelBlock | undefined = $derived(channel_data.blocks.find(({id})=>expanded_block.id ?(id==expanded_block.id):(id==prev_expanded)));
     let isImage=(block:ChannelBlock)=>block?.type=='Image' || block?.type == 'Link';
 
-
     let canon_fields:GobyField[]=$derived.by(()=>{
 
         // probably need a way of noting whether there is an override value, so that
@@ -76,54 +75,62 @@
         return [
             {
                 name:'Title', type:'string',
-                value:block && get_canon_value({field:'title', block,overrides:channel_data.schema?.overrides}) || null, 
+                // also note the || '' is really important, as opposed to letting values be null
+                // because otherwise the text binding in FieldInput overwrites it with the old value
+                value:block && get_canon_value({field:'title', block,overrides:channel_data.schema?.overrides}) || '', 
                 canon:true,
                 key:"goby.title"
             },
             {
                 name:'Description', 
                 type:'string',
-                value:block && get_canon_value({field:'description', block,overrides:channel_data.schema?.overrides}) || null, 
+                value:block && get_canon_value({field:'description', block,overrides:channel_data.schema?.overrides}) || '', 
                 canon:true,
                 key:"goby.description"
             }
         ]
     });
 
-    let goby_fields:GobyField[] = $derived((channel_data.schema?.fields || []).map((field)=>{
-        const core_fields={
-            name:field.name,
-            key:field.key,
-        };
+    let goby_fields:GobyField[] = $derived.by(()=>{
+        return (channel_data.schema?.fields || []).map((field)=>{
+            const core_fields={
+                name:field.name,
+                key:field.key,
+            };
 
-        const blockValue=block?.metadata?.[field.key];
-        const localValue = block?.id && field.values ? field.values[block.id] : undefined;
-        // for tomorrow: continue with process to save localValue, maybe as a fallback of blockValue.
+            const blockValue=block?.metadata?.[field.key];
+            const localValue = block?.id && field.values ? field.values[block.id] : undefined;
+            // for tomorrow: continue with process to save localValue, maybe as a fallback of blockValue.
 
-        if(field.type==='select'){
-            return {
-                ...core_fields,
-                type:field.type,
-                value:null,
-                max:field.max
-            }
-        }else if(field.type=="string"){
-            const value = blockValue!==undefined && blockValue!==null ? `${blockValue}`:'';
+            if(field.type==='select'){
+                return {
+                    ...core_fields,
+                    type:field.type,
+                    value:null,
+                    max:field.max
+                }
+            }else if(field.type=="string"){
+                const value = (typeof blockValue == 'string' && blockValue) || 
+                            (typeof localValue == 'string' && localValue) || '';
 
-            return {
-                ...core_fields,
-                type:field.type,
-                value
+                return {
+                    ...core_fields,
+                    type:field.type,
+                    value
+                }
+            }else{
+                const value = typeof blockValue=="boolean" ? blockValue :
+                            typeof localValue=="boolean" ? localValue :
+                            null;
+
+                return {
+                    ...core_fields,
+                    type:field.type,
+                    value
+                }
             }
-        }else{
-            const value = typeof blockValue=="boolean"?blockValue:null;
-            return {
-                ...core_fields,
-                type:field.type,
-                value
-            }
-        }
-    }))
+        })
+    })
 
 
     let fields = $derived([
@@ -147,7 +154,7 @@
     let editable_fields:GobyField[] = $state([]);
     
     $effect(()=>{
-        if(!edit_mode){
+        if(!edit_mode || block?.id!==prev_expanded){
             editable_fields = [...fields];
         }
     })
@@ -202,7 +209,6 @@
                     {#key block.id}
                         {#each fields as field,f}
                             <div class="field-wrapper" class:description={field.key=="goby.description"} class:canon={field.canon}>
-                                <!-- bind:changed={field_bindings[f].changed}  -->
                                 <FieldInput bind:editable_field={editable_fields[f]} {field} bind:edit_mode markdown={field.key!=="goby.title"}/>
                             </div>
                         {/each}

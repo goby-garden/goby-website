@@ -78,7 +78,11 @@ export async function save_block_fields({
                 if(field){
                     if(!field.values) field.values = {};
 
+                    console.log({field:field,cv:change.value})
+
                     field.values[id]=change.value;
+                    console.log(field.values)
+                    schema=schema;
                 }
             }
         }

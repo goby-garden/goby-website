@@ -32,12 +32,6 @@
           render_id
         })
       }
-
-      // blocks.push({
-      //   ...(matching || {}),
-      //   placeholder:matching==undefined,
-      //   render_id: `${matching ? "block" : "placeholder"}-${matching?.id || b}`,
-      // });
     }
     rendered_blocks = blocks;
   });
@@ -68,6 +62,12 @@
         page: page,
         per: page_size,
       });
+
+      const schema=JSON.parse(localStorage.getItem(channel_data.slug) || '');
+
+      if(typeof schema == 'object' && "fields" in schema){
+        channel_data.schema=schema;
+      }
 
       if(!meta || !data){
         queue_running = false;
