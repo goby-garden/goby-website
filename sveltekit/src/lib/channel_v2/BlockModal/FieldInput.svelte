@@ -172,6 +172,11 @@
             </div>
         {:else if editable_field.type==="boolean"}
             <input bind:this={checkbox_el} {@attach watchFocus} type="checkbox" bind:checked={editable_field.value} />
+        {:else if editable_field.type==="select"}
+            <div class="value-wrapper">
+                <input type="text" class="select-search" />
+            </div>
+            
         {/if}
     </div>
 {/if}
@@ -314,4 +319,9 @@
         color:rgba(0,0,0,0.5);
         line-height: 1.4em;
     }
+
+    .field:not(.edit-mode) .select-search{
+        display:none;
+    }
+    
 </style>

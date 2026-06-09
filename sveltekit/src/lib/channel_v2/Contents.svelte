@@ -63,7 +63,8 @@
         per: page_size,
       });
 
-      const schema=JSON.parse(localStorage.getItem(channel_data.slug) || '');
+      const localSchema=localStorage.getItem(channel_data.slug);
+      const schema=localSchema ? JSON.parse(localSchema):undefined;
 
       if(typeof schema == 'object' && "fields" in schema){
         channel_data.schema=schema;

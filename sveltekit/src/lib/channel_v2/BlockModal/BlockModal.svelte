@@ -107,7 +107,8 @@
                     ...core_fields,
                     type:field.type,
                     value:null,
-                    max:field.max
+                    max:field.max,
+                    options:field.options
                 }
             }else if(field.type=="string"){
                 const value = (typeof blockValue == 'string' && blockValue) || 

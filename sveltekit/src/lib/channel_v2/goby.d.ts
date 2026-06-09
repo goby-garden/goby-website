@@ -10,7 +10,11 @@ export type GobyFieldDefinition = {
         key: string;
         type: T;
     } & (T extends "select" ? {
-        max: number;
+        max: 'single' | 'multiple';
+        options:{
+            name:string;
+            color?:string;
+        }[]
     } : {})
 }
 
