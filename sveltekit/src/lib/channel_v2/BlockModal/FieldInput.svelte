@@ -36,11 +36,13 @@
         }
     })
 
+    
 
     let field_el:HTMLDivElement | undefined = $state();
     let string_el:HTMLDivElement | undefined=$state();
     let checkbox_el:HTMLInputElement | undefined = $state();
     let select_search_box:HTMLInputElement | undefined = $state();
+
 
     function handle_click() {
         if (editable_field?.type==="string") {
@@ -66,6 +68,14 @@
         focused = !field_el || document_state.activeElement && field_el.contains(document_state.activeElement) || false;
         window.requestAnimationFrame(()=>{
             if(focused && !edit_mode) edit_mode=true;
+
+            if(document_state.activeElement && field_el && field_el.isEqualNode(document_state.activeElement)){
+                if(editable_field?.type=="string"){
+                    string_el?.focus();
+                }else if(editable_field?.type=="select"){
+                    select_search_box?.focus();
+                }
+            }
         })
     })
 
