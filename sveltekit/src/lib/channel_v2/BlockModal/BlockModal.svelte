@@ -164,7 +164,7 @@
 
     const closeOnEsc = (e:KeyboardEvent) =>{
         if(e.key==="Escape" && open){
-
+            console.log('document.activeElement ',document.activeElement )
             if(
                 document.activeElement 
                 && document.activeElement instanceof HTMLElement){
@@ -293,9 +293,11 @@
 
     .save-controls{
         position:absolute;
+        left:0px;
         bottom:0;
-        width:calc(100% - 2px);
+        width:calc(100% - 0px);
         border-bottom:1px solid gainsboro;
+        border-inline:1px solid gainsboro;
         display:flex;
         flex-flow:row nowrap;
         justify-content:flex-end;

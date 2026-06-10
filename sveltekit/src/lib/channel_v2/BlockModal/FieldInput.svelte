@@ -3,6 +3,7 @@
     import { keyToClick } from "$lib/dom-utils";
     import parse from "$lib/markdown";
     import type { Attachment } from "svelte/attachments";
+    import { document_state } from "../context.svelte.ts";
 
     let {
         field,
@@ -36,16 +37,21 @@
     })
 
 
-    let input_el:HTMLDivElement | undefined=$state();
+    let field_el:HTMLDivElement | undefined = $state();
+    let string_el:HTMLDivElement | undefined=$state();
     let checkbox_el:HTMLInputElement | undefined = $state();
+    let select_search_box:HTMLInputElement | undefined = $state();
 
     function handle_click() {
         if (editable_field?.type==="string") {
-            if(input_el && !focused){
-                input_el.focus();
+            if(string_el && !focused){
+                string_el.focus();
 
                 moveCursorToEnd();
             }
+        }else if(editable_field?.type=="select"){
+            console.log('select_search_box',select_search_box)
+            if(select_search_box && !focused) select_search_box.focus();
         }else if(editable_field?.type=="boolean"){
             if(edit_mode){
                 editable_field.value=!Boolean(editable_field.value);
@@ -55,43 +61,19 @@
         }
     }
 
-    // let focused = $state(false);
-    let mouseup=$state(true);
 
-
-    let queue_focus_change=$state(false);
-
-    const focusOn=()=>{
+    $effect(()=>{
+        focused = !field_el || document_state.activeElement && field_el.contains(document_state.activeElement) || false;
         window.requestAnimationFrame(()=>{
-            focused=true;
-            if(!edit_mode) edit_mode=true;
+            if(focused && !edit_mode) edit_mode=true;
         })
-    };
+    })
 
-    const focusOff=()=>{
-        if(mouseup){
-            focused=false;
-        }else if(focused){
-            queue_focus_change=true;
-        }
-    }
-
-    
-    const watchFocus:Attachment=(element)=>{
-        
-        element.addEventListener('focus',focusOn)
-        element.addEventListener('blur', focusOff)
-
-        return ()=>{
-            element.removeEventListener('focus',focusOn);
-            element.removeEventListener('blur',focusOff);
-        }
-    }
 
     function moveCursorToEnd(){
-        if(input_el){
+        if(string_el){
             const range = document.createRange();
-            range.selectNodeContents(input_el);
+            range.selectNodeContents(string_el);
             const sel = window.getSelection();
             if(sel){
                 sel.removeAllRanges();
@@ -101,16 +83,6 @@
         }
     }
 
-    function handle_mouse_up(){
-        if(queue_focus_change){
-            console.log('cue unfocus')
-            focused=false;
-            queue_focus_change=false;
-        }
-        mouseup=true;
-        
-    }
-    
 
 
     let uid=$props.id();
@@ -124,7 +96,7 @@
     }
 </script>
 
-<svelte:window onmousedown={()=>mouseup=false} onmouseup={handle_mouse_up}/>
+<svelte:window />
 
 {#if editable_field}
     <div
@@ -141,6 +113,7 @@
         class:focused
         class:canon
         id={el_id}
+        bind:this={field_el}
     >
         {#if (!canon || edit_mode) && name}
             <div class="field-label"><span class="monospace">{name}</span></div>
@@ -151,8 +124,7 @@
                     aria-labelledby={el_id}
                     class="edit prose"
                     contenteditable="plaintext-only"
-                    {@attach watchFocus}
-                    bind:this={input_el}
+                    bind:this={string_el}
                     bind:innerText={editable_field.value}
                 ></div>
                 <div class="display prose" aria-hidden={edit_mode}>
@@ -171,10 +143,14 @@
                 </div>
             </div>
         {:else if editable_field.type==="boolean"}
-            <input bind:this={checkbox_el} {@attach watchFocus} type="checkbox" bind:checked={editable_field.value} />
+            <input bind:this={checkbox_el}  type="checkbox" bind:checked={editable_field.value} />
         {:else if editable_field.type==="select"}
-            <div class="value-wrapper">
-                <input type="text" class="select-search" />
+            <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+            <div class="select" >
+            <!-- {@attach watchFocus} -->
+                <input bind:this={select_search_box} type="text" class="select-search"  />
+                <button>test tag 1</button>
+                <button>test tag 2</button>
             </div>
             
         {/if}
@@ -321,7 +297,9 @@
     }
 
     .field:not(.edit-mode) .select-search{
-        display:none;
+        opacity:0;
+        width:0;
+        height:0;
     }
     
 </style>
