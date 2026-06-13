@@ -42,6 +42,7 @@
     let string_el:HTMLDivElement | undefined=$state();
     let checkbox_el:HTMLInputElement | undefined = $state();
     let select_search_box:HTMLInputElement | undefined = $state();
+    let select_search_value = $state();
 
 
     function handle_click() {
@@ -77,6 +78,10 @@
                 }
             }
         })
+
+        if(!focused){
+            select_search_value='';
+        }
     })
 
 
@@ -155,14 +160,24 @@
         {:else if editable_field.type==="boolean"}
             <input bind:this={checkbox_el}  type="checkbox" bind:checked={editable_field.value} />
         {:else if editable_field.type==="select"}
-            <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-            <div class="select" >
-            <!-- {@attach watchFocus} -->
-                <input bind:this={select_search_box} type="text" class="select-search"  />
-                <button>test tag 1</button>
-                <button>test tag 2</button>
+            <div class="select-value-wrapper" class:single={editable_field.max=="single"}>
+                <button class="option placeholder-opt selected">Tyrannosaurus</button>
+                {#if editable_field.max=="multiple"}
+                    <button class="option placeholder-opt selected">Triceratops</button>
+                    <button class="option placeholder-opt selected">Stegasaurus</button>
+                    <button class="option placeholder-opt selected">Brontosaurus</button>
+                {/if}
+                <div class="value-edit-wrapper">
+                    <input bind:value={select_search_value} bind:this={select_search_box} type="text" class="select-search"  />
+                    <div class="options-track">
+                        <button class="option placeholder-opt">Iguanodon</button>
+                        <button class="option placeholder-opt">Ankylosaur</button>
+                        <button class="option placeholder-opt">Velociraptor</button>
+                        <button class="option placeholder-opt">Spinosaurus</button>
+                        <button class="option placeholder-opt">Alasaur</button>
+                    </div>
+                </div>
             </div>
-            
         {/if}
     </div>
 {/if}
@@ -179,6 +194,10 @@
         padding-block:var(--field-padding-block,0px);
         position:relative;
         /* padding:20px; */
+    }
+
+    .field[data-type="select"]{
+        gap:10px;
     }
 
     .field.edit-mode{
@@ -212,6 +231,7 @@
 
     .field.focused{
         outline:1px solid rgba(22, 22, 22, 1);
+        z-index:100;
         /* border: 1px solid rgba(54, 54, 54, 0.5); */
     }
 
@@ -306,10 +326,84 @@
         line-height: 1.4em;
     }
 
-    .field:not(.edit-mode) .select-search{
+    .select-value-wrapper{
+        display:contents;
+    }
+
+    .select-value-wrapper .option{
+        /* background-color:var(--option-bg,#EAECFF); */
+        /* background-color:var(--option-bg,#d5d9fb7e); */
+        background-color:var(--option-bg,#d5d9fa);
+        padding-inline:6px;
+        padding-block:1px;
+        text-align:left;
+    }
+
+    .value-edit-wrapper{
+        position:relative;
+        width:100px;
+    }
+
+    .select-value-wrapper.single{
+        display:block;
+        position:relative;
+        flex:1;
+    }
+    
+    .select-value-wrapper.single .value-edit-wrapper{
+        position:absolute;
+        top:0;
+        left:0;
+        width:100%;
+    }
+
+    .select-value-wrapper.single .option.selected{
+        width:100%;
+    }
+
+    .select-search{
+        /* flex:1; */
+        background:transparent;
+        field-sizing: content;
+        width:100%;
+    }
+
+    .field:not(.focused) .select-search{
+        position:absolute;
+    }
+
+    .options-track{
+        position:absolute;
+        bottom:-8px;
+        left:calc(var(--track-padding) * -1);
+        transform:translateY(100%);
+        height:fit-content;
+        display:flex;
+        flex-flow:column nowrap;
+        box-sizing:border-box;
+        --track-padding:10px;
+        width:calc(100% + var(--track-padding) * 2);
+        outline:1px solid rgba(0,0,0,0.1);
+        outline-offset:-1px;
+        gap:4px;
+        padding:var(--track-padding);
+        /* padding-top:3px; */
+        background-color: #f5f5f5da;
+    }
+
+    .options-track .option:not(.option:last-of-type){
+        /* border-bottom:1px solid rgba(0,0,0,0.1); */
+    }
+
+    .field:not(.focused) .options-track{
+        display:none;
+    }
+
+    .field:not(.edit-mode) .value-edit-wrapper{
         opacity:0;
         width:0;
         height:0;
-    }
+        order: 1000;
+    } 
     
 </style>

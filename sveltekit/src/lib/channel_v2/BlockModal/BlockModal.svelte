@@ -276,6 +276,7 @@
     .sidebar-overscroll{
         height:fit-content;
         max-height:100%;
+        min-height:100%;
         width:100%;
         overflow-y:auto;
         overflow-x:hidden;
