@@ -20,7 +20,7 @@ export let channel_data:{
         fields:[
             {type:'string',name:'Comments',key:'goby[Comments]'},
             {type:'boolean',name:'Watched',key:'goby[Watched]'},
-            {type:'select',name:'Tags',key:'goby[Category]',max:'multiple',options:[]},
+            {type:'select',name:'Tags',key:'goby[Tags]',max:'multiple',options:[]},
             {type:'select',name:'Category',key:'goby[Category]',max:'single',options:[]},
         ]
     }

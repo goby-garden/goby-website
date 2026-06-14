@@ -78,8 +78,20 @@ export async function save_block_fields({
                 if(field){
                     if(!field.values) field.values = {};
 
+                    // will need to stringify tags
                     field.values[id]=change.value;
-                    console.log(field.values)
+
+                    if(change.type=='select' && field.type=='select'){
+                        for(let selection of change.value || []){
+                            const is_new=!field.options.some((o)=>o.name==selection);
+                            if(is_new){
+                                field.options.push({
+                                    name:selection
+                                })
+                            }
+                        }
+                    }
+                    
                 }
             }
         }

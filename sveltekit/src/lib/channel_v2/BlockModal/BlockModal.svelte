@@ -6,12 +6,9 @@
     import { save_block_fields, type ChannelBlock } from '$lib/arena-v3';
     import { get_canon_value } from '../goby-utils';
 
-    let modal:HTMLElement | undefined = $state();
-
     let edit_mode=$state(false);
 
     let prev_expanded=$state(expanded_block.id);
-    let clear_expand_timeout:ReturnType<typeof setTimeout> | undefined;
 
     let open=$derived(expanded_block.id!==undefined);
 
@@ -39,7 +36,7 @@
 
                     await save_block_fields({
                         authenticated:profile.authenticated,
-                        changes,
+                        changes:$state.snapshot(changes),
                         channel_slug:channel_data.slug,
                         id:block.id,
                         schema:channel_data.schema
@@ -99,14 +96,17 @@
             };
 
             const blockValue=block?.metadata?.[field.key];
-            const localValue = block?.id && field.values ? field.values[block.id] : undefined;
+            const localValue = block?.id && field.values ? $state.snapshot(field.values[block.id]) : undefined;
             // for tomorrow: continue with process to save localValue, maybe as a fallback of blockValue.
 
             if(field.type==='select'){
+                const parsedBlockValue = typeof blockValue == 'string' && JSON.parse(blockValue);
+                const value = (Array.isArray(parsedBlockValue) && parsedBlockValue) || (Array.isArray(localValue) && localValue) || [];
+
                 return {
                     ...core_fields,
                     type:field.type,
-                    value:null,
+                    value,
                     max:field.max,
                     options:field.options
                 }
@@ -141,22 +141,13 @@
     ]);
 
 
-    // type GobyKeyValue = {
-    //     [T in GobyFieldType]:
-    //     {
-    //         type:T
-    //         value: GobyFieldMap[T] | null;
-    //     }
-    // }[GobyFieldType];
-
-
-    // NOTE: now that I have this insane binding,
-    // consider just binding up editable_field directly
     let editable_fields:GobyField[] = $state([]);
+    let focused_bindings:boolean[] = $state([]);
     
     $effect(()=>{
         if(!edit_mode || block?.id!==prev_expanded){
             editable_fields = [...fields];
+            focused_bindings = fields.map(()=>false);
         }
     })
     
@@ -164,7 +155,6 @@
 
     const closeOnEsc = (e:KeyboardEvent) =>{
         if(e.key==="Escape" && open){
-            console.log('document.activeElement ',document.activeElement )
             if(
                 document.activeElement 
                 && document.activeElement instanceof HTMLElement){
@@ -177,7 +167,7 @@
 
 <svelte:window onkeydown={closeOnEsc} />
 
-<div bind:this={modal} class="modal" class:open aria-modal="true" class:edit-mode={edit_mode}>
+<div class="modal" class:open aria-modal="true" class:edit-mode={edit_mode}>
     <button aria-label="Close block modal" class="backdrop-close" onclick={()=>closeModal()}></button>
     {#if block}
         <figure class="block-content panel" data-type={block?.type} class:focused={content_focused}>
@@ -200,6 +190,7 @@
                         }} bind:edit_mode
                         bind:focused={content_focused}
                         height="fill"
+                        readonly
                      />
                 </div>
             {/if}
@@ -209,8 +200,8 @@
                 <section class="fields">
                     {#key block.id}
                         {#each fields as field,f}
-                            <div class="field-wrapper" class:description={field.key=="goby.description"} class:canon={field.canon}>
-                                <FieldInput bind:editable_field={editable_fields[f]} {field} bind:edit_mode markdown={field.key!=="goby.title"}/>
+                            <div class="field-wrapper" class:field-focused={focused_bindings[f]} class:description={field.key=="goby.description"} class:canon={field.canon}>
+                                <FieldInput bind:focused={focused_bindings[f]} bind:editable_field={editable_fields[f]} {field} bind:edit_mode markdown={field.key!=="goby.title"}/>
                             </div>
                         {/each}
                     {/key}
@@ -283,6 +274,11 @@
         margin:-1px;
         padding:1px;
         pointer-events:var(--pointer-events) !important;
+        scrollbar-width:none;
+    }
+
+    .sidebar-overscroll::-webkit-scrollbar{
+        display:none;
     }
 
     .edit-mode .sidebar-overscroll::after{
@@ -306,6 +302,7 @@
         padding:15px;
         padding-top:30px;
         gap:10px;
+         z-index:300;
         background:linear-gradient(0deg,var(--gray) 50%,transparent);
     }
 
@@ -334,18 +331,46 @@
     .field-wrapper{
         --pad-v-outer:20px;
         --pad-v-inner:15px;
-        --field-padding-block:var(--pad-v-inner);
-        --field-padding-inline:20px;
+
+        --field-pad-left:20px;
+        --field-pad-right:20px;
+        --field-pad-top:var(--pad-v-inner);
+        --field-pad-bottom:var(--pad-v-inner);
         border-top:1px solid gainsboro;
         pointer-events:var(--pointer-events);
     }
+
+    .edit-mode .field-wrapper::before{
+        margin-top:-1px;
+        display:block;
+        content:'';
+        position:sticky;
+        top:-1px;
+        width:100%;
+        height:1px;
+        box-sizing:border-box;
+        z-index:200;
+        border-top:1px solid gainsboro;
+    }
+
+    .field-wrapper.field-focused{
+        z-index:201;
+        position:relative;
+    }
+
+    .edit-mode .field-wrapper.field-focused::before{
+        border-top-color:rgba(22, 22, 22, 1);
+    }
+
+    /* rgba(22, 22, 22, 1); */
 
     .modal:not(.edit-mode) .field-wrapper.canon{
         --pad-v-inner:5px;
     }
 
     .field-wrapper.canon.description{
-        --field-padding-block:var(--pad-v-inner) 15px;
+        --field-pad-top:var(--pad-v-inner);
+        --field-pad-bottom:15px;
     }
 
     .modal:not(.edit-mode) .field-wrapper.canon,
@@ -354,11 +379,13 @@
     }
 
     .field-wrapper:first-child{
-        --field-padding-block:var(--pad-v-outer) var(--pad-v-inner);
+        --field-pad-top:var(--pad-v-outer);
+        --field-pad-bottom:var(--pad-v-inner);
     }
 
     .field-wrapper:last-child{
-        --field-padding-block:var(--pad-v-inner) var(--pad-v-outer);
+        --field-pad-top:var(--pad-v-inner);
+        --field-pad-bottom:var(--pad-v-outer);
     }
 
     /* :edit-mode */
@@ -402,7 +429,7 @@
         /* padding:0px; */
 
         &.focused{
-            z-index:100;
+            z-index:400;
 
             outline:1px solid rgba(22, 22, 22, 1);
         }
@@ -415,8 +442,10 @@
         line-height:1.4em;
         min-height:100%;
         height:100%;
-        --field-padding-block:20px;
-        --field-padding-inline:20px;
+        --field-pad-left:20px;
+        --field-pad-right:20px;
+        --field-pad-top:20px;
+        --field-pad-bottom:20px;
         overflow-y:auto;
         max-height:100%;
         pointer-events:var(--pointer-events);

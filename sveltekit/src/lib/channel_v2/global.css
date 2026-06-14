@@ -12,6 +12,10 @@ html,body{
     -webkit-font-smoothing:antialiased;
 }
 
+.menlo{
+    font-family: 'Menlo', 'Fragment Mono', Arial, sans-serif;
+}
+
 
 .prose{
     font-family:'Arial';
