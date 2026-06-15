@@ -234,7 +234,7 @@
                     <div class="options-track">
                         {#each unselected_options as option}
                             <button 
-                                class="option placeholder-opt"
+                                class="option"
                                 onclick={()=>toggle_selection(option.name)}
                                 onkeydown={keyToClick(()=>toggle_selection(option.name))}
                             >

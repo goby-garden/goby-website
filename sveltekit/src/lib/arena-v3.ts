@@ -74,11 +74,38 @@ export async function save_block_fields({
                     schema.overrides[key].values[id]=change.value || '';
                 }
             }else{
+                if(change.key==''){
+                    const key=schema.preferences.namespace_keys ? `goby[${change.name}]`:change.name;
+                    
+                    if(change.type!=='select'){
+                        schema.fields.push({
+                            name:change.name,
+                            type:change.type,
+                            key,
+                        })
+                    }else if(change.type=='select'){
+                        const options:{name:string}[]=(change.value || []).map((name)=>({name}));
+                        schema.fields.push({
+                            name:change.name,
+                            type:change.type,
+                            options,
+                            max:change.max,
+                            key
+                        })
+                    }
+
+                    change.key=key;
+                    
+                }
+
+
                 const field=schema.fields.find((f)=>f.key==change.key);
+
                 if(field){
                     if(!field.values) field.values = {};
 
                     // will need to stringify tags
+                    // this change and the below schema change will need to be in callbacks that only fire if the relevant async POST goes through to are.na
                     field.values[id]=change.value;
 
                     if(change.type=='select' && field.type=='select'){

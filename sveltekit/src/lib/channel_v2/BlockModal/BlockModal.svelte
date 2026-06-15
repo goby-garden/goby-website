@@ -1,8 +1,9 @@
 <script lang="ts">
     import {goto} from '$app/navigation';
     import {channel_data, expanded_block, profile} from '$lib/channel_v2/context.svelte';
-    import type { GobyField, GobyFieldMap, GobyFieldType } from '$lib/channel_v2/goby';
+    import type { GobyField, GobyFieldMap, GobyFieldType, GobySchema } from '$lib/channel_v2/goby';
     import FieldInput from './FieldInput.svelte';
+    import FieldEditor from './FieldEditor.svelte';
     import { save_block_fields, type ChannelBlock } from '$lib/arena-v3';
     import { get_canon_value } from '../goby-utils';
 
@@ -22,7 +23,7 @@
 
     async function closeModal(save = false){
         if(edit_mode){
-            const changes=editable_fields.filter((field,f)=>differentValues({edited:field,field:fields[f]}));
+            const changes=editable_fields.filter((field,f)=>field.key=='' || differentValues({edited:field,field:fields[f]}));
             if(changes.length>0){
                 if(save && block){
                     // create a save function
@@ -46,6 +47,7 @@
                 }
             }
 
+            new_fields=[];
             edit_mode=false;
             return
         }
@@ -133,10 +135,13 @@
         })
     })
 
+    let new_fields:GobyField[] = $state([]);
+
 
     let fields = $derived([
         ...canon_fields,
-        ...goby_fields
+        ...goby_fields,
+        ...new_fields
         // ...maybe newly created fields can go below here before they’re saved
     ]);
 
@@ -162,6 +167,37 @@
             }
             closeModal();
         }
+    }
+
+
+    function stage_new_field(field:Partial<GobySchema["fields"][number]>){
+        if(field.name && field.type){
+            if(field.type!=='select'){
+                new_fields.push({
+                    name:field.name,
+                    type:field.type,
+                    value:null,
+                    key:''
+                })
+            }else if(field.type=='select' && field.max){
+                new_fields.push({
+                    name:field.name,
+                    type:field.type,
+                    max:field.max,
+                    options:[],
+                    value:null,
+                    key:''
+                })
+            }
+
+            
+        }
+
+
+        // new_fields.push({
+        //     ...field,
+        //     value:null
+        // })
     }
 </script>
 
@@ -205,6 +241,9 @@
                             </div>
                         {/each}
                     {/key}
+                    <div class="field-wrapper new-field-editor">
+                        <FieldEditor bind:edit_mode {stage_new_field} {new_fields} />
+                    </div>
                 </section>
             </div>
             {#if edit_mode}
@@ -338,6 +377,10 @@
         --field-pad-bottom:var(--pad-v-inner);
         border-top:1px solid gainsboro;
         pointer-events:var(--pointer-events);
+    }
+
+    .field-wrapper.new-field-editor{
+        /* padding:var(--field-pad-top) var(--field-pad-left) var(--field-pad-bottom) var(--field-pad-left); */
     }
 
     .edit-mode .field-wrapper::before{

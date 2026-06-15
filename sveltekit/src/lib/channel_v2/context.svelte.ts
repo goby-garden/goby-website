@@ -18,11 +18,14 @@ export let channel_data:{
     blocks:[],
     schema:{
         fields:[
-            {type:'string',name:'Comments',key:'goby[Comments]'},
-            {type:'boolean',name:'Watched',key:'goby[Watched]'},
-            {type:'select',name:'Tags',key:'goby[Tags]',max:'multiple',options:[]},
-            {type:'select',name:'Category',key:'goby[Category]',max:'single',options:[]},
-        ]
+            // {type:'string',name:'Comments',key:'goby[Comments]'},
+            // {type:'boolean',name:'Watched',key:'goby[Watched]'},
+            // {type:'select',name:'Tags',key:'goby[Tags]',max:'multiple',options:[]},
+            // {type:'select',name:'Category',key:'goby[Category]',max:'single',options:[]},
+        ],
+        preferences:{
+            namespace_keys:true
+        }
     }
 })
 

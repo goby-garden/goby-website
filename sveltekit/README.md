@@ -4,6 +4,45 @@ The bulk of goby-website runs on [11ty](https://www.11ty.dev/), hosted (mostly) 
 
 ## are.na/channel route
 
+**7/14/26 (time flies...)**
+
+Next steps:
+
+
+features/functionality:
+- field creator
+    - button to create a new field (maybe a summary/detail)
+        - opens edit mode
+        - radio buttons to choose string / boolean / select
+        - field-type specific properties:
+            - for now just for select: either single or multiple, also radio buttons
+        - creates new editable_field; need to figure out data management for that
+- goby schema representation in top left
+    - lists fields, lets you add/remove and rename / possibly edit properties, using same flow as field creator
+        - in the future possibly let you set colors for select options or the field as a whole
+    - tells you where it is saving:
+        - in localstorage if not authenticated, with an option to copy the json to clipboard
+        - channel metadata if authenticated and owner/collaborator
+        - in a block if authenticated but not owner/collaborator
+- authentication flow and UI for it
+- once authenticated, flow to save back to block and channel metadata
+
+UI improvements:
+- quad-directional arrow key navigation of modal
+    - only functions when not in edit_mode
+    - have to refactor modal to work by having a giant grid with empty placeholder for the modal rectangles, and only rendering the block currently selected + the blocks surrounding it in 4 directions
+- a functional mobile display, which functions like a cabinet sliding up from below
+- display urls for link blocks in modal
+- ability to click to exit focus of a field in edit mode without exiting edit altogether
+- preserve scroll position of focused field when you enter edit mode
+- create centralized fn to propagate goby titles to other areas besides the modal where blocks are represented
+
+very far-off:
+- filtering/searching by field value
+- bulk-editing
+
+
+
 **5/17/26**
 
 - I am thinking the text fields can have some in-built padding and no padding on the panels, so that the only thing that changes is the markdown and the labels that appear for title/desc

@@ -51,4 +51,7 @@ export type GobySchema = {
             values:Record<string,string>
         }
     },
+    preferences:{
+        namespace_keys?:boolean;
+    }
 }
