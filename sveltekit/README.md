@@ -17,7 +17,7 @@ features/functionality:
         - field-type specific properties:
             - for now just for select: either single or multiple, also radio buttons
         - creates new editable_field; need to figure out data management for that
-        - BUG: when you create a new field, it clears changes to existing fields (I think because editable_fields is overwritten)
+        - [x] BUG: when you create a new field, it clears changes to existing fields (I think because editable_fields is overwritten)
             - maybe what the $effect needs to do is set the values to undefined, and only if they don't already exist?
 - [ ] goby schema representation in top left
     - lists fields, lets you add/remove and rename / possibly edit properties, using same flow as field creator
