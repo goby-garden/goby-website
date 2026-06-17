@@ -5,7 +5,7 @@
     import Nav from '$lib/channel_v2/Nav/Nav.svelte';
     import Contents from '$lib/channel_v2/Contents.svelte';
     import BlockModal from '$lib/channel_v2/BlockModal/BlockModal.svelte'
-    import {channel_data, expanded_block} from '$lib/channel_v2/context.svelte';
+    import {channel_data, document_state, expanded_block} from '$lib/channel_v2/context.svelte';
     import parse from '$lib/markdown';
 
     let channel_slug:string | undefined=$state();
@@ -49,6 +49,22 @@
         if(window.location.search.length>1){
             channel_slug=window.location.search.slice(1,window.location.search.length);
         }
+
+        // https://hidde.blog/console-logging-the-focused-element-as-it-changes
+        document.addEventListener('focus',()=>{
+            if(document.activeElement ){
+                document_state.activeElement = document.activeElement;
+            }
+            
+        },true)
+        document.addEventListener('blur',()=>{
+            window.requestAnimationFrame(()=>{
+                if(!document.activeElement || document.activeElement === document.body){
+                    document_state.activeElement = undefined;
+                }
+                
+            })
+        },true)
     })
 
 </script>
