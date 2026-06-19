@@ -4,6 +4,13 @@ The bulk of goby-website runs on [11ty](https://www.11ty.dev/), hosted (mostly) 
 
 ## are.na/channel route
 
+**7/17/26**
+
+Still keeping track of progress below but some stray thoughts here:
+
+- maybe when not in edit mode, the "add new field" prompt disappears and only the plus stays showing, unless you hover over that region and get the prompt
+
+
 **7/14/26 (time flies...)**
 
 Next steps:
@@ -29,6 +36,13 @@ features/functionality:
 - [ ] authentication flow and UI for it
 - [ ] once authenticated, flow to save back to block and channel metadata
 
+
+BUGS:
+- [ ] currently when you switch from one channel to another, it persists the previous state until you refresh
+- [ ] multi-line select options are breaking onto two lines, need white-space:nowrap
+- [ ] gotta figure out whatever is going on with markdown single line break parsing (see https://www.are.na/nico-chilla/_-type-an-ode-to-the-monospace for example)
+
+
 UI improvements:
 - quad-directional arrow key navigation of modal
     - only functions when not in edit_mode
@@ -38,6 +52,7 @@ UI improvements:
 - ability to click to exit focus of a field in edit mode without exiting edit altogether
 - preserve scroll position of focused field when you enter edit mode
 - create centralized fn to propagate goby titles to other areas besides the modal where blocks are represented
+- box for author and connector dates/attribution in modal (see sketch below in 5/16)
 
 very far-off:
 - filtering/searching by field value
@@ -109,6 +124,3 @@ Far horizon:
     - fit or cover for images
 - sorting and filtering by fields, both custom and are.na-native
 - consider making edit_mode for fields in mobile field-specific, rather than global
-
-Bugs:
-- [ ] gotta figure out whatever is going on with markdown single line break parsing (see https://www.are.na/nico-chilla/_-type-an-ode-to-the-monospace for example)

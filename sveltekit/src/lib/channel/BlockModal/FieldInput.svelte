@@ -520,6 +520,10 @@
         position:absolute;
     }
 
+    .option{
+        white-space:nowrap;
+    }
+
     .options-track{
         display:flex;
         flex-flow:row nowrap;

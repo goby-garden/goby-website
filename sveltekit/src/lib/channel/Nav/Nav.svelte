@@ -1,7 +1,9 @@
 <script lang="ts">
-    import '$lib/channel_v2/global.css';
-    import Input from '$lib/channel_v2/Nav/Input.svelte';
-    import {channel_data, expanded_block} from '$lib/channel_v2/context.svelte';
+    import '$lib/channel/global.css';
+    import Input from '$lib/channel/Nav/Input.svelte';
+    import Profile from '$lib/channel/Nav/Profile.svelte';
+    import {auth_modal, channel_data, expanded_block} from '$lib/channel/context.svelte';
+    import AuthModal from './AuthModal.svelte';
 
     let {
         channel_slug=$bindable(),
@@ -25,7 +27,7 @@
     })
 </script>
 
-<nav inert={expanded_block.id!==undefined}>
+<nav inert={expanded_block.id!==undefined || auth_modal.open}>
     <Input 
         bind:str_components={channel_str_components} 
         bind:url_str={channel_data.url}
@@ -33,14 +35,17 @@
         input_id="channel-url-input" 
         placeholder="https://www.are.na/<user>/<channel-slug>"
     />
-    
+    <Profile />
     <!-- <input bind:this={input_el} class="monospace" autocomplete="off" bind:value={url_str} id="channel-url-input" type="text" placeholder="https://are.na/<user>/<channel-slug>" /> -->
 </nav>
+<AuthModal />
 
 
 <style>
     nav{
         margin-bottom:10px;
+        display:flex;
+        flex-flow:row nowrap;
     }
 </style>
 

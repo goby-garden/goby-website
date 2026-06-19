@@ -13,6 +13,7 @@ export let channel_data:{
     blocks:ChannelBlock[]
     length:number;
     schema?:GobySchema;
+    can_edit?:boolean;
 }=$state({
     length:0,
     blocks:[],
@@ -31,6 +32,10 @@ export let channel_data:{
 
 export let expanded_block:{id:number | undefined} = $state({
     id:undefined
+})
+
+export let auth_modal = $state({
+    open:false
 })
 
 export let profile: {

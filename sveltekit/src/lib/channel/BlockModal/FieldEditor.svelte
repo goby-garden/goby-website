@@ -1,8 +1,8 @@
 <script lang="ts">
     import type { GobySchema } from "../goby";
-    import { document_state } from "$lib/channel_v2/context.svelte";
+    import { document_state } from "$lib/channel/context.svelte";
     import { keyToClick } from "$lib/dom-utils";
-    import {channel_data } from '$lib/channel_v2/context.svelte';
+    import {channel_data } from '$lib/channel/context.svelte';
 
     let base_field:GobySchema["fields"][number]={
         type:'string',
@@ -69,9 +69,10 @@
     })
 
     function send_field_to_staging(){
-        stage_new_field(field);
-        field=base_field;
-
+        if(edit_mode && valid_field){
+            stage_new_field(field);
+            field=base_field;
+        }
     }
 </script>
 
@@ -80,6 +81,7 @@
     tabindex={-1}
     bind:this={edit_container}
     class="edit-container"
+    class:edit-mode={edit_mode}
     onclick={handle_click}
     onkeydown={keyToClick(handle_click)}
 >
@@ -136,10 +138,15 @@
         --row-gap: 6px;
     }
 
+    .edit-container:not(.edit-mode,:hover){
+        pointer-events:none;
+    }
+
     .box-button{
         aspect-ratio:1;
         padding-inline:6px;
         padding-block:0px;
+        pointer-events:all;
     }
 
     label.config-option:not(.selected){
@@ -183,9 +190,15 @@
         background: transparent;
     }
 
+
+
     .edit-field-name::placeholder {
         color: black;
         opacity: 0.3;
+    }
+
+    .edit-container:not(.edit-mode):not(:hover) .edit-field-name::placeholder{
+        opacity:0;
     }
 
     .create-button {

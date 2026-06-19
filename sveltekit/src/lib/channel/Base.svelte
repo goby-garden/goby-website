@@ -2,10 +2,10 @@
     import {onMount} from 'svelte';
     import {goto} from '$app/navigation';
     import { get_channel_meta } from '$lib/arena-v3';
-    import Nav from '$lib/channel_v2/Nav/Nav.svelte';
-    import Contents from '$lib/channel_v2/Contents.svelte';
-    import BlockModal from '$lib/channel_v2/BlockModal/BlockModal.svelte'
-    import {channel_data, expanded_block} from '$lib/channel_v2/context.svelte';
+    import Nav from '$lib/channel/Nav/Nav.svelte';
+    import Contents from '$lib/channel/Contents.svelte';
+    import BlockModal from '$lib/channel/BlockModal/BlockModal.svelte'
+    import {channel_data, expanded_block} from '$lib/channel/context.svelte';
     import parse from '$lib/markdown';
 
     let channel_slug:string | undefined=$state();
@@ -31,12 +31,13 @@
 
     async function load_channel(slug:string){
         let results=await get_channel_meta(slug);
-        console.log('results',results)
+        
         if(results){
             channel_data.title=results.title;
             channel_data.description=results?.description?.markdown;
             channel_data.owner=results.owner?.name;
             channel_data.length=results.counts?.contents;
+            channel_data.can_edit=results.can?.update;
 
             if(!channel_data.url && results.owner?.slug){
                 channel_data.url=`https://www.are.na/${results.owner?.slug}/${channel_data.slug}`

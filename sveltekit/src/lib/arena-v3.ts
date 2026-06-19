@@ -1,5 +1,5 @@
 import type { Block, Channel } from "@aredotna/sdk";
-import type { GobyField, GobySchema } from "./channel_v2/goby";
+import type { GobyField, GobySchema } from "./channel/goby";
 
 const netlify_fn='/.netlify/functions/arena-api-v3';
 

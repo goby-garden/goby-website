@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
   import parse from "$lib/markdown";
 
-  import { channel_data, page_size, expanded_block } from "$lib/channel_v2/context.svelte";
+  import { channel_data, page_size, expanded_block, auth_modal } from "$lib/channel/context.svelte";
   import { get_channel_contents, type ChannelBlock } from "$lib/arena-v3";
     import { get_canon_value } from "./goby-utils";
   // import type { Block } from "@aredotna/sdk";
@@ -149,7 +149,7 @@
   $inspect('channel_data.blocks',channel_data.blocks)
 </script>
 
-<main inert={expanded_block.id!==undefined}>
+<main inert={expanded_block.id!==undefined || auth_modal.open}>
   {#each rendered_blocks as block, b (block.render_id)}
     {@const title = "title" in block && get_canon_value({field:'title',block,overrides:channel_data.schema?.overrides})}
     <a

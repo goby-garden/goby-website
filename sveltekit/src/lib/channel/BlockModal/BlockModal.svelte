@@ -1,7 +1,7 @@
 <script lang="ts">
     import {goto} from '$app/navigation';
-    import {channel_data, expanded_block, profile} from '$lib/channel_v2/context.svelte';
-    import type { GobyField, GobyFieldMap, GobyFieldType, GobySchema } from '$lib/channel_v2/goby';
+    import {channel_data, expanded_block, profile} from '$lib/channel/context.svelte';
+    import type { GobyField, GobyFieldMap, GobyFieldType, GobySchema } from '$lib/channel/goby';
     import FieldInput from './FieldInput.svelte';
     import FieldEditor from './FieldEditor.svelte';
     import { save_block_fields, type ChannelBlock } from '$lib/arena-v3';
