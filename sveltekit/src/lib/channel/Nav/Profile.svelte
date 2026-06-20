@@ -16,8 +16,10 @@
             </span>
         </div>
     {/if}
-    {#if !profile.authenticated}
+    {#if !(profile.slug)}
         <button class="log-in monospace" class:modal-open={auth_modal.open} onclick={()=>auth_modal.open=true}>log in</button>
+    {:else if (profile.avatar && profile.name)}
+        <img class="profile-avatar" src="{profile.avatar}" alt="{profile.name} avatar" />
     {/if}
 </div>
 
@@ -39,6 +41,11 @@
         aspect-ratio:1;
         padding-inline:5px;
         font-size:18px;
+    }
+
+    .profile-avatar{
+        height:32px;
+        aspect-ratio:1;
     }
 
     .log-in{

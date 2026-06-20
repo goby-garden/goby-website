@@ -39,12 +39,12 @@ export let auth_modal = $state({
 })
 
 export let profile: {
-    authenticated:false
-} | {
-    authenticated:true
+    slug?:string;
+    name?:string;
+    avatar?:string;
     // add more attributes once known
 } = $state({
-    authenticated:false
+    slug:undefined
 })
 
 

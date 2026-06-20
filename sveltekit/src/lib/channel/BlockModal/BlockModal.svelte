@@ -36,7 +36,7 @@
 
 
                     await save_block_fields({
-                        authenticated:profile.authenticated,
+                        authenticated:channel_data.can_edit || false,
                         changes:$state.snapshot(changes),
                         channel_slug:channel_data.slug,
                         id:block.id,

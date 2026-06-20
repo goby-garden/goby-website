@@ -75,6 +75,8 @@
         return;
       }
 
+      console.log({meta,data})
+
       channel_data.length = meta.total_count;
       merge_blocks(data);
 

@@ -19,6 +19,18 @@ export async function get_channel_meta(slug:string){
     );
 }
 
+export async function get_current_profile(){
+    return await make_v3_request(
+        {
+            method:"GET",
+            type:'api',
+            category:`me`,
+            endpoint:"/",
+            params:{}
+        }
+    );
+}
+
 
 export async function get_channel_contents(
     {
@@ -133,8 +145,8 @@ export async function save_block_fields({
 async function make_v3_request(data:{
         method:"GET" | "POST" | "PUT";
         type:"api" | 'auth';
-        resourceId:string;
-        category:"channels";
+        resourceId?:string;
+        category:"channels" | "me";
         endpoint:"/" | "/contents";
         params:{[key:string]:string|number}
         user?:string;
