@@ -1,11 +1,12 @@
 <script lang="ts">
     import {goto} from '$app/navigation';
-    import {channel_data, expanded_block, profile} from '$lib/channel/context.svelte';
+    import {channel_data, document_state, expanded_block, profile} from '$lib/channel/context.svelte';
     import type { GobyField, GobyFieldMap, GobyFieldType, GobySchema } from '$lib/channel/goby';
     import FieldInput from './FieldInput.svelte';
     import FieldEditor from './FieldEditor.svelte';
     import { save_block_fields, type ChannelBlock } from '$lib/arena-v3';
     import { get_canon_value } from '../goby-utils';
+  import { untrack } from 'svelte';
 
     let edit_mode=$state(false);
 
@@ -152,8 +153,16 @@
     
     $effect(()=>{
         if(!edit_mode || block?.id!==prev_expanded){
-            editable_fields = [...fields];
-            focused_bindings = fields.map(()=>false);
+            fields.length;
+            untrack(()=>{
+                editable_fields = fields.map((field,f)=>{
+                    if(editable_fields[f]) return editable_fields[f];
+                    else return {...field};
+                })
+
+                 focused_bindings = fields.map((_,f)=>focused_bindings[f] || false);
+            })
+           
         }
     })
     
@@ -200,6 +209,8 @@
         //     value:null
         // })
     }
+
+    // $inspect('document_state.activeElement',document_state.activeElement)
 </script>
 
 <svelte:window onkeydown={closeOnEsc} />

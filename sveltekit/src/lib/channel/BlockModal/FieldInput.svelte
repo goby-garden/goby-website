@@ -4,6 +4,7 @@
     import parse from "$lib/markdown";
     import type { Attachment } from "svelte/attachments";
     import { document_state } from "../context.svelte.ts";
+    import {tick} from 'svelte';
 
     let {
         field,
@@ -115,12 +116,16 @@
         return !field.value;
     }
 
-    function toggle_selection(name:string){
+    async function toggle_selection(name:string){
+        console.log(document_state.activeElement,document.activeElement)
         if(edit_mode && editable_field?.type=="select"){
             const is_selected=editable_field.value?.includes(name);
 
             if(is_selected){
                 editable_field.value=editable_field.value?.filter((n)=>n!==name) || [];
+
+                await tick();
+                field_el?.focus();
             }else{
                 if(editable_field.max=='single' && (editable_field.value?.length || 0)>0){
                     editable_field.value=[];
@@ -133,6 +138,7 @@
                     select_search_value='';
                     if(select_search_box && editable_field.max=='multiple') select_search_box.focus();
                 }
+                field_el?.focus();
             }
         }
     }
@@ -208,6 +214,7 @@
                             onclick={()=>toggle_selection(selected)}
                             onkeydown={keyToClick(()=>toggle_selection(selected))}
                             class="option selected"
+                            data-value={selected}
                         >{selected}</button>
                     {/each}
                     <div class="select-search-wrapper">
@@ -235,6 +242,7 @@
                         {#each unselected_options as option}
                             <button 
                                 class="option"
+                                data-value={option.name}
                                 onclick={()=>toggle_selection(option.name)}
                                 onkeydown={keyToClick(()=>toggle_selection(option.name))}
                             >
@@ -433,6 +441,7 @@
     .select-search-wrapper{
         display:flex;
         flex-flow:row nowrap;
+        gap:4px;
     }
 
     .select-value-wrapper.single{
@@ -507,8 +516,11 @@
         @supports(field-sizing:content){
             width:unset;
             /* width:unsets; */
-            max-width:250px;
+            min-width:fit-content;
+            min-width:30px;
+            max-width:100%;
             field-sizing: content;
+            box-sizing:border-box;
         }
     }
 

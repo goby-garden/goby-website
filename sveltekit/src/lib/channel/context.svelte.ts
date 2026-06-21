@@ -53,19 +53,3 @@ export let document_state:{
 } = $state({
     activeElement:undefined
 })
-
-if(browser){
-    // https://hidde.blog/console-logging-the-focused-element-as-it-changes
-    document.addEventListener('focus',()=>{
-        if(document.activeElement ){
-            document_state.activeElement = document.activeElement;
-        }
-        
-    },true)
-    document.addEventListener('blur',()=>{
-        if(!document.activeElement || document.activeElement === document.body){
-            document_state.activeElement = undefined;
-        }
-        
-    },true)
-}
