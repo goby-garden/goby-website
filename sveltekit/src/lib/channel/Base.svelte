@@ -92,6 +92,12 @@
         }
 
         if(code){
+            goto(
+                window.location.pathname,
+                {
+                    replaceState:true
+                }
+            )
             const last_slug=localStorage.getItem('last-slug');
             if(last_slug) channel_data.slug=last_slug;
 
@@ -99,7 +105,8 @@
             const checkAuth=await get_access_token(code,'https://goby.garden/arena/channel');
             if(checkAuth?.authenticated){
                 console.log('authenticated successfully!')
-                await get_current_profile();
+                load_profile();
+                // window.location.search='';
             }
         }
 
