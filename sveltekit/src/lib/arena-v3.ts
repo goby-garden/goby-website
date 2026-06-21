@@ -31,6 +31,24 @@ export async function get_current_profile(){
     );
 }
 
+export async function get_access_token(code:string,redirect_uri:string){
+    return await make_v3_request(
+        {
+            method:"POST",
+            type:'api',
+            category:`oauth`,
+            endpoint:"/token",
+            params:{},
+            body:{
+                grant_type:'authorization_code',
+                // add client_id and client_secret server-side
+                redirect_uri,
+                code
+            }
+        }
+    );
+}
+
 
 export async function get_channel_contents(
     {
@@ -302,8 +320,8 @@ async function make_v3_request(data:{
         method:"GET" | "POST" | "PUT";
         type:"api" | 'auth';
         resourceId?:string;
-        category:"channels" | "me" | "connections";
-        endpoint:"/" | "/contents";
+        category:"channels" | "me" | "connections" | 'oauth';
+        endpoint:"/" | "/contents" | '/token';
         params:{[key:string]:string|number}
         user?:string;
         body?:Record<string,any>

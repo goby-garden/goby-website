@@ -53,6 +53,7 @@ UI improvements:
 - preserve scroll position of focused field when you enter edit mode
 - create centralized fn to propagate goby titles to other areas besides the modal where blocks are represented
 - box for author and connector dates/attribution in modal (see sketch below in 5/16)
+- typing in selection field should filter down the options by match
 
 very far-off:
 - filtering/searching by field value

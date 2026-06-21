@@ -76,12 +76,27 @@
     }
 
     onMount(()=>{
-        if(window.location.search.length>1){
+        let slug_query='';
+        let code;
+        for(let [key,value] of new URLSearchParams(window.location.search)){
+           if(value.length==0) slug_query=key;
+           else if(key=='code') code=value;
+        }
+
+        if(slug_query.length>1){
             load_profile({cache_only:true});
-            channel_slug=window.location.search.slice(1,window.location.search.length);
+            channel_slug=slug_query;
         }else{
             load_profile();
         }
+
+        if(code){
+            console.log('code!',code);
+        }
+        
+        
+        // console.log('queryString',queryString)
+        // queryString.get('code');
     })
 
 </script>

@@ -1,7 +1,9 @@
 const api_client_id=process.env.ARENA_CLIENT_ID;
 const api_client_token=process.env.ARENA_CLIENT_TOKEN;
+const api_client_secret=process.env.ARENA_CLIENT_SECRET;
 // not adding this to netlify, so it is local dev only
-const test_access_token=process.env.GOBY_TEST_TOKEN;
+// const test_access_token=process.env.GOBY_TEST_TOKEN;
+const test_access_token=undefined;
 
 import path from 'node:path'
 
@@ -56,6 +58,15 @@ export default async (req) => {
     }
 
     if(input.body){
+        if(input.endpoint=='/token'){
+            input.body={
+                ...(input.body || {}),
+                client_id:api_client_id,
+                client_secret:api_client_secret
+            }
+        }
+
+
         body_params={
             body:JSON.stringify(input.body)
         }
