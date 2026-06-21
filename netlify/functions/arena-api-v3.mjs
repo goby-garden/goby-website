@@ -27,7 +27,7 @@ export default async (req) => {
         console.log('netlify fn error:',e)
     }
 
-    const profile_access_token=cookies.find((a)=>a.includes('are.na_access_token'))?.split('=')?.[1] || test_access_token;
+    let profile_access_token=cookies.find((a)=>a.includes('are.na_access_token'))?.split('=')?.[1] || test_access_token;
     
     const root=input.type=='auth'?auth_root:api_root;
     
@@ -90,6 +90,16 @@ export default async (req) => {
         data=await response.json();
     }catch(e){
         console.log(e);
+    }
+
+
+    if(input.endpoint==='/token' && response.status==200){
+        // add token and clean out the response
+        profile_access_token=data.access_token;
+        data={
+            authenticated:true
+        }
+        
     }
 
     let cookieHeader = {};

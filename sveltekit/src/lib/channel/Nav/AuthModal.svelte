@@ -8,7 +8,7 @@
 
     let location = $derived(`${browser && window?.location || "https://goby.garden"}`)
     
-    let auth_url=$derived(`https://www.are.na/oauth/authorize?client_id=t9F7ZmHfgBO6kF5-K5s3B6PdALcNb8Bbb2zhlfnGaJA&redirect_uri=${encodeURIComponent(location)}&response_type=code&scope=write`);
+    let auth_url=$derived(`https://www.are.na/oauth/authorize?client_id=t9F7ZmHfgBO6kF5-K5s3B6PdALcNb8Bbb2zhlfnGaJA&redirect_uri=${encodeURI('https://goby.garden/arena/channel')}&response_type=code&scope=write`);
 </script>
 
 <!-- eventually consolidate this modal wrapper with the one in BlockModal -->

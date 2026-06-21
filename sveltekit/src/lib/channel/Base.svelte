@@ -1,11 +1,11 @@
 <script lang="ts">
     import {onMount} from 'svelte';
     import {goto} from '$app/navigation';
-    import { get_channel_meta, get_current_profile } from '$lib/arena-v3';
+    import { get_access_token, get_channel_meta, get_current_profile } from '$lib/arena-v3';
     import Nav from '$lib/channel/Nav/Nav.svelte';
     import Contents from '$lib/channel/Contents.svelte';
     import BlockModal from '$lib/channel/BlockModal/BlockModal.svelte'
-    import {channel_data, expanded_block, profile} from '$lib/channel/context.svelte';
+    import {channel_data, document_state, expanded_block, profile} from '$lib/channel/context.svelte';
     import parse from '$lib/markdown';
 
     let channel_slug:string | undefined=$state();
@@ -34,6 +34,7 @@
             channel_data.length=results.counts?.contents;
             channel_data.can_edit=results.can?.update;
 
+            localStorage.setItem('last-slug',slug);
 
             const localSchema=localStorage.getItem(slug);
             const channelSchema = results.metadata?.["goby__schema"];
@@ -75,7 +76,7 @@
         }
     }
 
-    onMount(()=>{
+    onMount(async ()=>{
         let slug_query='';
         let code;
         for(let [key,value] of new URLSearchParams(window.location.search)){
@@ -91,8 +92,29 @@
         }
 
         if(code){
-            console.log('code!',code);
+            const last_slug=localStorage.getItem('last-slug');
+            if(last_slug) channel_data.slug=last_slug;
+
+            const authenticated=await get_access_token(code,'https://goby.garden/arena/channel');
+            console.log('authenticated',authenticated)
         }
+
+
+        // https://hidde.blog/console-logging-the-focused-element-as-it-changes
+        document.addEventListener('focus',()=>{
+            if(document.activeElement ){
+                document_state.activeElement = document.activeElement;
+            }
+            
+        },true)
+        document.addEventListener('blur',()=>{
+            window.requestAnimationFrame(()=>{
+                if(!document.activeElement || document.activeElement === document.body){
+                    document_state.activeElement = undefined;
+                }
+                
+            })
+        },true)
         
         
         // console.log('queryString',queryString)
