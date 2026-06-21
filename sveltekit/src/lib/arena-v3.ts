@@ -98,7 +98,7 @@ export async function save_block_fields({
                 type CanonicalKey = keyof NonNullable<GobySchema["overrides"]>;
                 const isCanonicalKey=(k:string):k is CanonicalKey=>["title","description"].includes(k);
 
-                const key=change.key.split('.')[1];
+                const key=change.key.split('__')[1];
                 if(isCanonicalKey(key) && change.type=="string"){
                     if(can_edit){
                         // if authenticated and can edit channel connections,
