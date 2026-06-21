@@ -88,19 +88,20 @@ export default async (req) => {
         });
         if(response.status!==200) console.log(`${response.status} response`,response);
         data=await response.json();
+
+        if(input.endpoint==='/token' && response.status==200){
+            // add token and clean out the response
+            profile_access_token=data.access_token;
+            data={
+                authenticated:true
+            }
+        }
     }catch(e){
         console.log(e);
     }
 
 
-    if(input.endpoint==='/token' && response.status==200){
-        // add token and clean out the response
-        profile_access_token=data.access_token;
-        data={
-            authenticated:true
-        }
-        
-    }
+    
 
     let cookieHeader = {};
 
