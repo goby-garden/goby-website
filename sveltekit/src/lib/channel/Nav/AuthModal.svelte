@@ -17,7 +17,7 @@
 
     <div class="auth-confirmation monospace">
         <!-- <h3>Give goby.garden access to your are.na?</h3> -->
-        <p>If you’d like to save your edits on this page back to are.na, you can log in below and give goby.garden edit access.</p>
+        <p>If you’d like to save your edits on this page back to are.na, log in below to authorize goby.garden.</p>
         <p>
             <a id="authentication-portal" href="{auth_url}">Authenticate</a>
         </p>

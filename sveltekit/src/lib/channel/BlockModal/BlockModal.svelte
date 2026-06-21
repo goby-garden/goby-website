@@ -36,11 +36,12 @@
 
 
                     await save_block_fields({
-                        authenticated:channel_data.can_edit || false,
+                        can_edit:channel_data.can_edit || false,
                         changes:$state.snapshot(changes),
                         channel_slug:channel_data.slug,
                         id:block.id,
-                        schema:channel_data.schema
+                        schema:channel_data.schema,
+                        connection:block.connection
                     })
                 }else{
                     // *possibly* flash an alert that you changed stuff, prompting you to either save or discard
@@ -78,14 +79,14 @@
                 // because otherwise the text binding in FieldInput overwrites it with the old value
                 value:block && get_canon_value({field:'title', block,overrides:channel_data.schema?.overrides}) || '', 
                 canon:true,
-                key:"goby.title"
+                key:"goby__title"
             },
             {
                 name:'Description', 
                 type:'string',
                 value:block && get_canon_value({field:'description', block,overrides:channel_data.schema?.overrides}) || '', 
                 canon:true,
-                key:"goby.description"
+                key:"goby__description"
             }
         ]
     });
@@ -97,7 +98,7 @@
                 key:field.key,
             };
 
-            const blockValue=block?.metadata?.[field.key];
+            const blockValue=block?.connection?.metadata?.[field.key];
             const localValue = block?.id && field.values ? $state.snapshot(field.values[block.id]) : undefined;
             // for tomorrow: continue with process to save localValue, maybe as a fallback of blockValue.
 
@@ -236,8 +237,8 @@
                 <section class="fields">
                     {#key block.id}
                         {#each fields as field,f}
-                            <div class="field-wrapper" class:field-focused={focused_bindings[f]} class:description={field.key=="goby.description"} class:canon={field.canon}>
-                                <FieldInput bind:focused={focused_bindings[f]} bind:editable_field={editable_fields[f]} {field} bind:edit_mode markdown={field.key!=="goby.title"}/>
+                            <div class="field-wrapper" class:field-focused={focused_bindings[f]} class:description={field.key=="goby__description"} class:canon={field.canon}>
+                                <FieldInput bind:focused={focused_bindings[f]} bind:editable_field={editable_fields[f]} {field} bind:edit_mode markdown={field.key!=="goby__title"}/>
                             </div>
                         {/each}
                     {/key}

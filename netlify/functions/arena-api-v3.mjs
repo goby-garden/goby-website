@@ -1,7 +1,7 @@
 const api_client_id=process.env.ARENA_CLIENT_ID;
 const api_client_token=process.env.ARENA_CLIENT_TOKEN;
 // not adding this to netlify, so it is local dev only
-// const test_access_token=process.env.ARENA_PERSONAL_ACCESS_TOKEN;
+const test_access_token=process.env.GOBY_TEST_TOKEN;
 
 import path from 'node:path'
 
@@ -25,7 +25,7 @@ export default async (req) => {
         console.log('netlify fn error:',e)
     }
 
-    const profile_access_token=cookies.find((a)=>a.includes('are.na_access_token'))?.split('=')?.[1];
+    const profile_access_token=cookies.find((a)=>a.includes('are.na_access_token'))?.split('=')?.[1] || test_access_token;
     
     const root=input.type=='auth'?auth_root:api_root;
     
@@ -44,14 +44,38 @@ export default async (req) => {
     
     let data={};
 
+    let body_params={};
+
+    let headers={};
+
+    if(profile_access_token){
+        headers={
+            ...headers,
+            "Authorization":`Bearer ${profile_access_token}`
+        }
+    }
+
+    if(input.body){
+        body_params={
+            body:JSON.stringify(input.body)
+        }
+
+        headers={
+            ...headers,
+            'Content-Type':'application/json'
+        }
+    }
+
+    // 'Content-Type': 'application/json'
+
     try{
-        console.log(`fetching ${url}`);
+        console.log(`${input.method=="GET"?"fetching":"updating"} ${url}`);
         let response=await fetch(url,{
             method:input.method,
-            headers:profile_access_token?new Headers({
-            "Authorization":`Bearer ${profile_access_token}`
-            }):{}
+            ...body_params,
+            headers:new Headers(headers)
         });
+        if(response.status!==200) console.log(`${response.status} response`,response);
         data=await response.json();
     }catch(e){
         console.log(e);

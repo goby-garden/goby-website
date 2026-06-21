@@ -12,5 +12,8 @@ export function get_canon_value({
 }){
     const base_value=field==="title"?block.title:block.description?.markdown;
 
-    return overrides[field].values[block.id] || base_value;
+    const blockOverride=block.connection?.metadata?.[`goby__${field}`];
+    const schemaOverride=overrides[field].values[block.id];
+
+    return (typeof blockOverride =='string'?blockOverride:undefined) || schemaOverride || base_value;
 }

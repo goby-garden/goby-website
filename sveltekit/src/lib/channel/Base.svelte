@@ -33,6 +33,19 @@
             channel_data.owner=results.owner?.name;
             channel_data.length=results.counts?.contents;
             channel_data.can_edit=results.can?.update;
+
+
+            const localSchema=localStorage.getItem(slug);
+            const channelSchema = results.metadata?.["goby__schema"];
+
+            const foundSchema = channelSchema || localSchema;
+            const schema=foundSchema ? JSON.parse(foundSchema):undefined;
+
+            if(typeof schema == 'object' && "fields" in schema){
+                channel_data.schema=schema;
+            }
+
+
             console.log('results',results)
 
             if(!channel_data.url && results.owner?.slug){
@@ -45,7 +58,7 @@
         }
     }
 
-    async function load_profile(){
+    async function load_profile({cache_only = false} = {}){
         const cachedString=localStorage.getItem('profile');
         const cached_profile=cachedString?JSON.parse(cachedString):undefined;
 
@@ -53,7 +66,7 @@
             profile.slug=cached_profile.slug;
             profile.name=cached_profile.name;
             profile.avatar=cached_profile.avatar;
-        }else{
+        }else if(!cache_only){
             const profile_data=await get_current_profile();
             profile.slug=profile_data.slug;
             profile.name=profile_data.name;
@@ -64,11 +77,10 @@
 
     onMount(()=>{
         if(window.location.search.length>1){
+            load_profile({cache_only:true});
             channel_slug=window.location.search.slice(1,window.location.search.length);
         }else{
             load_profile();
-
-            // get_current_profile
         }
     })
 

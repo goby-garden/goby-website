@@ -46,6 +46,7 @@
         margin-bottom:10px;
         display:flex;
         flex-flow:row nowrap;
+        min-height:32px;
     }
 </style>
 

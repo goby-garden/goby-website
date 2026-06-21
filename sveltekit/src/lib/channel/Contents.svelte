@@ -63,13 +63,6 @@
         per: page_size,
       });
 
-      const localSchema=localStorage.getItem(channel_data.slug);
-      const schema=localSchema ? JSON.parse(localSchema):undefined;
-
-      if(typeof schema == 'object' && "fields" in schema){
-        channel_data.schema=schema;
-      }
-
       if(!meta || !data){
         queue_running = false;
         return;
