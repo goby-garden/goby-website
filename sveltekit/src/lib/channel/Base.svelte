@@ -44,6 +44,11 @@
 
             if(typeof schema == 'object' && "fields" in schema){
                 channel_data.schema=schema;
+            }else{
+                channel_data.schema={
+                    fields:[],
+                    preferences:{ namespace_keys:true }
+                };
             }
 
 
@@ -58,6 +63,8 @@
             }
         }
     }
+
+    $inspect('channel_data.schema',channel_data.schema)
 
     async function load_profile({cache_only = false} = {}){
         const cachedString=localStorage.getItem('profile');
@@ -98,8 +105,6 @@
                     replaceState:true
                 }
             )
-            const last_slug=localStorage.getItem('last-slug');
-            if(last_slug) channel_data.slug=last_slug;
 
             console.log('detected code. exchanging for token!')
             const checkAuth=await get_access_token(code,'https://goby.garden/arena/channel');
@@ -108,6 +113,10 @@
                 load_profile();
                 // window.location.search='';
             }
+
+            const last_slug=localStorage.getItem('last-slug');
+            console.log('last_slug',last_slug)
+            if(last_slug) channel_data.slug=last_slug;
         }
 
 

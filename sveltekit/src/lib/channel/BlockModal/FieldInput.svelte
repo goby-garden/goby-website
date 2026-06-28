@@ -117,7 +117,7 @@
     }
 
     async function toggle_selection(name:string){
-        console.log(document_state.activeElement,document.activeElement)
+        console.log(document_state.activeElement,document.activeElement);
         if(edit_mode && editable_field?.type=="select"){
             const is_selected=editable_field.value?.includes(name);
 
@@ -140,6 +140,8 @@
                 }
                 field_el?.focus();
             }
+
+            select_search_value='';
         }
     }
 
@@ -239,7 +241,7 @@
                 </div>
                 {#if unselected_options.length>0}
                     <div class="options-track">
-                        {#each unselected_options as option}
+                        {#each unselected_options.filter((a)=>select_search_value=='' || a.name.toLowerCase().includes(select_search_value.toLowerCase())) as option}
                             <button 
                                 class="option"
                                 data-value={option.name}

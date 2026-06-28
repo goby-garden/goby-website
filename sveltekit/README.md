@@ -33,8 +33,8 @@ features/functionality:
         - in localstorage if not authenticated, with an option to copy the json to clipboard
         - channel metadata if authenticated and owner/collaborator
         - in a block if authenticated but not owner/collaborator
-- [ ] authentication flow and UI for it
-- [ ] once authenticated, flow to save back to block and channel metadata
+- [x] authentication flow and UI for it
+- [x] once authenticated, flow to save back to block and channel metadata
 
 
 BUGS:
@@ -53,7 +53,7 @@ UI improvements:
 - preserve scroll position of focused field when you enter edit mode
 - create centralized fn to propagate goby titles to other areas besides the modal where blocks are represented
 - box for author and connector dates/attribution in modal (see sketch below in 5/16)
-- typing in selection field should filter down the options by match
+- [x] typing in selection field should filter down the options by match
 
 very far-off:
 - filtering/searching by field value

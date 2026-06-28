@@ -9,6 +9,7 @@
   import { untrack } from 'svelte';
 
     let edit_mode=$state(false);
+    let saving = $state(false);
 
     let prev_expanded=$state(expanded_block.id);
 
@@ -23,8 +24,16 @@
 
 
     async function closeModal(save = false){
+        // console.log('focused_bindings',$state.snapshot(focused_bindings))
+        if(focused_el_count>0 && !save){
+            console.log('focused_el_count',focused_el_count)
+            return;
+        }
+
+
         if(edit_mode){
             const changes=editable_fields.filter((field,f)=>field.key=='' || differentValues({edited:field,field:fields[f]}));
+            console.log('changes',$state.snapshot(changes))
             if(changes.length>0){
                 if(save && block){
                     // create a save function
@@ -34,7 +43,8 @@
                     // await the response before closing edit_mode (non-eager)
                     // const changes=fields.filter((f)=>tracked_changes.some((b)=>b.key==f.key));
                     // getValue
-
+                    
+                    saving=true;
 
                     await save_block_fields({
                         can_edit:channel_data.can_edit || false,
@@ -44,6 +54,8 @@
                         schema:channel_data.schema,
                         connection:block.connection
                     })
+
+                    saving=false;
                 }else{
                     // *possibly* flash an alert that you changed stuff, prompting you to either save or discard
                 }
@@ -149,7 +161,25 @@
 
 
     let editable_fields:GobyField[] = $state([]);
+    let new_field_editor_focused=$state(false);
     let focused_bindings:boolean[] = $state([]);
+
+    let focused_el_count=$state(0);
+    let focused_el_count_timeout:number | undefined;
+    $effect(()=>{
+        let c=focused_bindings.filter((a)=>a).length + (new_field_editor_focused?1:0);
+        if(c!==focused_el_count){
+            untrack(()=>{
+                if(focused_el_count_timeout) clearTimeout(focused_el_count_timeout);
+                focused_el_count_timeout=setTimeout(()=>{
+                    focused_el_count=c;
+
+                    // not sure why it needs a 200ms delay.
+                    // 100ms is apparently not enough
+                },200)
+            })
+        }
+    })
     
     $effect(()=>{
         if(!edit_mode || block?.id!==prev_expanded){
@@ -202,15 +232,9 @@
 
             
         }
-
-
-        // new_fields.push({
-        //     ...field,
-        //     value:null
-        // })
     }
 
-    // $inspect('document_state.activeElement',document_state.activeElement)
+    $inspect('block',block)
 </script>
 
 <svelte:window onkeydown={closeOnEsc} />
@@ -218,30 +242,41 @@
 <div class="modal" class:open aria-modal="true" class:edit-mode={edit_mode}>
     <button aria-label="Close block modal" class="backdrop-close" onclick={()=>closeModal()}></button>
     {#if block}
-        <figure class="block-content panel" data-type={block?.type} class:focused={content_focused}>
-            {#if isImage(block)}
-                {#key block.id}
-                    <img width={block.image?.width || 2000} height={block.image?.height || 2000} alt={block.image?.alt_text} src={block.image?.medium?.src} />
-                {/key}
-            {:else if block.type=='Embed'}
-                {@html block.embed?.html || ''}
-            {:else if block.type=='Attachment'}
-                <iframe title="{block.title || ''}" src="{block.attachment.url}"></iframe>
-            {:else if block.type=="Text" &&  typeof block?.content?.markdown == "string"}
-                <div class="prose">
+        {@const is_text=block.type=="Text" &&  typeof block?.content?.markdown == "string"}
+        {@const source = block.type!=='Channel'? block.source : null}
+        {@const wrapInLink= source?.url && !is_text}
+        <figure class:has-link={source?.url} class="block-content panel" data-type={block?.type} class:focused={content_focused}>
+            <svelte:element 
+                this={wrapInLink ? 'a' : 'div'} 
+                href={source?.url}
+                class="content-inner-wrapper" 
+                class:has-media={block.type=='Embed' || block.type=='Attachment' || isImage(block)}
+                class:prose={is_text}>
+                {#if isImage(block)}
+                    {#key block.id}
+                        <img width={block.image?.width || 2000} height={block.image?.height || 2000} alt={block.image?.alt_text} src={block.image?.medium?.src} />
+                    {/key}
+                {:else if block.type=='Embed'}
+                    {@html block.embed?.html || ''}
+                {:else if block.type=='Attachment'}
+                    <iframe title="{block.title || ''}" src="{block.attachment.url}"></iframe>
+                {:else if is_text}
                     <FieldInput 
-                        field={{
-                            name:'',
-                            key:'',
-                            type:'string',
-                            value:block.content.markdown
-                        }} bind:edit_mode
-                        bind:focused={content_focused}
-                        height="fill"
-                        readonly
-                     />
-                </div>
-            {/if}
+                            field={{
+                                name:'',
+                                key:'',
+                                type:'string',
+                                value:block.content.markdown
+                            }} bind:edit_mode
+                            bind:focused={content_focused}
+                            height="fill"
+                            readonly
+                         />
+                {/if}
+                {#if source?.url && !is_text}
+                    <svelte:element class="source-box" this={wrapInLink?'div':'a'}><span class="monospace">{@html source.url}</span></svelte:element>
+                {/if}
+            </svelte:element>
         </figure>
         <sidebar class="panel">
             <div class="sidebar-overscroll">
@@ -254,14 +289,16 @@
                         {/each}
                     {/key}
                     <div class="field-wrapper new-field-editor">
-                        <FieldEditor bind:edit_mode {stage_new_field} {new_fields} />
+                        <FieldEditor bind:focused={new_field_editor_focused} bind:edit_mode {stage_new_field} {new_fields} />
                     </div>
                 </section>
             </div>
             {#if edit_mode}
                 <div class="save-controls">
                     <button id="cancel-changes" onclick={()=>closeModal()}><span class="monospace">×</span></button>
-                    <button id="save-changes" onclick={()=>closeModal(true)}><span class="monospace">Save changes</span></button>
+                    <button id="save-changes" class:saving onclick={()=>closeModal(true)}>
+                        <span class="monospace">{saving ? "Saving" : "Save changes"}</span>
+                    </button>
                 </div>
             {/if}
         </sidebar>
@@ -368,6 +405,36 @@
         flex:1;
     }
 
+    #save-changes.saving span::after{
+        width:1px;
+        max-width:1px;
+        display:inline-block;
+        content:'.';
+        animation:ellipsis infinite forwards 1s;
+    }
+
+    @keyframes ellipsis{
+        0%{
+            content:'';
+        }
+
+        25%{
+            content:'.';
+        }
+
+        50%{
+           content:'..'; 
+        }
+
+        75%{
+            content:'...';
+        }
+
+        100%{
+            content:'';
+        }
+    }
+
     sidebar,sidebar section{
         display:flex;
         flex-flow:column nowrap;
@@ -459,8 +526,17 @@
         pointer-events:var(--pointer-events) !important;
         /* flex: 1; */
         /* aspect-ratio:1; */
-        width:calc(100lvh - 80px);
+        --modal-margins:80px;
+        --source-box-height:0px;
+        --gap:10px;
+        --fig-w:calc(100lvh - (var(--modal-margins) + var(--source-box-height) + var(--gap)));
+        width:var(--fig-w);
         max-width:100%;
+        min-width:0;
+    }
+
+    figure.has-link{
+        --source-box-height:20px;
     }
 
     figure iframe,
@@ -470,6 +546,8 @@
         height:100%;
         object-fit:contain;
         object-position:center;
+        display:flex;
+        flex:1;
         pointer-events:var(--pointer-events) !important;
     }
 
@@ -491,23 +569,50 @@
     }
     
 
-    figure .prose{
-        /* font-family:'Times New Roman', serif; */
-        font-size:20px;
-        line-height:1.4em;
+    .content-inner-wrapper{
+        display:block;
         min-height:100%;
         height:100%;
+        max-height:100%;
+        pointer-events:var(--pointer-events);
+        color:unset;
+        text-decoration:unset;
+    }
+
+    .source-box{
+        overflow:hidden;
+        color:rgba(0,0,0,0.5);
+        text-decoration-color:rgba(0,0,0,0.5);
+        text-decoration:underline;
+        display:block;
+        /* width:calc(var(--fig-w) - 40px); */
+        width:100%;
+    }
+
+    .source-box span{
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        width: 100%;
+        min-width:0;
+        display: block;
+    }
+
+    .content-inner-wrapper.has-media{
+        display:flex;
+        flex-flow:column nowrap;
+        gap:var(--gap);
+    }
+
+
+    .content-inner-wrapper.prose{
+        font-size:20px;
+        line-height:1.4em;
+        overflow-y:auto;
         --field-pad-left:20px;
         --field-pad-right:20px;
         --field-pad-top:20px;
         --field-pad-bottom:20px;
-        overflow-y:auto;
-        max-height:100%;
-        pointer-events:var(--pointer-events);
-        /* position:absolute;
-        top:0;
-        left:0;
-        width:100%; */
     }
 
     .panel{
