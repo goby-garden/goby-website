@@ -1,4 +1,5 @@
 <script lang="ts">
+    import Modal from '../Modal.svelte';
     import {auth_modal} from '$lib/channel/context.svelte';
     import {browser} from '$app/environment';
 
@@ -11,43 +12,32 @@
     let auth_url=$derived(`https://www.are.na/oauth/authorize?client_id=t9F7ZmHfgBO6kF5-K5s3B6PdALcNb8Bbb2zhlfnGaJA&redirect_uri=${encodeURI('https://goby.garden/arena/channel')}&response_type=code&scope=write`);
 </script>
 
-<!-- eventually consolidate this modal wrapper with the one in BlockModal -->
-<div class="modal" class:open={auth_modal.open}>
-    <button aria-label="Close block modal" class="backdrop-close" onclick={()=>closeModal()}></button>
-
-    <div class="auth-confirmation monospace">
-        <!-- <h3>Give goby.garden access to your are.na?</h3> -->
-        <p>If you’d like to save your edits on this page back to are.na, log in below to authorize goby.garden.</p>
-        <p>
-            <a id="authentication-portal" href="{auth_url}">Authenticate</a>
-        </p>
-        <p>Otherwise, you can still edit channels locally! The changes persist in your browser’s storage, and you can export the data as a JSON at any time.</p>
-        <p>Feel free to explore the codebase <a href="https://github.com/goby-garden/goby-website/tree/master/sveltekit">here</a> or <a href="https://www.are.na/nico-chilla/span-span-span-span">contact me</a> with any questions you have.</p>
+<Modal open={auth_modal.open}>
+    <!-- eventually consolidate this modal wrapper with the one in BlockModal -->
+    <div class="panel-wrapper">
+        <button aria-label="Close block modal" class="backdrop-close" onclick={()=>closeModal()}></button>
+    
+        <div class="auth-confirmation monospace">
+            <!-- <h3>Give goby.garden access to your are.na?</h3> -->
+            <p>If you’d like to save your edits on this page back to are.na, log in below to authorize goby.garden.</p>
+            <p>
+                <a id="authentication-portal" href="{auth_url}">Authenticate</a>
+            </p>
+            <p>Otherwise, you can still edit channels locally! The changes persist in your browser’s storage, and you can export the data as a JSON at any time.</p>
+            <p>Feel free to explore the codebase <a href="https://github.com/goby-garden/goby-website/tree/master/sveltekit">here</a> or <a href="https://www.are.na/nico-chilla/span-span-span-span">contact me</a> with any questions you have.</p>
+        </div>
     </div>
-</div>
+</Modal>
 
 <style>
-    .modal{
-        position:fixed;
+    .panel-wrapper{
         width:100%;
         height:100%;
-        top:0;
-        left:0;
-        --pointer-events:all;
-        pointer-events:var(--pointer-events) !important;
-        transition:opacity 0.3s;
         display:flex;
         flex-flow:column nowrap;
          box-sizing:border-box;
         padding:40px;
-        z-index:10000;
-    }
-
-    
-
-    .modal:not(.open){
-        opacity:0;
-        --pointer-events:none;
+        position:relative;
     }
 
     .backdrop-close{

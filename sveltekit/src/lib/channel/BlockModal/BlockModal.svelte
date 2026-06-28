@@ -6,7 +6,8 @@
     import FieldEditor from './FieldEditor.svelte';
     import { save_block_fields, type ChannelBlock } from '$lib/arena-v3';
     import { get_canon_value } from '../goby-utils';
-  import { untrack } from 'svelte';
+    import { untrack } from 'svelte';
+    import Modal from '../Modal.svelte';
 
     let edit_mode=$state(false);
     let saving = $state(false);
@@ -239,82 +240,83 @@
 
 <svelte:window onkeydown={closeOnEsc} />
 
-<div class="modal" class:open aria-modal="true" class:edit-mode={edit_mode}>
-    <button aria-label="Close block modal" class="backdrop-close" onclick={()=>closeModal()}></button>
-    {#if block}
-        {@const is_text=block.type=="Text" &&  typeof block?.content?.markdown == "string"}
-        {@const source = block.type!=='Channel'? block.source : null}
-        {@const wrapInLink= source?.url && !is_text}
-        <figure class:has-link={source?.url} class="block-content panel" data-type={block?.type} class:focused={content_focused}>
-            <svelte:element 
-                this={wrapInLink ? 'a' : 'div'} 
-                href={source?.url}
-                class="content-inner-wrapper" 
-                class:has-media={block.type=='Embed' || block.type=='Attachment' || isImage(block)}
-                class:prose={is_text}>
-                {#if isImage(block)}
-                    {#key block.id}
-                        <img width={block.image?.width || 2000} height={block.image?.height || 2000} alt={block.image?.alt_text} src={block.image?.medium?.src} />
-                    {/key}
-                {:else if block.type=='Embed'}
-                    {@html block.embed?.html || ''}
-                {:else if block.type=='Attachment'}
-                    <iframe title="{block.title || ''}" src="{block.attachment.url}"></iframe>
-                {:else if is_text}
-                    <FieldInput 
-                            field={{
-                                name:'',
-                                key:'',
-                                type:'string',
-                                value:block.content.markdown
-                            }} bind:edit_mode
-                            bind:focused={content_focused}
-                            height="fill"
-                            readonly
-                         />
-                {/if}
-                {#if source?.url && !is_text}
-                    <svelte:element class="source-box" this={wrapInLink?'div':'a'}><span class="monospace">{@html source.url}</span></svelte:element>
-                {/if}
-            </svelte:element>
-        </figure>
-        <sidebar class="panel">
-            <div class="sidebar-overscroll">
-                <section class="fields">
-                    {#key block.id}
-                        {#each fields as field,f}
-                            <div class="field-wrapper" class:field-focused={focused_bindings[f]} class:description={field.key=="goby__description"} class:canon={field.canon}>
-                                <FieldInput bind:focused={focused_bindings[f]} bind:editable_field={editable_fields[f]} {field} bind:edit_mode markdown={field.key!=="goby__title"}/>
-                            </div>
-                        {/each}
-                    {/key}
-                    <div class="field-wrapper new-field-editor">
-                        <FieldEditor bind:focused={new_field_editor_focused} bind:edit_mode {stage_new_field} {new_fields} />
-                    </div>
-                </section>
-            </div>
-            {#if edit_mode}
-                <div class="save-controls">
-                    <button id="cancel-changes" onclick={()=>closeModal()}><span class="monospace">×</span></button>
-                    <button id="save-changes" class:saving onclick={()=>closeModal(true)}>
-                        <span class="monospace">{saving ? "Saving" : "Save changes"}</span>
-                    </button>
+<Modal {open}>
+    <div class="block-outer" class:open aria-modal="true" class:edit-mode={edit_mode}>
+        <button aria-label="Close block modal" class="backdrop-close" onclick={()=>closeModal()}></button>
+        {#if block}
+            {@const is_text=block.type=="Text" &&  typeof block?.content?.markdown == "string"}
+            {@const source = block.type!=='Channel'? block.source : null}
+            {@const wrapInLink= source?.url && !is_text}
+            <figure class:has-link={source?.url} class="block-content panel" data-type={block?.type} class:focused={content_focused}>
+                <svelte:element 
+                    this={wrapInLink ? 'a' : 'div'} 
+                    href={source?.url}
+                    class="content-inner-wrapper" 
+                    class:has-media={block.type=='Embed' || block.type=='Attachment' || isImage(block)}
+                    class:prose={is_text}>
+                    {#if isImage(block)}
+                        {#key block.id}
+                            <img width={block.image?.width || 2000} height={block.image?.height || 2000} alt={block.image?.alt_text} src={block.image?.medium?.src} />
+                        {/key}
+                    {:else if block.type=='Embed'}
+                        {@html block.embed?.html || ''}
+                    {:else if block.type=='Attachment'}
+                        <iframe title="{block.title || ''}" src="{block.attachment.url}"></iframe>
+                    {:else if is_text}
+                        <FieldInput 
+                                field={{
+                                    name:'',
+                                    key:'',
+                                    type:'string',
+                                    value:block.content.markdown
+                                }} bind:edit_mode
+                                bind:focused={content_focused}
+                                height="fill"
+                                readonly
+                             />
+                    {/if}
+                    {#if source?.url && !is_text}
+                        <svelte:element class="source-box" this={wrapInLink?'div':'a'}><span class="monospace">{@html source.url}</span></svelte:element>
+                    {/if}
+                </svelte:element>
+            </figure>
+            <sidebar class="panel">
+                <div class="sidebar-overscroll">
+                    <section class="fields">
+                        {#key block.id}
+                            {#each fields as field,f}
+                                <div class="field-wrapper" class:field-focused={focused_bindings[f]} class:description={field.key=="goby__description"} class:canon={field.canon}>
+                                    <FieldInput bind:focused={focused_bindings[f]} bind:editable_field={editable_fields[f]} {field} bind:edit_mode markdown={field.key!=="goby__title"}/>
+                                </div>
+                            {/each}
+                        {/key}
+                        <div class="field-wrapper new-field-editor">
+                            <FieldEditor bind:focused={new_field_editor_focused} bind:edit_mode {stage_new_field} {new_fields} />
+                        </div>
+                    </section>
                 </div>
-            {/if}
-        </sidebar>
-    {/if}
-</div>
+                {#if edit_mode}
+                    <div class="save-controls">
+                        <button id="cancel-changes" onclick={()=>closeModal()}><span class="monospace">×</span></button>
+                        <button id="save-changes" class:saving onclick={()=>closeModal(true)}>
+                            <span class="monospace">{saving ? "Saving" : "Save changes"}</span>
+                        </button>
+                    </div>
+                {/if}
+            </sidebar>
+        {/if}
+    </div>
+</Modal>
+
+
+
 
 <style>
-    .modal{
-        position:fixed;
+    .block-outer{
+        position:relative;
         width:100%;
         height:100%;
-        top:0;
-        left:0;
-        --pointer-events:all;
         pointer-events:var(--pointer-events) !important;
-        transition:opacity 0.3s;
         display:flex;
         flex-flow:column nowrap;
         /* gap:20px; */
@@ -335,12 +337,6 @@
         width:100%;
         height:100%;
         cursor:default;
-    }
-
-
-    .modal:not(.open){
-        opacity:0;
-        --pointer-events:none;
     }
 
     sidebar{
@@ -486,7 +482,7 @@
 
     /* rgba(22, 22, 22, 1); */
 
-    .modal:not(.edit-mode) .field-wrapper.canon{
+    .block-outer:not(.edit-mode) .field-wrapper.canon{
         --pad-v-inner:5px;
     }
 
@@ -495,7 +491,7 @@
         --field-pad-bottom:15px;
     }
 
-    .modal:not(.edit-mode) .field-wrapper.canon,
+    .block-outer:not(.edit-mode) .field-wrapper.canon,
     .field-wrapper:first-child{
         border-top:none;
     }
@@ -634,7 +630,7 @@
     }
 
     @media(min-width:900px){
-        .modal{
+        .block-outer{
             flex-flow:row nowrap;
             justify-content:center;
         }
