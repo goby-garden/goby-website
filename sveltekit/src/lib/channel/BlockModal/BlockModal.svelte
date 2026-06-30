@@ -256,7 +256,7 @@
                     class:prose={is_text}>
                     {#if isImage(block)}
                         {#key block.id}
-                            <img width={block.image?.width || 2000} height={block.image?.height || 2000} alt={block.image?.alt_text} src={block.image?.medium?.src} />
+                            <img loading="lazy" width={block.image?.width || 2000} height={block.image?.height || 2000} alt={block.image?.alt_text} src={block.image?.medium?.src} />
                         {/key}
                     {:else if block.type=='Embed'}
                         {@html block.embed?.html || ''}

@@ -1,12 +1,13 @@
 <script lang="ts">
     import {onMount} from 'svelte';
     import {goto} from '$app/navigation';
-    import { get_access_token, get_channel_meta, get_current_profile } from '$lib/arena-v3';
+    import { get_access_token, get_channel_meta, get_current_profile, type ChannelBlock } from '$lib/arena-v3';
     import Nav from '$lib/channel/Nav/Nav.svelte';
     import Contents from '$lib/channel/Contents.svelte';
     import BlockModal from '$lib/channel/BlockModal/BlockModal.svelte'
     import {channel_data, document_state, expanded_block, profile} from '$lib/channel/context.svelte';
     import parse from '$lib/markdown';
+    import ModalOverlay from './BlockModal/ModalOverlay.svelte';
 
     let channel_slug:string | undefined=$state();
 
@@ -141,6 +142,32 @@
         // queryString.get('code');
     })
 
+    let rendered_blocks: (
+        { render_id:string; } | { render_id:string; id:number; } & ChannelBlock
+    )[] = $state([]);
+
+    $effect(() => {
+        let blocks:typeof rendered_blocks = [];
+        for (let b = channel_data.length; b > 0; b--) {
+        const matching = channel_data.blocks?.find(
+            (block) => block.connection?.position == b,
+        );
+
+        const render_id=`${matching ? "block" : "placeholder"}-${matching?.id || b}`;
+        if(matching!==undefined){
+            blocks.push({
+            render_id,
+            ...matching
+            })
+        }else{
+            blocks.push({
+            render_id
+            })
+        }
+        }
+        rendered_blocks = blocks;
+    });
+
 </script>
 
 <main>
@@ -155,8 +182,9 @@
             </div>
         {/if}
      </header>
-     <Contents />
-     <BlockModal />
+     <Contents {rendered_blocks} />
+     <!-- <BlockModal /> -->
+     <ModalOverlay {rendered_blocks} />
 </main>
 
 

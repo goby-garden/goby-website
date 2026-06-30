@@ -8,33 +8,14 @@
     import { get_canon_value } from "./goby-utils";
   // import type { Block } from "@aredotna/sdk";
 
-  let rendered_blocks: (
-    { render_id:string; } | { render_id:string; id:number; } & ChannelBlock
-  )[] = $state([]);
+  let {
+    rendered_blocks
+  }:{
+    rendered_blocks:(
+        { render_id:string; } | { render_id:string; id:number; } & ChannelBlock
+    )[]
+  }  = $props();
 
-  $inspect('channel_data.blocks',channel_data.blocks)
-
-  $effect(() => {
-    let blocks:typeof rendered_blocks = [];
-    for (let b = channel_data.length; b > 0; b--) {
-      const matching = channel_data.blocks?.find(
-        (block) => block.connection?.position == b,
-      );
-
-      const render_id=`${matching ? "block" : "placeholder"}-${matching?.id || b}`;
-      if(matching!==undefined){
-        blocks.push({
-          render_id,
-          ...matching
-        })
-      }else{
-        blocks.push({
-          render_id
-        })
-      }
-    }
-    rendered_blocks = blocks;
-  });
 
   let observer: IntersectionObserver | undefined;
 

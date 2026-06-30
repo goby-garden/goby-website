@@ -25,6 +25,8 @@
         pointer-events:var(--pointer-events) !important;
         transition:opacity 0.3s;
         z-index:10000;
+        container-name:modal;
+        container-type:size;
     }
 
     
